@@ -1,0 +1,369 @@
+---
+title: "Ocean Wealth\\: Securing Palau's Blue Prosperity"
+subtitle: "Core Ocean Gross Domestic Product (GDP) Accounts\nPalau Marine Spatial Planning\nMinisterial Brief"
+author: James Hogan, Senior Marine Resource Economist, The Pacific Community
+date: "`r format(Sys.time(), '%d %B %Y')`"
+fontsize: 11pt
+urlcolor: blue
+classoption: a4paper
+geometry: margin = 1in
+fig_caption: true
+output: 
+   bookdown::word_document2:
+      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\SPC_R_Template.docx"
+      toc: false  
+      figure:
+        style: Table
+        layout: autofit
+        width: 1.0
+        caption:
+          style: Table Caption
+          pre: 'Table '
+          sep: ': '
+          topcaption: true
+      
+header-includes:
+   - \usepackage[percent]{overpic}   
+   - \usepackage{tikz}
+   - \usetikzlibrary{calc}
+   - \usepackage{graphicx}
+   - \usepackage{placeins}
+   - \usepackage{fancyhdr}
+   - \pagestyle{fancy}
+   - \fancyhf{}
+   - \addtolength{\headwidth}{\marginparsep}
+   - \addtolength{\headwidth}{\marginparwidth}   
+   - \usepackage{floatrow}
+   - \floatsetup[figure]{capposition=top}
+
+---
+\newpage
+
+
+```{r setup, cache=FALSE, include=FALSE}
+
+##
+##    Core libraries
+##
+      library(ggplot2)
+      library(plyr)
+      library(stringr)
+      library(lubridate)
+      library(calibrate)
+      library(Hmisc)
+      library(RColorBrewer)
+      library(stringi)
+      library(sqldf)
+      library(scales)
+      library(RDCOMClient)
+      library(extrafont)
+      library(tictoc)
+      library(RODBC)
+      
+      library(sysfonts)
+      library(showtext)
+##
+##    Project-specific libraries
+##
+      library(comtradr)
+      library(curl)
+      library(XML)   
+      library(RJSONIO)   
+      library(data.table)
+      library(ggrepel)
+
+      library(strucchange)
+      library(lmtest)
+      library(dynlm)
+      library(systemfit)
+      library(tseries)
+      library(cluster)
+      library(nlme)
+      library(plm)
+      library(splines)
+      library(systemfit)
+      library(forecast)  
+
+      library(knitr)
+      library(htmlTable)
+      library(png)
+      library(bookdown)
+      library(kableExtra)
+      library(pander)
+      library(officer)
+      library(RefManageR)
+      
+options(xtable.comment = FALSE)
+BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Graphical_Output\\"
+
+##
+##    Grab my Bibliography - where do you find the collection key from? https://forums.zotero.org/discussion/18400/collectionid-collectionkey
+##       Its found on the web version of your library - of course... ;)
+##
+      Bibliography <- ReadZotero(user = '14637827', .params = list(key = '0RTmBtbkHWkStie80fRsfVdn', collection = 'QCYI7BUU')) # Reads in James Hogan's "Ocean Accounting" bibliography
+      BibOptions(check.entries = FALSE, style = "markdown", cite.style = "authoryear", bib.style = "numeric")
+           
+```
+
+   
+
+<!-- 
+##
+##       This bit below is the commentary written in R Markup
+--> 
+
+[^Page23]: `r AutoCite(Bibliography, "unescap_technical_2020")` page 23
+[^CoreGDP]: `r Citet(Bibliography, "colgan_guide_2022")`
+[^FishingHhld]: `r AutoCite(Bibliography, "gillett_fisheries_2023")` page 178.
+[^FishingRevenue]: _ibid_ page 176.
+[^SEEA]: `r AutoCite(Bibliography, "unseea_system_2021")`
+[^SNA]: `r AutoCite(Bibliography, "european_commission_system_2009")`
+[^I-OTables]: https://www.oecd.org/en/data/datasets/input-output-tables.html
+[^PalauPAN]: 24 PNCA ss 3401 - Protected Areas Network https://www.palaupanfund.org/pdf/24%20PNCA%20ss%203401%20PAN.pdf
+[^FiveAccounts]: The [five accounts](https://seea.un.org/ecosystem-accounting) are: Ecosystem extent accounts, Ecosystem condition accounts, Ecosystem services (Physical) accounts, Ecosystem services (Monetary) accounts, and Ecosystem monetary asset accounts.
+
+
+
+# Recommendations at a Glance
+
+To achieve the Blue Prosperity Plan's ambitious goals Palau needs a clear understanding of the economic value of its ocean and their contribution to the national economy. Developing Core Ocean Gross Domestic Product (GDP) Accounts from existing national accounting information, and then extending into Environmental Accounts and a Tourism Satelite Account provides the most direct analytical return for a given level of effort.
+
+Investing in these economic accounts is essential for achieving Palau's Blue Prosperity Plan and securing a sustainable future for people and our ocean. By understanding the full value of our ocean resources, we can make informed decisions that balance economic development with environmental protection.
+
+Palau has asked The Pacific Community (SPC) for advice on the economic information needed for supporting its MSP process. This document contains the collaborative advice from the Fisheries, Aquaculture and Marine Environment (FAME), Geospatial, Energy and Maritime (GEM), and Statistics for Development Divisions (SDD) of SPC on the economic data needed to create the economic information to support the Blue Prosperity Plan. 
+
+It may also be appropriate for Palau to utilise the expertise of the Forum Fisheries Agency (FFA), and the Parties to the Nauru Agreement (PNA).
+
+### Types of Economic Accounts for Palau
+
+We recommend developing three types of economic accounts to provide a holistic view of Palau's ocean economy:
+
+_**1. Ocean Accounts:**_ Ocean Accounts track the economic activity associated with our ocean, including fishing, tourism, and transportation. Their first development stage is to derive a set of Core Ocean GDP Accounts: statistics of the contribution made from ocean-related industries to GDP.
+
+_**2. Environmental Accounts:**_ Environmental Accounts measure the extent and condition of a country's natural capital (coral reefs and fish stocks) and the flow of ecosystem services that flow from those assets. Environmental Accounts can quantify the value of healthy coral reefs for tourism and sustainable fishing.
+
+_**3. Tourism Satellite Account:**_ A Tourism Satelite Account measures the full impact (the direct and indirect effects) of tourism on an economy. Tourism impacts multiple industries including accommodation, transportation, and retail. Tourism Satelite Account
+
+\newpage
+ 
+
+### The Importance of Economic Accounts
+
+Accurately measuring the economic significance of our ocean is important because:
+
+* Understanding Palau's Ocean-based Economic Path-dependency: 
+
+Palau is heavily economically reliant on its oceans. This ocean-dependency makes diversifying the economy more challenging and underscores the need to manage our ocean resources sustainably.
+
+* Informing Policy Decisions: 
+
+Comprehensive economic accounts provide policymakers with the data needed to make informed decisions about marine spatial planning, sustainable fisheries management, and tourism development.
+
+* Measuring Progress: 
+
+These three economic accounts will allow Palau to track progress towards achieving the Blue Prosperity Plan objectives and demonstrate Palau's commitment to sustainable ocean management to citizens and the international community.
+
+### Benefits of Implementing Economic Accounts
+
+These accounts will:
+
+* Enable Palau to express the value of its environmental wealth and its contribution to the national economy.
+
+* Provide data to model the impact of future development scenarios and different marine spatial configurations.
+
+* Help analyse tradeoffs associated with developing different sectors of our economy and ensure sustainable growth.
+
+### Next Steps
+
+To move forward, we recommend the following actions:
+
+* The Ministry of Finance should engage an Economic Analyst to coordinate the development of these accounts.
+
+* This Analyst should work closely with the Office of Statistics, the Graduate School of the USA, and the Pacific Community to leverage existing data and expertise.
+
+* Prioritise the development of Core Ocean GDP Accounts and Environmental Accounts as these offer the most immediate analytical benefits.
+
+\newpage
+
+# Key Recommendations 
+
+Recommendation:
+
+* Palau develop Ocean Accounts (OAs), Environmental Accounts (EAs) and a Tourism Satelite Account (TSA) according to the United Nations statistical frameworks of the System of Environmental-Economic Accounting[^SEEA] (SEEA) and the System of National Accounts[^SNA] (SNA). 
+
+Activities:
+
+* Developing an initial set of Core Ocean GDP Accounts as the first step towards a full OA using the principles described in `r Citet(Bibliography, "colgan_guide_2022")`.
+
+The Office of Statistics (Budget and Planning) and the Graduate School of the USA has made significant progress in developing a Palau-based commodity supply table, a precursor to a fully developed input-output table (I-O table) needed for developing Core Ocean GDP accounts.
+
+* Secondly, develop a TSA using the methodology described by the [United Nations Statistical Division - Statistics of International Trade in Services Section.](https://unstats.un.org/unsd/tourism/methodology.asp)
+
+A TSA will build on the I-O table work and estimate the direct and indirect effects to the Palau economy from changes in tourism activity. Measuring the economic value of tourism through a TSA will allow it to be directly compared with other industries within the Palau economy. 
+
+* Thirdly, use the fisheries science analysis from the MSP work, and the skills of the Pacific Community and Polaris to develop a [fisheries stock measure](https://seea.un.org/content/agriculture-forestry-and-fisheries) of an experimental set of Palau _"Ecosystem Extent Accounts"_: the common starting point for ecosystem accounting. 
+
+An experimental Ecosystem Extent Account will measure the extent and condition of Palau's natural environment, together with the ecosystem service "flows" into fishing or tourism withing the Palau economy.
+
+* Finally, work with the Ministry of Finance to engage an Economic Analyst to liase with the Office of Statistics (Budget and Planning), the Graduate School of the USA and the Pacific Community to progress this body of work. 
+
+The Analyst will work with the organisations to develop the economic data sources, and an internal Palau economic modelling capabilty for modelling the impact of future Palau development scenarios and the trade-offs associated with different marine spatial configurations. Reference is made at the end of this paper to an integrated economic-environment model developed for the Alaskan economy which could suit Palau's marine spatial planning requirements.
+
+\newpage
+
+# Background
+Palau is recognised as a global leader in environmental stewardship, protecting 20\% of its forests, 30\% of its coral reefs, and 80\% of its pelagic waters in no-take reserves.[^PalauPAN]
+
+Palau is charting a course to achieve 100\% management of its ocean, balancing protection of its precious marine resources with sustainable use of those resources for the benefit of all Palauan people "A Kot a Rechad er Belau".
+
+To achieve this vision, Palau has developed a Blue Prosperity Plan, to develop:
+
+* An inclusive, and locally led marine spatial planning (MSP) process to implement a science-based zoning and management plan that secures at least a minimum 50\% of Palau's Exclusive Economic Zone (EEZ) under no-take protections;
+
+* A vessel day buy-back scheme that fills critical budget gaps during the MSP process, freezes the 2021 longline fishery footprint (spatial & effort), and catalyses a sustainable fisheries development program to establish a world-class pelagic fishery that returns more value to Palau and minimises impacts to its resources;
+
+* A further set of innovative blue economy development programs backed by a long-term financing plan to support protection and production for the entire jurisdiction.
+
+Delivering Palau's Blue Prosperity Plan requires a long-term time horizon and a multi-year commitment. Measuring progress over time, and the direction of change requires official statistics capable of measuring change. 
+
+### Origin of Document 
+Palau has asked SPC for advice on the economic information needed for supporting its MSP process. This document contains the collaborative advice from the Fisheries, Aquaculture and Marine Environment (FAME), Geospatial, Energy and Maritime (GEM), and Statistics for Development Divisions (SDD) of SPC on the economic data needed to create the economic information to support the Blue Prosperity Plan. 
+
+It may also be appropriate for Palau to utilise the expertise of the Forum Fisheries Agency (FFA), and the Parties to the Nauru Agreement (PNA).
+
+## Palau has an Ocean-Based economic path dependency which needs to be reflected in its statistics
+When an economy is heavily focused on one specific type of economic activity, it becomes **_path dependent_**: its ability to change its economic focus _away_ from its primary activities becomes more difficult over time. 
+
+With path dependency, industries and the economy's labour and credit markets become highly skilled in supporting a specific type of economic activity but also "hard-wired" into delivering more of that type of activity. For policy-makers, changing a country's economic focus and diversifying the economy becomes significantly more difficult. 
+
+Measuring economic progress using only Gross Domestic Product (GDP) will understate the economy's dependency through creating the impression that industry activity can be perfectly-substituted across industries. Moving from one type of economy to another might look achievable on paper if forecast GDP per capita is projected to remain constant; however, if an economy is deeply entrenched in one form of industry, its path dependency will constrain its ability to expand its economic base. 
+
+Palau has an ocean-based path dependency which needs to be reflected to policy makers through its official statistics. The Pacific Community estimates 38% of households in Palau participate in fishing,[^FishingHhld] 16% of its direct exports are from its fisheries, and the government receives between $US7 - $US11 million annually in fishing access fee revenue.[^FishingRevenue] 
+
+With a land area of 458 km^2^ surrounded by 604,000 km^2^ of EEZ, the bulk of Palau's environmental capital resides in its oceans; however, its environment capital - its fisheries, and aquatic biodiversity - are not assets routinely valued in its national accounts, nor are the services from those environmental assets routinely measured. 
+
+The invisibility of environmental assets in traditional economic measures understates their role within the Palau economy, leading to a potential mistreatment in their use, or an overly optimistic perception around Palau's ability to change its economic direction.  
+
+\newpage
+
+# What are Ocean Accounts, Environmental Accounts and Tourism Satelite Accounts
+The System of Environmental-Economic Accounting[^SEEA] (SEEA) is a statistical framework developed by the United Nations to integrate environmental and economic information. It is aligned with the United Nations System of National Accounts[^SNA] (SNA) that defines how economic metrics, like GDP, are measured. 
+
+The two measurement systems are internationally recognised and compatible frameworks for measuring both economy-wide measures of production, consumption and exchange (through the SNA), and the physical and monetary amount of ecological assets and their services to the economy (through the SEEA). The SEEA also has additional guidance frameworks, such as the SEEA Ecosystem Accounting (SEEA EA) that focuses on extent, condition and value of ecosystems.
+
+
+```{r IntroSEEA, echo=FALSE, fig.pos='h', out.width = '100%',out.heigth = '100%', fig.cap = "SEEA Conceptual Framework"}
+knitr::include_graphics(paste0(BaseDir, "SEEAFramework.PNG"))
+```
+Source: [Introduction-to-Ecosystem-Accounting](https://seea.un.org/Introduction-to-Ecosystem-Accounting)
+
+
+The "stock" of natural capital creates ecosystem service "flows" which are inputs into economic processes. For example, the fisheries "stock" creates the "maximum sustainable yield" flow for annual fisheries harvests and its fishing revenues. Similarly, the prestine environment free of pollution becomes a "tourism attractor"  attracting tourism "flow" into the country and supporting the tourism sector.
+
+The SEEA EA framework is modular: there are five core ecosystem accounts which, when developed, provide a coherent view for how ecosystems support economic and social well-being.[^FiveAccounts] Ecosystem Extent Accounts are a common starting point for ecosystem accounting, and organise information on the extent of different ecosystem types (e.g. forests, wetlands, agricultural areas, marine areas) within a spatial area.
+
+Tourism Satelite Accounts measure how changes in tourism impacts a range of economic industries. Tourism jointly affects a _range_ of industries: accommodation, food and beverage, transport (air and marine), and retail. Changes in tourism simultanously affects a range of different industries. Tourism Satelite Accounts measure the direct and indirect effect of tourism for an economy.
+
+Ocean Accounts incorporate macro-economic accounts, environmental-economic accounts, ecosystem accounts and other structured data related to oceans. They use a suite of internationally recognised and legitamate economic metrics for measuring, monitoring, and modelling economic change in an ocean-dominate economy. They will enable Palau to  express the value of its environmental wealth, the benefits it confers to its domestic economy, and the tradeoffs associated with developing alternative aspects of its economy relative to others. 
+
+All three metrics together will provide a more complete perspective into the Palau economy and its economic structure, constraints and potential opportunities when it considers how best to plan its marine spatial environment: the key enabling input into almost every aspect of Palau's economy.
+
+
+## Core GDP Ocean Accounts
+Core GDP Ocean Accounts decompose traditional economic GDP-based measures of economic activity into the components which are "ocean-dependent" and estimate how changes in those metrics flow through the economy. For example, the shipping industry is 100\% ocean-dependent, and is also a significant contributor to the fuel retailing industry through import linkages. Changes in the shipping industry from ocean-related sources will "flow through" into supply changes for the fuel retailing industry, manifesting in fuel quantity changes and/or fuel price changes. Ocean-related sources of change might be climate related, geo-political or technologically based from productivity change effects.
+
+The Global Ocean Accounts Partnership (GOAP) provides technical guidence for developing Core Ocean GDP Accounts. Figure \@ref(fig:ConceptualOverview), modified from figure 1 in `r AutoCite(Bibliography, "unescap_technical_2020")`[^Page23] outlines both the full structure of the Ocean Account Framework, and the component considered "Core Ocean GDP Accounts".[^CoreGDP]
+
+```{r ConceptualOverview, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Conceptual Overview of the Full Suite of Ocean Accounts"}
+knitr::include_graphics(paste0(BaseDir, "Core_Ocean_GDP_Accounts.png"))
+```
+
+When fully developed, Ocean Accounts provide guidance that enables decision-makers to monitor:
+
+* Ocean assets which are marine and coastal natural capital _(Environmental Assets)_
+
+* Ocean services used in the economy including ocean ecosystem services _(Flows to the Economy)_
+
+* Impacts of economic activities to the ocean environment including marine debris _(Flows to the Environment)_
+
+* Ocean-based economic production or an ocean economy _(The Economy)_
+
+\newpage
+
+## Input-Output Tables: The Foundation for Core Ocean GDP and Tourism Satelite Accounts
+Economic Input-Output tables[^I-OTables] are the main statistical inputs into creating  Core Ocean GDP and TSAa. Because of their complexity, I-O tables are usually developed by countries with more technically advanced statistical offices. However, through the efforts of the Office of Statistics (Budget and Planning) and the Graduate School of the USA, Palau is well advanced in this statistical area.
+
+Palau has an annual Supply-Use table used as part of the GDP expenditure estimation process. It also has prepared an input-output matrix, the precursor to an I-O table, and a Social Accounting Matrix (SAM) reflecting the exchange of approximately 50 aggregated products. 
+
+The I-O and SAM matricies have not been updated since Covid and are unpublished measures. They do, however, provide an advanced starting point for developing Palau-specific Core GDP Ocean Accounts, and a TSAs.
+
+Once developed, the metrics could assist other Pacific Island countries. Most I-O tables derive from advanced economies with a larger range of industries, more complicated and entwined industries, and less dependency on their surrounding ocean systems. When Palau's I-O metrics are completed, their measured industry structure and small island inter-relationships will be similar to other Pacific Island countries and could help them in their economic modelling. Palau's I-O metrics could be calibrated and used for other Pacific Island countries.
+
+\newpage
+
+
+# References
+
+```{r results = "asis", echo = FALSE}
+PrintBibliography(Bibliography, .opts = list(check.entries = FALSE, sorting = "ynt"))
+```
+
+
+\newpage
+
+
+# Appendix: _Post Ocean Accounts_: Measuring and Modelling Palau's Economic Change
+
+The three proposed accounts measure the economic value generated from ocean-related economic activity, tourism activity, and how each affects other parts of the Palau economy. They provide a data framework for a forward-looking modelling capability to allow Palau to translate ocean-related future scenarios into changes in employment and revenues. Without these metrics, Palau will lack the ability to translate scenarios of future ocean-based activity into domestic economic change, hindering its ability to make informed choices for its future economic direction.
+
+Implementing the full Ocean Account framework is data intensive and should be seen as a long-term (10 year) statistical infrastructure goal. 
+
+Developing Core Ocean GDP Accounts from existing national accounting information, and then extending into environmental accounts provides the most direct analytical return for a given level of effort.
+
+## Long Term Challenge: Managing Dynamically Evolving Economic and Environmental Systems
+
+`r AutoCite(Bibliography, "finnoff_linking_2008")` provides an example for how dynamic economic and ecological general equilibrium models might be linked and used to inform policy-makers on future economic scenarios. 
+
+```{r CGEGEEM, echo=FALSE, fig.pos='h', out.width = '95%', out.heigth = '95%', fig.cap = paste("Linked Alaskan Economy and EBS/AI Ecosystem from",AutoCite(Bibliography, "finnoff_linking_2008"))}
+knitr::include_graphics(paste0(BaseDir, "1-s2.0-S0928765507000450-gr1.jpg"))
+```
+
+The simplified economy was modeled as having three production sectors: the fishery sector, a recreation and tourism sector, and "composite" goods sector representing all production-based industries within the Alaskan economy. The ecological modelling combined two disparate approaches: an optimum foraging model and a dynamic population model. 
+
+The authors note seems appropriate for considering marine spatial planning:
+
+> _The linked modeling approach can be applied to numerous conflicts that arise when economic activities and environmental conservation appear at odds. For example, in a terrestrial economy/ecosystem there may be the same consumptive and non-consumptive links used here in addition to pollution that can interfere with species respiration patterns, habitat loss that would reduce space available for plants and, therefore, food for animals, and introduced exotic species that compete with native species._
+
+> _... Integrated economic and ecological General Equilbruim models offer one approach to broadening fishery policies, because they can capture the interactions within and between the systems. We have developed a methodology that integrates simple economic and ecological General Equilbruim models, and may provide a prototype for more detailed models that would be fitting for ecosystem based management._
+
+> --- `r AutoCite(Bibliography, "finnoff_linking_2008")` on page 110.
+
+
+\newpage
+
+
+# Acronyms
+
+EA – Environmental Accounts
+
+EEZ – Exclusive Economic Zone
+
+GDP - Gross domestic product 
+
+I-O – Input-Output
+
+OA – Ocean Accounts
+
+MSP – Marine Spatial Planning
+
+PALARIS - Palau Automated Land and Resource Information System
+
+SEEA - System of Environmental-Economic Accounting
+
+SNA - System of National Accounts
+
+SPC – The Pacific Community
+
+TSA – Tourism Satellite Accounts
+
+

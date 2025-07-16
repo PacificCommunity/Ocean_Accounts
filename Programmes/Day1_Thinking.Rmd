@@ -1,0 +1,159 @@
+---
+title: Ocean Accounts
+subtitle: Day 1 Thinking
+author: James Hogan, Senior Marine Resource Economist, FAME - SPC
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+   bookdown::word_document2:
+      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\Blank_Word_Template.docx"
+      toc: false  
+      fig_caption: true
+      number_sections: true
+      global_numbering: true  
+      
+header-includes:
+   - \usepackage[percent]{overpic}   
+   - \usepackage{tikz}
+   - \usetikzlibrary{calc}
+   - \usepackage{graphicx}
+   - \usepackage{placeins}
+   - \usepackage{fancyhdr}
+   - \pagestyle{fancy}
+   - \fancyhf{}
+   - \addtolength{\headwidth}{\marginparsep}
+   - \addtolength{\headwidth}{\marginparwidth}   
+   - \usepackage{floatrow}
+   - \floatsetup[figure]{capposition=top}
+
+   
+---
+\newpage
+
+
+```{r setup, cache=FALSE, include=FALSE}
+
+##
+##    Core libraries
+##
+      library(ggplot2)
+      library(plyr)
+      library(stringr)
+      library(lubridate)
+      library(calibrate)
+      library(Hmisc)
+      library(RColorBrewer)
+      library(stringi)
+      library(sqldf)
+      library(scales)
+      library(RDCOMClient)
+      library(extrafont)
+      library(tictoc)
+      library(RODBC)
+      
+      library(sysfonts)
+      library(showtext)
+##
+##    Project-specific libraries
+##
+      library(knitr)
+      library(citr)
+      library(htmlTable)
+      library(bookdown)
+      library(kableExtra)
+      library(pander)
+      library(officer)
+
+
+      library(RefManageR)
+
+      BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Graphical_Output\\"
+  
+  
+##
+##    Grab my Bibliography - where do you find the collection key from? https://forums.zotero.org/discussion/18400/collectionid-collectionkey
+##       Its found on the web version of your library - of course... ;)
+##
+##       The key is an API access key created in Zotero online under JamesHogan1\Settings\Security\Applications area => "create new private key"
+##       The Collection ID is found from the URL when you click into the collection: https://www.zotero.org/jameshogan1/collections/QCYI7BUU
+##
+      Biib <- ReadZotero(user = '14637827', .params = list(key = '0RTmBtbkHWkStie80fRsfVdn', collection = 'QCYI7BUU')) # Reads in James Hogan's "Ocean Accounting" bibliography
+      BibOptions(check.entries = FALSE, style = "markdown", cite.style = "authoryear", bib.style = "numeric",first.inits = TRUE)
+
+```
+
+   
+
+<!-- 
+##
+##       This bit below is the commentary written in R Markup
+-->
+ 
+*	What are they?
+
+      * SEEA-based versus GOAP(?)
+      * Sea-based capital versus land-based capital[^Page23]
+      * Economics flows come from productive capital
+      * Sea-based capital is:
+         * Economically productive
+         * Affected by climate change differently
+         * Creates a separate source of economic flows, compared to land-based capital
+
+
+*	Who will use them?
+
+      *	Member countries
+      *	Donors/funders
+   
+*	What problem(s) will they solve?
+
+      *	Made at scale and all at once, they enable countries to be compared
+      *	Bring together fisheries assets & fisheries revenues
+
+*	Data
+
+      *	Digital Earth Pacific data sources
+      *	FAME Fisheries Stocks
+      *	GEM Minerals
+
+*	Advisory group
+
+      *	Lisa Green
+      *	Tony
+      *	Jens
+      *	Tiffany
+
+*	Governance Group
+
+      *	Process with the members
+      *	Finances – who is this being paid for?
+      *	Engagement – what’s the relationship between GOAP and SPC? Where does SPREP feature in this picture?
+      *	Members
+         *	Peter Ellis 
+         *	Neville Smith
+         *	Karen Mu
+         
+*	What do these things look like?
+      *	Based off the SEEA – look for real examples
+      *	Geospatial version
+      *	Statistical reporting version (a set of accounts)
+   
+*	Important people
+      *	Anne-Claire Goarant
+      *	Espen Ronneberg
+      *	Lisa Green
+      *	Lucie Kuczynski
+   
+*	Connection with
+      *	Palau Marine Spatial Planning
+      *	Biodiversity metrics – SPREP Indicators
+      *	Economic connections 
+         *	Tuna revenues
+         *	Petroleum Revenues?
+
+
+
+# References
+
+```{r results = "asis", echo = FALSE}
+PrintBibliography(Biib, .opts = list(check.entries = FALSE, sorting = "ynt"))
+```

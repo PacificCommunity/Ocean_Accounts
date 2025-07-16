@@ -1,0 +1,71 @@
+##    Programme:  Oceans_Accounts_Project_Documentation.r
+##
+##    Objective:  
+##                
+##                
+##
+##    Plan of  :  
+##    Attack   :  
+##
+##
+##    Important:  
+##    Linkages :  
+##
+##
+##    Author   :  James Hogan, Senior Marine Resource Economist, FAME, 11 July 2025
+##
+##
+   ##
+   ##    Clear the decks and load up some functionality
+   ##
+      rm(list=ls(all=TRUE))
+      options(scipen = 999)
+   ##
+   ##    Core libraries
+   ##
+      library(ggplot2)
+      library(plyr)
+      library(stringr)
+      library(reshape2)
+      library(lubridate)
+      library(calibrate)
+      library(Hmisc)
+      library(RColorBrewer)
+      library(stringi)
+      library(sqldf)
+      library(extrafont)
+      library(scales)
+      library(RDCOMClient)
+      library(extrafont)
+      library(tictoc)
+      library(RefManageR)
+      
+   ##
+   ##    Project-specific libraries
+   ##
+
+   ##
+   ##    Set working directory
+   ##
+      setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts")
+      ##
+      ##    This is the content that went to Palau back in November 2024 
+      ##
+      ##    The project died a death after this - it wasnt a priority, and now, in July 2025, the project's gone no further
+      ##
+         #rmarkdown::render("Programmes/Marine_Spatial_Planning_Economics_Version.rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\Marine_Spatial_Planning_Economics_Version.docx")                
+      ##
+      ##    
+      ##
+         rmarkdown::render("Programmes/Day1_Thinking.rmd",                                  output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\Day1_Thinking.docx")                
+         rmarkdown::render("Programmes/SEEA_CF and Ocean-Specific Components_Version2.Rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\SEEA_CF and Ocean-Specific Components.docx")                
+
+
+
+##
+##   End of programme
+##
+
+
+
+
