@@ -47,18 +47,18 @@
    ##
    ##    Set working directory
    ##
-      setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts")
+      setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
       ##
       ##    This is the content that went to Palau back in November 2024 
       ##
       ##    The project died a death after this - it wasnt a priority, and now, in July 2025, the project's gone no further
       ##
-         #rmarkdown::render("Programmes/Marine_Spatial_Planning_Economics_Version.rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\Marine_Spatial_Planning_Economics_Version.docx")                
+         #rmarkdown::render("Programmes/Marine_Spatial_Planning_Economics_Version.rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Marine_Spatial_Planning_Economics_Version.docx")                
       ##
       ##    
       ##
-         rmarkdown::render("Programmes/Day1_Thinking.rmd",                                  output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\Day1_Thinking.docx")                
-         rmarkdown::render("Programmes/SEEA_CF and Ocean-Specific Components_Version2.Rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\SEEA_CF and Ocean-Specific Components.docx")                
+         rmarkdown::render("Programmes/Day1_Thinking.rmd",                                  output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Day1_Thinking.docx")                
+         rmarkdown::render("Programmes/SEEA_CF and Ocean-Specific Components_Version2.Rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\SEEA_CF and Ocean-Specific Components.docx")                
 
 
 

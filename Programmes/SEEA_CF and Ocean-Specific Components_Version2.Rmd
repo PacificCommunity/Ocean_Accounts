@@ -5,7 +5,7 @@ author: FAME Economics
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
    bookdown::word_document2:
-      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\SPC_R_Template.docx"
+      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
       toc: true  
       fig_caption: true
       number_sections: true
@@ -50,7 +50,7 @@ output:
 
       library(RefManageR)
 
-      BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Graphical_Output\\"
+      BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Graphical_Output\\"
   
   
 ##
@@ -74,7 +74,15 @@ output:
 [^DefineEnrivonAssets]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.17, page 13
 [^DefineEcosystem]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.21, page 14
  
+ 
+ 
+ 
+ 
 # Introduction 
+
+Climate change and economic development are topical issues for Pacific Island Countries and Territories (PICTs). The environmental impacts of rising sea-levels, coastal erosion, water security and environmental integrity, and also from economic development setbacks brought on by the increasing frequency and intensity of disasters dramatically affect PICTs. loss and damage, due to both sudden and slow-onset climate change events are a growing concern for vulnerable countries.
+
+
  
 *	What are they?
 
