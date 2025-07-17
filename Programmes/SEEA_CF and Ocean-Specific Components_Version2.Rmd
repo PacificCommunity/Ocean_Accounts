@@ -6,7 +6,7 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
    bookdown::word_document2:
       reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
-      toc: true  
+      toc: false  
       fig_caption: true
       number_sections: true
       global_numbering: true  
@@ -62,6 +62,32 @@ output:
 ##
       Biib <- ReadZotero(user = '14637827', .params = list(key = '0RTmBtbkHWkStie80fRsfVdn', collection = 'QCYI7BUU')) # Reads in James Hogan's "Ocean Accounting" bibliography
       BibOptions(check.entries = FALSE, style = "markdown", cite.style = "authoryear", bib.style = "numeric",first.inits = TRUE)
+      
+      
+load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2024.rda")      
+##
+##    Calculate the licensing revenues
+##
+      License_Revenues <- FFA_Compendium_of_Economic_and_Development_Statistics_2024[SecondHeading == "Licence and access fee revenue",
+                                                                                     list(Value = sum(Value,na.rm = TRUE)),
+                                                                                      by = .(Year = Year,
+                                                                                             Country = Country)]
+      License_Revenues_Agg <- FFA_Compendium_of_Economic_and_Development_Statistics_2024[SecondHeading == "Licence and access fee revenue",
+                                                                                     list(Value = sum(Value,na.rm = TRUE),
+                                                                                          Country = "Total"),
+                                                                                      by = .(Year = Year)]
+      License_Revenues <- data.table::dcast(License_Revenues,
+                                            Country ~ Year,
+                                            value.var = "Value")
+      License_Revenues_Agg <- data.table::dcast(License_Revenues_Agg,
+                                            Country ~ Year,
+                                            value.var = "Value")
+                                            
+      License_Revenues <- data.frame(rbind(License_Revenues[order(-License_Revenues$`2023`),],
+                                     License_Revenues_Agg))
+                                     
+      names(License_Revenues) <- str_replace_all(names(License_Revenues), "X","")      
+                                                              
 
 ```
 
@@ -73,14 +99,70 @@ output:
 -->
 [^DefineEnrivonAssets]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.17, page 13
 [^DefineEcosystem]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.21, page 14
- 
- 
- 
+[^KiribatiClaimateChange]: `r AutoCite(Biib, "kiribati_national_statistics_office_kiribati_2025")`
+[^BiodiversityMarkets]: `r AutoCite(Biib, "villasenor-derbez_market_2024")`
  
  
 # Introduction 
 
-Climate change and economic development are topical issues for Pacific Island Countries and Territories (PICTs). The environmental impacts of rising sea-levels, coastal erosion, water security and environmental integrity, and also from economic development setbacks brought on by the increasing frequency and intensity of disasters dramatically affect PICTs. loss and damage, due to both sudden and slow-onset climate change events are a growing concern for vulnerable countries.
+The twin issues of rebuilding from and adapting to present day climate change, and securing meaningful and valuable sources of economic value are hot topics for Pacific Island Countries and Territories (PICTs) policy-makers. Ocean Accounts offer PICTs an economic alternative. Through estimating the volume and type of ocean-based capital, the estimated value of ocean-based economic production can be quantified and potentially tapped. 
+Secondly, potentially (and ironically) as climate change worsens, the most valuable aspect of the Pacific Ocean could be the continued existance of its rich and life-sustaining biodiversity. Ocean Accounts provide an evidence-based frameworks for the development of markets in the protection of biodiversity, potentially another source of funding running counter too climate change: as climate change negatively impacts habitats, protecting existing habitats and preserving biodiversity becomes increasingly more valueable in a more harsh and extreme world environment.
+ 
+ 
+## Climate change destroys land-based capital 
+
+Rising sea levels and coastal erosion combine with increasingly violent and frequent weather extremes to decimating PICT economic physical productive capital. The impact of destructive weather conditions on their economic production base lessen their economic growth potential, while increasing their increasing their rebuild and climate change adaptation cost. With a lower economic growth potential from their land-based capital PICTs increasingly dependent on international donor aid funding for their continued existance.
+
+The lastest statistics for Kiribati during 2023-2024 showed:[^KiribatiClaimateChange]
+
+* A quarter (25%) of households reported being impacted by at least one natural disaster.
+
+* The estimated economic losses from climate change totaled $1.25 million (AUD), with housing and agriculture most affected.
+
+* Three-fifths (60%) of affected households experienced damage to their homes — mostly due to strong winds and heavy rain.
+
+* A quarter (26%) of households affected by disasters reported agricultural losses, with drought the leading cause.
+
+* One in 10 (10%) of households affected by disasters experienced health issues linked to climate events, including extreme heat and flooding.
+
+* Nearly 4,000 people were temporarily relocated due to natural disasters.
+
+
+## Land Based economic production is dependent on PICT labour markets 
+
+PICTs labour markets are impacted by the effects of hurricanes and drought on domestic employment options, making the most capable seek income from overseas countries, sending remittences back to home country dependences.
+
+
+## Ocean-based capital is less weather resilent
+
+Fishing stocks and mineral deposits - ocean-based capital - present opportunities for PICTs to tap into overseas sources of funding, and generate value export incomes and licencing revenues independent of their land-based capital. Unlike physical productive capital - factories, farms and land-based mechinery - ocean-based capital is less weather dependent and more resiliant against weather extremes.
+
+As seen from Table \@ref(tab:LicenseRevenues), PICTs have generated an average $US`r sum(License_Revenues[License_Revenues$Country == "Total",c((length(License_Revenues)-9):length(License_Revenues))])/10` million per year over the last 10 years from fishing license fees of tuna alone, 
+
+```{r LicenseRevenues, echo=FALSE, fig.pos='h', out.width = '100%'}
+
+knitr::kable(License_Revenues[,c(1,(length(License_Revenues)-9):length(License_Revenues))], 
+             booktabs = TRUE,
+             caption = paste0('Tuna Revenues: Access fees for offshore fishing ', names(License_Revenues)[(length(License_Revenues)-9)], "–", names(License_Revenues)[length(License_Revenues)], ' - $US Millions'))
+print("Forum Fisheries Authority, Compendium of Economic and Development Statistics 2024.xlsx, https://www.ffa.int/download/economic-development-indicators-and-statistics/")
+```
+
+The Pacific Ocean is facing its own climate-related issues, but despite this and increasing weather-related climate change land-based loss and damage, fishing revenues generated from fishing stocks have been a constant source of PICT revenue.
+
+## Markets in biodiversity
+
+Pacfic-wider biodiversity, centrally measured from authoratative and sciencifically valid data sources, and directly comparable _between_ PICTs makes rich and life-sustaining biodiversity sources valueable opening the potential for establishing _economic markets_ in protecting and enhancing ocean-based biodiversity.[^BiodiversityMarkets]
+
+> _The main allure of a market-based approach is its potential to achieve any given conservation goal at the lowest possible cost._
+>
+> _Market-based policies have led to substantial improvements in air quality, reduced overfishing, and increased water provisioning and quality. Some coastal nations are already engaging in trade-based schemes to protect the marine environment—for example, The Nature Conservancy and the Republic of Seychelles’ "Blue Bonds for Ocean Conservation" program, or the "Ocean Conservation Commitments" scheme recently announced by the Pacific Island nation of Niue._
+>
+> _Both models have something in common: A deal is struck between a coastal nation that conserves a portion of the marine environment and an interested party who helps pay for the costs of conserving. These schemes show that nations are interested in innovative financing approaches that take advantage of trades in which buyers place higher values on conservation than sellers. Although these examples are promising, they do not fully harness the cost reductions that could be achieved with a global market for conservation._
+
+>
+> --- `r AutoCite(Biib, "villasenor-derbez_market_2024")`
+ 
+ 
 
 
  

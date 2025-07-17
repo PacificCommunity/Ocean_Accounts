@@ -5,7 +5,7 @@ author: James Hogan, Senior Marine Resource Economist, FAME - SPC
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
    bookdown::word_document2:
-      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Product_Output\\SPC_R_Template.docx"
+      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
       toc: true  
       fig_caption: true
       number_sections: true
@@ -50,7 +50,7 @@ output:
 
       library(RefManageR)
 
-      BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceans_Accounts\\Graphical_Output\\"
+      BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Graphical_Output\\"
   
   
 ##
