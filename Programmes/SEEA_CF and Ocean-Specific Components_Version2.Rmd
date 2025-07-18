@@ -162,6 +162,13 @@ Pacfic-wider biodiversity, centrally measured from authoratative and sciencifica
 >
 > --- `r AutoCite(Biib, "villasenor-derbez_market_2024")`
  
+# Ocean Accounts are numerically SEEA-CF and spatially SEEA-EA
+ 
+ 
+
+# System of National Accounts fundamentals
+
+
  
 # System of Environmental-Economic Account 2012 - Central Framework (SEEA-CF)
 
@@ -674,6 +681,9 @@ Illegal harvest should still be recorded as production with an income accruing t
 
 ## Valuation of natural aquatic resources
 There are two main options. One is to value the aquatic resource using the value of long-term fishing licences and quotas where realistic market values are available. The other is to base the value on the net present value of the resource rent of the aquatic resources. 
+
+
+
 
 
 
