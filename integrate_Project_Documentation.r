@@ -48,6 +48,7 @@
    ##    Set working directory
    ##
       setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
+      setwd("C:\\GIT_Projects\\Ocean_Accounts")
       ##
       ##    This is the content that went to Palau back in November 2024 
       ##
@@ -58,7 +59,7 @@
       ##    
       ##
          rmarkdown::render("Programmes/Day1_Thinking.rmd",                                  output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Day1_Thinking.docx")                
-         rmarkdown::render("Programmes/SEEA_CF and Ocean-Specific Components_Version2.Rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\SEEA_CF and Ocean-Specific Components.docx")                
+         rmarkdown::render("Programmes/SEEA_CF and Ocean-Specific Components_Version2.Rmd", output_file = "C:\\GIT_Projects\\Ocean_Accounts\\Product_Output\\SEEA_CF and Ocean-Specific Components.docx")                
 
 
 

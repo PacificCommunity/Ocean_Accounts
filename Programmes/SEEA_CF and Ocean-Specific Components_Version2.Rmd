@@ -5,7 +5,7 @@ author: FAME Economics
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
    bookdown::word_document2:
-      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
+      reference_docx: "C:\\GIT_Projects\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
       toc: false  
       fig_caption: true
       number_sections: true
@@ -50,7 +50,7 @@ output:
 
       library(RefManageR)
 
-      BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Graphical_Output\\"
+      BaseDir <- "C:\\GIT_Projects\\Ocean_Accounts\\Graphical_Output\\"
   
   
 ##
@@ -64,7 +64,8 @@ output:
       BibOptions(check.entries = FALSE, style = "markdown", cite.style = "authoryear", bib.style = "numeric",first.inits = TRUE)
       
       
-load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2024.rda")      
+    load("C:\\Work_Related_Projects\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2022.rda")  
+    FFA_Compendium_of_Economic_and_Development_Statistics_2024 <- FFA_Compendium_of_Economic_and_Development_Statistics_2022  # Fudge factor for being at home
 ##
 ##    Calculate the licensing revenues
 ##
@@ -83,7 +84,7 @@ load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE
                                             Country ~ Year,
                                             value.var = "Value")
                                             
-      License_Revenues <- data.frame(rbind(License_Revenues[order(-License_Revenues$`2023`),],
+      License_Revenues <- data.frame(rbind(License_Revenues[order(-License_Revenues$`2021`),],
                                      License_Revenues_Agg))
                                      
       names(License_Revenues) <- str_replace_all(names(License_Revenues), "X","")      
