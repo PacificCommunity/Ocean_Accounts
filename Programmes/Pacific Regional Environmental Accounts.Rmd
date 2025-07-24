@@ -1,6 +1,6 @@
 ---
 title: "Pacific Regional Environmental Accounts\nIncorporating Ocean Accounts"
-subtitle: " Using Digital Earth Pacific and FAME Data Sources"
+subtitle: "Using Digital Earth Pacific and FAME Data Sources"
 author: FAME Economics
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
@@ -74,7 +74,7 @@ load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE
                                                                                              Country = Country)]
       License_Revenues_Agg <- FFA_Compendium_of_Economic_and_Development_Statistics_2024[SecondHeading == "Licence and access fee revenue",
                                                                                      list(Value = sum(Value,na.rm = TRUE),
-                                                                                          Country = "Total"),
+                                                                                          Country = "Total Fishing License Revenue"),
                                                                                       by = .(Year = Year)]
       License_Revenues <- data.table::dcast(License_Revenues,
                                             Country ~ Year,
@@ -83,8 +83,9 @@ load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE
                                             Country ~ Year,
                                             value.var = "Value")
                                             
-      License_Revenues <- data.frame(rbind(License_Revenues[order(-License_Revenues$`2023`),],
-                                     License_Revenues_Agg))
+#      License_Revenues <- data.frame(rbind(License_Revenues[order(-License_Revenues$`2023`),],
+#                                     License_Revenues_Agg))
+      License_Revenues <- data.frame(License_Revenues_Agg)
                                      
       names(License_Revenues) <- str_replace_all(names(License_Revenues), "X","")      
                                                               
@@ -105,7 +106,18 @@ load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE
  
 # Introduction 
 
+The System of National Accounts (SNA), introduced in 1947, pioneered national accounting: the statistical reporting of a country's economic activity. The metrics reflected the information policy-makers needed to address economic problems from the great 1930 depression, and to finance the Second World War. The concept of a productive "capital stock" to estimate "capital services" used in the economic production process, only formally entered the SNA in 1993. 
+
+Prior to 1993, capital inputs into production were either entire consumed in the production process (intermediate consumption), or were the _change in value_ a measure of the "consumption of fixed capital" during production. Environmental assets were recognised but only as balance sheet items if property rights were established, and not as inputs into the production process. 
+
+
+Since then, the metrics have expanded to fit different user needs.
+
+costs of maintaining intact the stock of fixed assets used in production
+
+
 The twin issues of rebuilding from and adapting to present day climate change, and securing meaningful and valuable sources of economic value are hot topics for Pacific Island Countries and Territories (PICTs) policy-makers. Ocean Accounts offer PICTs an economic alternative. Through estimating the volume and type of ocean-based capital, the estimated value of ocean-based economic production can be quantified and potentially tapped. 
+
 Secondly, potentially (and ironically) as climate change worsens, the most valuable aspect of the Pacific Ocean could be the continued existance of its rich and life-sustaining biodiversity. Ocean Accounts provide an evidence-based frameworks for the development of markets in the protection of biodiversity, potentially another source of funding running counter too climate change: as climate change negatively impacts habitats, protecting existing habitats and preserving biodiversity becomes increasingly more valueable in a more harsh and extreme world environment.
  
  
