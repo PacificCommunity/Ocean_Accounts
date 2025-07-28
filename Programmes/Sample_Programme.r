@@ -1,10 +1,9 @@
 ##
-##    Programme:  SAMPLE_PROGRAMME.r
+##    Programme:  <SAMPLE_PROGRAMME.r>
 ##
 ##    Objective:  What is this programme designed to do?
 ##
 ##    Author:     <PROGRAMMER>, <TEAM>, <DATE STARTED>
-##    Peer Review:<PROGRAMMER>, <TEAM>, <DATE STARTED>
 ##
 ##
    ##

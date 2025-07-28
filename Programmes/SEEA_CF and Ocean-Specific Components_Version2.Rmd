@@ -1,6 +1,6 @@
 ---
-title: Ocean Accounts
-subtitle: "Ocean-Specific Components of the _System of Environmental-Economic Accounting - Central Framework_"
+title: "Pacific Regional Environmental Accounts\nIncorporating Ocean Accounts"
+subtitle: " Using Digital Earth Pacific and FAME Data Sources"
 author: FAME Economics
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
