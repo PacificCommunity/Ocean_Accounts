@@ -64,7 +64,8 @@ output:
       BibOptions(check.entries = FALSE, style = "markdown", cite.style = "authoryear", bib.style = "numeric",first.inits = TRUE)
       
       
-load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2024.rda")      
+load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2024.rda")
+load('Data_Output/Land_and_EEZ.rda')
 ##
 ##    Calculate the licensing revenues
 ##
@@ -106,11 +107,87 @@ load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE
 [^SNA]: https://unstats.un.org/unsd/nationalaccount/sna.asp[https://unstats.un.org/unsd/nationalaccount/sna.asp] 
 [^Solow]: `r AutoCite(Biib, "solow_contribution_1956")` `r AutoCite(Biib, "solow_technical_1957")` 
 [^SNA93]: https://unstats.un.org/unsd/nationalaccount/docs/1993sna.pdf[https://unstats.un.org/unsd/nationalaccount/docs/1993sna.pdf] 
- 
+[^DutchDisease]: https://en.wikipedia.org/wiki/Dutch_disease 
  
 # Introduction 
 
-The System of National Accounts[^SNA] (SNA), introduced in 1947, pioneered the concept of National Accounting - the idea that you can express the economic activity and the progress of a country in a suite of statistical reports much like a map describes the contours of a landscape or a road. As initially, conceived the metrics focused on the income "flow" information needed to address economic problems of the great 1930 depression, financing the Second World War, and describing the "flow" of money and products _between_ countries. The economic system had a "cadence" of boom-bust cycles. The role of national account was to support the developed of counter-cyclical policy advice which smoothed out these economic cycles which were so destructive to economies. 
+For a long time, the environment received little economic attention and was not viewed as an essential input into the economic production process. Since its inception in 1947 up until 1987, the standard international economic measurement "textbook", the System of National Accounts[^SNA] (SNA) continued its original focus of measuring how countries might recover from the 1930's economic depression, and fund the second world war (WW2). For decades, its focus remained on measuring the economic fundimentals of production, consumption, and exchange. The environment was recognised to the extent it could be contained within property rights and capable of monetarised measurement. It was something ancillary-to the economy and within-which economies undertook the serious stuff of production, consumption and exchange.
+
+The limits of the environment moved the SNA's focus beyond 1930's depression and WW2 economics. Extractive processes from the environment were recognised as exhaustible and the feedback relationships  between the environment and the economic systems were acknowledged. "Sustainability" and is material progress in an economic-based welfare system depends on "non-exhaustibility" within the environmental system that economies reside within. However, the environmental system is itself limited by economic-system-derived pollution and degradation. The feedback relationships between the two systems are binding constraints on each other. Climate change only reinforces the impact of this inter-dependency.
+
+## The System of Environmental-Economic Accounts: a framework for measuring Environmental / Economic co-dependency
+
+Within the System of Environmental-Economic Accounts - Central Framework (SEEA-CF), economic production, consumption, and exchange _a la_ SNA remain important, but SEEA-CF also recognised the quantity and quality of the change in the environment is simultanously important. The SEEA-CF framework seeks to record each system _simultaneously_ through companion economic and environmental supply/use tables reflecting simultanous changes within the two systems. 
+
+The System of Environmental-Economic Accounts - Ecosystem Accounting (SEEA-EA) extends the environmental measurement framework by considering clusters of environmental assets grouped together as being collectively important to each other and the economy. In Ecosystem accounting, 
+
+Changes in the "stock" of cultivated timber resources (otherwise known as "forests") over a period of time, are compared to the economic flows derived within the forestry industry through SNA supply/use tables, and the subsequent economic impact forestry activity has on the construction industry, employment, exports and economic welfare. The SNA system measures can be further extended into the related financial flows through the monetary/credit transmission mechanism and the economic levers of government policy.
+
+### Two way traffic with co-dependency: the Dutch Disease
+
+While the economic system is the overwhelming source of pollution and depopulation affecting the environmental system, the co-dependency between the systems means the direction of change isn't all one-way, with many economic problems having their cause in the environment. 
+
+The "Dutch Disease"[^DutchDisease] is an example where the environmental component of the environment/economic co-relationship comes to dominate the mix of activity in the economic system component. Significant stocks of natural resources make extractive industries the overwhelming dominant industries within affected economics. Consequently, labour markets, and capital investment become biased towards those industries and away from other productive processes. In the long-run, affected economies become stunted through "path-dependancy", as unbalanced labour markets, and over-investment in single industries limiting the country' ability to change economic direction from extraction other activities.
+
+
+## Implications for Pacific Countries
+
+Lacking the economic complexity of high income econonomies, Pacific Countries are more sensitive than others to the interactions of the environment into their economies.
+
+
+```{r LandSize, echo=FALSE, fig.pos='h', out.width = '100%'}
+
+knitr::kable(Land_and_EEZ, 
+             row.names = FALSE,
+             booktabs = TRUE,
+             align = c('lrrrr'),
+             caption = "Land and exclusive economic zone (EEZ) areas for each of the 22 Pacific Island Countries and Territories (PICTs).")
+
+```
+
+
+
+
+Rising sea levels and coastal erosion combine with increasingly violent and frequent weather extremes to decimating PICT economic physical productive capital. The impact of destructive weather conditions on their economic production base lessen their economic growth potential, while increasing their increasing their rebuild and climate change adaptation cost. With a lower economic growth potential from their land-based capital PICTs increasingly dependent on international donor aid funding for their continued existance.
+
+The lastest statistics for Kiribati during 2023-2024 showed:[^KiribatiClaimateChange]
+
+* A quarter (25%) of households reported being impacted by at least one natural disaster.
+
+* The estimated economic losses from climate change totaled $1.25 million (AUD), with housing and agriculture most affected.
+
+* Three-fifths (60%) of affected households experienced damage to their homes — mostly due to strong winds and heavy rain.
+
+* A quarter (26%) of households affected by disasters reported agricultural losses, with drought the leading cause.
+
+* One in 10 (10%) of households affected by disasters experienced health issues linked to climate events, including extreme heat and flooding.
+
+* Nearly 4,000 people were temporarily relocated due to natural disasters.
+
+
+
+
+
+
+
+The SEEA Central Framework captures the relationship between the economy and the environment through measuring the quantity, change and value of environmental assets, energy 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The , introduced in 1947, pioneered the concept of National Accounting - the idea that you can express the economic activity and the progress of a country in a suite of statistical reports much like a map describes the contours of a landscape or a road. As initially, conceived the metrics focused on the income "flow" information needed to address economic problems of the great 1930 depression, financing the Second World War, and describing the "flow" of money and products _between_ countries. The economic system had a "cadence" of boom-bust cycles. The role of national account was to support the developed of counter-cyclical policy advice which smoothed out these economic cycles which were so destructive to economies. 
+>>>>>>> WorkComputer
 
 Within the National Accounts, production economics - the relationship between economic output and labour/capital inputs - was expressed as "flows". Gross Domestic Production are the sums paid _over a specific period of time_ to labour, the Government and capital owners through economic profit. The concept of a "stock" of capital and a stock of "labour" received less attention until Robert Solow's seminal work into economic growth[^Solow] - how countries economically grow. 
 
@@ -144,6 +221,7 @@ Secondly, potentially (and ironically) as climate change worsens, the most valua
  
 ## Climate change destroys land-based capital 
 
+<<<<<<< HEAD
 Rising sea levels and coastal erosion combine with increasingly violent and frequent weather extremes to decimating PICT economic physical productive capital. The impact of destructive weather conditions on their economic production base lessen their economic growth potential, while increasing their increasing their rebuild and climate change adaptation cost. With a lower economic growth potential from their land-based capital PICTs increasingly dependent on international donor aid funding for their continued existance.
 
 The lastest statistics for Kiribati during 2023-2024 showed:[^KiribatiClaimateChange]
@@ -160,6 +238,8 @@ The lastest statistics for Kiribati during 2023-2024 showed:[^KiribatiClaimateCh
 
 * Nearly 4,000 people were temporarily relocated due to natural disasters.
 
+=======
+>>>>>>> WorkComputer
 
 ## Land Based economic production is dependent on PICT labour markets 
 
