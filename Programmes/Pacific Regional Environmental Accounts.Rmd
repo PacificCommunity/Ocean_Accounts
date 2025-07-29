@@ -1,0 +1,844 @@
+---
+title: "Pacific Regional Environmental Accounts\nIncorporating Ocean Accounts"
+subtitle: "An SPC Digital Earth Pacific Foundation Augmented with FAME and GEM Data Sources"
+author: FAME Economics
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+   bookdown::word_document2:
+      reference_docx: "C:\\GIT_Projects\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
+      toc: false  
+      fig_caption: true
+      number_sections: true
+      global_numbering: true  
+---
+\newpage
+
+
+```{r setup, cache=FALSE, include=FALSE}
+
+##
+##    Core libraries
+##
+      library(ggplot2)
+      library(plyr)
+      library(stringr)
+      library(lubridate)
+      library(calibrate)
+      library(Hmisc)
+      library(RColorBrewer)
+      library(stringi)
+      library(sqldf)
+      library(scales)
+      library(RDCOMClient)
+      library(extrafont)
+      library(tictoc)
+      library(RODBC)
+      
+      library(sysfonts)
+      library(showtext)
+##
+##    Project-specific libraries
+##
+      library(knitr)
+      library(citr)
+      library(htmlTable)
+      library(bookdown)
+      library(kableExtra)
+      library(pander)
+      library(officer)
+
+
+      library(RefManageR)
+
+      BaseDir <- "C:\\GIT_Projects\\Ocean_Accounts\\Graphical_Output\\"
+  
+  
+##
+##    Grab my Bibliography - where do you find the collection key from? https://forums.zotero.org/discussion/18400/collectionid-collectionkey
+##       Its found on the web version of your library - of course... ;)
+##
+##       The key is an API access key created in Zotero online under JamesHogan1\Settings\Security\Applications area => "create new private key"
+##       The Collection ID is found from the URL when you click into the collection: https://www.zotero.org/jameshogan1/collections/QCYI7BUU
+##
+      Biib <- ReadZotero(user = '14637827', .params = list(key = '0RTmBtbkHWkStie80fRsfVdn', collection = 'QCYI7BUU')) # Reads in James Hogan's "Ocean Accounting" bibliography
+      BibOptions(check.entries = FALSE, style = "markdown", cite.style = "authoryear", bib.style = "numeric",first.inits = TRUE)
+      
+      
+load("C:\\Work_Related_Projects\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2022.rda")
+load('Data_Output/Land_and_EEZ.rda')
+##
+##    Calculate the licensing revenues
+##
+      License_Revenues <- FFA_Compendium_of_Economic_and_Development_Statistics_2022[SecondHeading == "Licence and access fee revenue",
+                                                                                     list(Value = sum(Value,na.rm = TRUE)),
+                                                                                      by = .(Year = Year,
+                                                                                             Country = Country)]
+      License_Revenues_Agg <- FFA_Compendium_of_Economic_and_Development_Statistics_2022[SecondHeading == "Licence and access fee revenue",
+                                                                                     list(Value = sum(Value,na.rm = TRUE),
+                                                                                          Country = "Total Fishing License Revenue"),
+                                                                                      by = .(Year = Year)]
+      License_Revenues <- data.table::dcast(License_Revenues,
+                                            Country ~ Year,
+                                            value.var = "Value")
+      License_Revenues_Agg <- data.table::dcast(License_Revenues_Agg,
+                                            Country ~ Year,
+                                            value.var = "Value")
+                                            
+#      License_Revenues <- data.frame(rbind(License_Revenues[order(-License_Revenues$`2023`),],
+#                                     License_Revenues_Agg))
+      License_Revenues <- data.frame(License_Revenues_Agg)
+                                     
+      names(License_Revenues) <- str_replace_all(names(License_Revenues), "X","")      
+                                                              
+
+
+
+```
+
+   
+
+<!-- 
+##
+##       This bit below is the commentary written in R Markup
+-->
+[^DefineEnrivonAssets]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.17, page 13
+[^DefineEcosystem]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.21, page 14
+[^KiribatiClaimateChange]: `r AutoCite(Biib, "kiribati_national_statistics_office_kiribati_2025")`
+[^BiodiversityMarkets]: `r AutoCite(Biib, "villasenor-derbez_market_2024")`
+[^flows]: The three flow measures captured through the SEEA-CF.
+[^SNA]: https://unstats.un.org/unsd/nationalaccount/sna.asp
+[^Solow]: `r AutoCite(Biib, "solow_contribution_1956")` `r AutoCite(Biib, "solow_technical_1957")` 
+[^SNA93]: https://unstats.un.org/unsd/nationalaccount/docs/1993sna.pdf
+[^DutchDisease]: https://en.wikipedia.org/wiki/Dutch_disease 
+[^Brudtland]: https://www.are.admin.ch/are/en/home/media/publications/sustainable-development/brundtland-report.html
+[^SEEAEA]: `r AutoCite(Biib, "united_nations_system_2014")`
+
+
+# Introduction {-}
+
+For most of the 20th century, and until relatively recently into the 21st century, the environment's contribution to economic production had received little statistical measurement attention. 
+
+Measuring countries economic processes had, since 1947, been guided by the United Nations Systems of National Accounts (SNA):[^SNA] a statistical methodological framework that maintained a robust adherance to a standard suite of economic measures that enabled countries to recover from the 1930's Great Depression and fund the Second World War, despite a growing body of evidence that these issues had indeed been solved, and the world was now facing a new set of issues needing an expanded suite of economic metrics.
+
+What was becoming _Issue de Jure_ for countries - climate change -  was not on the national accounting statistical radar until 1987 and the publication of the _Brudtland Report_.[^Brudtland] The latest statistical framework with is origins in that report is the United Nations System of Environmental-Economic Accounts - Central Frame (SEEA-CF)[^SEEAEA]: a robust suite of measures that both supports SNA measures and reflects SNA principals. 
+
+SEEA-CF and its theoretical companion, the System of Environmental-Economic Accounts - Exosystem Accounting (SEEA-EA), create a suite of environment statistical measures that are designed to complement the economics metrics from the SNA. Taken together countries now have the theoretical tools for connecting changes in their economic systems to environmental changes, and (importantly) **_vice versa_**.
+
+The value of simulatenously measuring both enviromental and economic systems impacting the welfare of their populations is high. For Pacific Countries, SEEA-CF represents the most pertinent lens for understanding how value created in their environments can shape their economic opportunities. In turn, as their economies change their through economic or climatic forces, understanding the impact of change on their environmental capital enables alternative choices, trade-offs and opportunities to be considered. 
+
+Secondly, in an age where earth-observing satellite systems encompass the planet, the cost of employing remote-sensing satellite technologies for statistically measuring the environment is low. This paper outlines how the Pacific Community's (SPC) data sources might be leveraged to create an initial suite of Environmental-Economic Accounts for our Pacific member countries. 
+
+\newpage
+
+## This paper is the product from almost all of the Pacific Community's divisions.  {-}
+
+* Its impetus started in Fisheries, Aquatic and Marine Environment (FAME), who is also guiding the ocean-based aquatic life data sources and measures. 
+
+* Digital Earth Pacific, mineral resources and maritime transport activity data is supplied by Geoscience, Energy and Marine (GEM). 
+
+* The Land Resources Division (LRD) is guiding the development of land use metrics. 
+
+* Climate Change and Environmental Sustainability (CCES) are guiding the use of the metrics for member countries, and finally, being an informationa product about statistical systems, 
+
+* The Statistics for Development Division (SDD) is providing oversight of the validity and compliance of the SEEA-based statistical measures.
+
+## Plan of attack {-}
+
+### Statistically measuring the environment {-}
+
+A brief outline of both SEEA-CF and SEEA-EA are presented. 
+
+### Introduction to Digital Earth Pacific {-}
+
+Secondly, the paper outlines how The Pacific Community's Digital Earth Pacific (DEP) platform might measure member environmental assets through remote-sensing. DEP has the capability to measure both land and ocean-based environmental assets for all SPC member countries _contemporanously_, creating common measures for countries and enabling comparisons to be drawn. DEP can take repeat periodic measures, enabling change measures to be derived, and capture the impact of climate on member countries. 
+
+Prospectively, DEP might also create measures of ocean-based pollution which reflect the impact of existing pressures on the environment, and the sustainability of existing processes for absorbing the products from human or economic polluting activities.
+
+### Fisheries, Aquatic and Marine Environment metrics(FAME) {-}
+
+This paper outlines how SPC's Fisheries, Aquatic and Marine Environment  and  might enrich the measures of ocean-based environmental assets.
+
+
+
+### Geoscience, Energy and Marine (GEM) data sources {-}
+
+
+### Estimating, preserving and restoring biodiversity: Unlocking Blue Pacific Prosperity {-}
+Finally, this paper suggests the end-goal for the whole SEEA measuring system process is to create the capability to allow the development of data sources that measure _biodiversity_ and create the data foundation for supporting economic markets in biodiversity conservation as a ocean-based source of member-country economic activity. 
+
+\newpage
+
+# Foundation {-}
+Since its inception in 1947 up until 1987, the standard international economic measurement "textbook", the System of National Accounts[^SNA] (SNA) continued its original focus of measuring how countries might recover from the 1930's economic depression, and fund the second world war (WW2). For decades, its focus remained on measuring the economic fundimentals of production, consumption, and exchange. The environment was recognised to the extent it could be contained within property rights and capable of monetarised measurement. It was something ancillary-to the economy and within-which economies undertook the serious stuff of production, consumption and exchange.
+
+The limits of the environment moved the SNA's focus beyond 1930's depression and WW2 economics. Extractive processes from the environment were recognised as exhaustible and the feedback relationships  between the environment and the economic systems were acknowledged. "Sustainability" and is material progress in an economic-based welfare system depends on "non-exhaustibility" within the environmental system that economies reside within. However, the environmental system is itself limited by economic-system-derived pollution and degradation. The feedback relationships between the two systems are binding constraints on each other. Climate change only reinforces the impact of this inter-dependency.
+
+## The System of Environmental-Economic Accounts: a framework for measuring Environmental / Economic co-dependency {-}
+
+Within the System of Environmental-Economic Accounts - Central Framework (SEEA-CF), economic production, consumption, and exchange _a la_ SNA remain important, but SEEA-CF also recognised the quantity and quality of the change in the environment is simultanously important. The SEEA-CF framework seeks to record each system _simultaneously_ through companion economic and environmental supply/use tables reflecting simultanous changes within the two systems. 
+
+The System of Environmental-Economic Accounts - Ecosystem Accounting (SEEA-EA) extends the environmental measurement framework by considering clusters of environmental assets grouped together as being collectively important to each other and the economy. In Ecosystem accounting, 
+
+Changes in the "stock" of cultivated timber resources (otherwise known as "forests") over a period of time, are compared to the economic flows derived within the forestry industry through SNA supply/use tables, and the subsequent economic impact forestry activity has on the construction industry, employment, exports and economic welfare. The SNA system measures can be further extended into the related financial flows through the monetary/credit transmission mechanism and the economic levers of government policy.
+
+### Two way traffic with co-dependency: the Dutch Disease {-}
+
+While the economic system is the overwhelming source of pollution and depopulation affecting the environmental system, the co-dependency between the systems means the direction of change isn't all one-way, with many economic problems having their cause in the environment. 
+
+The "Dutch Disease"[^DutchDisease] is an example where the environmental component of the environment/economic co-relationship comes to dominate the mix of activity in the economic system component. Significant stocks of natural resources make extractive industries the overwhelming dominant industries within affected economics. Consequently, labour markets, and capital investment become biased towards those industries and away from other productive processes. In the long-run, affected economies become stunted through "path-dependancy", as unbalanced labour markets, and over-investment in single industries limiting the country' ability to change economic direction from extraction other activities.
+
+\newpage
+
+## Implications for Pacific Countries {-}
+
+Lacking the economic complexity of high income econonomies, Pacific Countries are more sensitive than others to the interactions of the environment into their economies.
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Distribution of countries, by land size relative to EEZ size (World Bank Groupings)"}
+
+knitr::include_graphics(paste0(BaseDir, "Relative Land Area to EEZ.png"))
+
+```
+
+
+
+
+Rising sea levels and coastal erosion combine with increasingly violent and frequent weather extremes to decimating PICT economic physical productive capital. The impact of destructive weather conditions on their economic production base lessen their economic growth potential, while increasing their increasing their rebuild and climate change adaptation cost. With a lower economic growth potential from their land-based capital PICTs increasingly dependent on international donor aid funding for their continued existance.
+
+The lastest statistics for Kiribati during 2023-2024 showed:[^KiribatiClaimateChange]
+
+* A quarter (25%) of households reported being impacted by at least one natural disaster.
+
+* The estimated economic losses from climate change totaled $1.25 million (AUD), with housing and agriculture most affected.
+
+* Three-fifths (60%) of affected households experienced damage to their homes — mostly due to strong winds and heavy rain.
+
+* A quarter (26%) of households affected by disasters reported agricultural losses, with drought the leading cause.
+
+* One in 10 (10%) of households affected by disasters experienced health issues linked to climate events, including extreme heat and flooding.
+
+* Nearly 4,000 people were temporarily relocated due to natural disasters.
+
+
+
+
+
+
+
+The SEEA Central Framework captures the relationship between the economy and the environment through measuring the quantity, change and value of environmental assets, energy 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The , introduced in 1947, pioneered the concept of National Accounting - the idea that you can express the economic activity and the progress of a country in a suite of statistical reports much like a map describes the contours of a landscape or a road. As initially, conceived the metrics focused on the income "flow" information needed to address economic problems of the great 1930 depression, financing the Second World War, and describing the "flow" of money and products _between_ countries. The economic system had a "cadence" of boom-bust cycles. The role of national account was to support the developed of counter-cyclical policy advice which smoothed out these economic cycles which were so destructive to economies. 
+
+Within the National Accounts, production economics - the relationship between economic output and labour/capital inputs - was expressed as "flows". Gross Domestic Production are the sums paid _over a specific period of time_ to labour, the Government and capital owners through economic profit. The concept of a "stock" of capital and a stock of "labour" received less attention until Robert Solow's seminal work into economic growth[^Solow] - how countries economically grow. 
+
+Understanding the nature of economic growth, and how growth generates development and welfare improvements is relates to the _quality_ of the capital and labour services generated by the capital and labour stocks. The size of the "flow" measures captured in the National Accounts, directly reflected the quality of the labour and capital services derived from the stocks. High technology in both capital and labour generated the 
+
+Measuring the "net capital stock", the physical quantity of productive capital available for production only become an explicit component of National Accounting in 1993.[^SNA93]
+
+
+
+
+
+. It wasn't until 1993 
+
+
+
+
+The concept of a productive "capital stock" to estimate "capital services" used in the economic production process, only formally entered the SNA in 1993. 
+
+Prior to 1993, capital inputs into production were either entire consumed in the production process (intermediate consumption), or were the _change in value_ a measure of the "consumption of fixed capital" during production. Environmental assets were recognised but only as balance sheet items if property rights were established, and not as inputs into the production process. 
+
+
+Since then, the metrics have expanded to fit different user needs.
+
+costs of maintaining intact the stock of fixed assets used in production
+
+
+The twin issues of rebuilding from and adapting to present day climate change, and securing meaningful and valuable sources of economic value are hot topics for Pacific Island Countries and Territories (PICTs) policy-makers. Ocean Accounts offer PICTs an economic alternative. Through estimating the volume and type of ocean-based capital, the estimated value of ocean-based economic production can be quantified and potentially tapped. 
+
+Secondly, potentially (and ironically) as climate change worsens, the most valuable aspect of the Pacific Ocean could be the continued existance of its rich and life-sustaining biodiversity. Ocean Accounts provide an evidence-based frameworks for the development of markets in the protection of biodiversity, potentially another source of funding running counter too climate change: as climate change negatively impacts habitats, protecting existing habitats and preserving biodiversity becomes increasingly more valueable in a more harsh and extreme world environment.
+ 
+ 
+## Climate change destroys land-based capital {-} 
+
+
+## Land Based economic production is dependent on PICT labour markets {-} 
+
+PICTs labour markets are impacted by the effects of hurricanes and drought on domestic employment options, making the most capable seek income from overseas countries, sending remittences back to home country dependences.
+
+
+## Ocean-based capital is less weather resilent {-}
+
+Fishing stocks and mineral deposits - ocean-based capital - present opportunities for PICTs to tap into overseas sources of funding, and generate value export incomes and licencing revenues independent of their land-based capital. Unlike physical productive capital - factories, farms and land-based mechinery - ocean-based capital is less weather dependent and more resiliant against weather extremes.
+
+As seen from Table \@ref(tab:LicenseRevenues), PICTs have generated an average $US`r sum(License_Revenues[License_Revenues$Country == "Total",c((length(License_Revenues)-9):length(License_Revenues))])/10` million per year over the last 10 years from fishing license fees of tuna alone, 
+
+```{r LicenseRevenues, echo=FALSE, fig.pos='h', out.width = '100%'}
+
+knitr::kable(License_Revenues[,c(1,(length(License_Revenues)-9):length(License_Revenues))], 
+             booktabs = TRUE,
+             caption = paste0('Tuna Revenues: Access fees for offshore fishing ', names(License_Revenues)[(length(License_Revenues)-9)], "–", names(License_Revenues)[length(License_Revenues)], ' - $US Millions'))
+print("Forum Fisheries Authority, Compendium of Economic and Development Statistics 2024.xlsx, https://www.ffa.int/download/economic-development-indicators-and-statistics/")
+```
+
+The Pacific Ocean is facing its own climate-related issues, but despite this and increasing weather-related climate change land-based loss and damage, fishing revenues generated from fishing stocks have been a constant source of PICT revenue.
+
+## Markets in biodiversity {-}
+
+Pacfic-wider biodiversity, centrally measured from authoratative and sciencifically valid data sources, and directly comparable _between_ PICTs makes rich and life-sustaining biodiversity sources valueable opening the potential for establishing _economic markets_ in protecting and enhancing ocean-based biodiversity.[^BiodiversityMarkets]
+
+> _The main allure of a market-based approach is its potential to achieve any given conservation goal at the lowest possible cost._
+>
+> _Market-based policies have led to substantial improvements in air quality, reduced overfishing, and increased water provisioning and quality. Some coastal nations are already engaging in trade-based schemes to protect the marine environment—for example, The Nature Conservancy and the Republic of Seychelles’ "Blue Bonds for Ocean Conservation" program, or the "Ocean Conservation Commitments" scheme recently announced by the Pacific Island nation of Niue._
+>
+> _Both models have something in common: A deal is struck between a coastal nation that conserves a portion of the marine environment and an interested party who helps pay for the costs of conserving. These schemes show that nations are interested in innovative financing approaches that take advantage of trades in which buyers place higher values on conservation than sellers. Although these examples are promising, they do not fully harness the cost reductions that could be achieved with a global market for conservation._
+
+>
+> --- `r AutoCite(Biib, "villasenor-derbez_market_2024")`
+ 
+# Ocean Accounts are numerically SEEA-CF and spatially SEEA-EA {-}
+ 
+ 
+
+# System of National Accounts fundamentals {-}
+
+
+ 
+# System of Environmental-Economic Account 2012 - Central Framework (SEEA-CF) {-}
+
+The System of Environmental-Economic Accounting 2012 — Central Framework is a statistical framework consisting of a comprehensive set of tables and accounts, which guides the compilation of consistent and comparable statistics and indicators for policymaking, analysis and research. It is a multipurpose conceptual framework for understanding the interactions between the environment and the economy. It puts statistics on the environment and its relationship to the economy at the core of official statistics.
+
+The Central Framework covers three main measurement areas: 
+
+(a) the physical flows of materials and energy within the economy and between the economy and the environment; 
+
+(b) the stocks of environmental assets and changes in these stocks; and 
+
+(c) economic activity and transactions related to the environment.      
+
+## Economy and environment dependency
+From the perspective of environmental flows, the environment is the source of all natural inputs to the economy, including natural resource inputs (minerals, timber, fish, water, etc.) and other natural inputs absorbed by the economy, for example, energy from solar and wind sources and the air used in combustion processes. Both produced and non-produced assets provide inputs to the production of goods and services. While many economic assets are produced from economic activity (e.g., buildings and machines), many environmental assets are non-produced (e.g. land, mineral resources and water resources). 
+
+Both the economic and the environment are recorded as "stocks" and "flows" and measured in both physical units and monetary values. The analysis of these both environment and economic data can also be extended by linking the tables and accounts to relevant employment, demographic and social information.
+
+* _Stocks:_ are the starting and end values of the economic assets that are inputs to the flow measures. Stocks are a source of wealth for members of institutional sectors like households (in the household sector) or firms (in the enterprise sector). Environmental stocks and flows are considered holistically. 
+
+    From a stock perspective, the environment includes all living and non-living components that constitute the biophysical environment, including all types of natural resources and the ecosystems within which they are located. 
+
+* _Flows:_ capture how the stocks change during a period from economic activities like production, consumption and accumulation, or non-economic sources of change, like catastrophic distruction or natural addition. Flows from the environment to the economy are recorded as natural inputs (e.g, flows of minerals, timber, fish and water). 
+
+    Flows within the economy are recorded as product flows (including additions to the stock of fixed assets) and flows from the economy to the environment are recorded as residuals (e.g., solid waste, air emissions and return flows of water)
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Physical flows of natural inputs, products and residuals"}
+
+knitr::include_graphics(paste0(BaseDir, "Physical flows of natural inputs, products and residuals.png"))
+
+```
+
+## Environmental assets and ecosystem services: Terminology
+      
+* _Environmental assets_ are the naturally occurring living and non-living components of the Earth, together constituting the biophysical environment, which may provide benefits to humanity.[^DefineEnrivonAssets] 
+
+    Environmental assets are either cultivated or natural resources. Natural resources include all natural biological resources (including timber and aquatic resources), mineral and energy resources, soil resources and water resources.
+
+* _Physical flows_ are reflected in the movement and use of materials, water and energy.The three categories of physical flows form three distinct but related accounting subsystems, each of which has a different perspective on relevant physical flows. Physical flows are also recorded in asset accounts where they represent changes in the stocks of assets between one period and another.
+
+    During the extraction of some natural resource inputs, not all extraction is retained in the economy, for example, in fishing operations, there is an amount of discarded catch and in timber harvesting there is an amount of felling residues. The extraction that is not retained in the economy is considered to have returned immediately to the environment. These flows are termed natural resource residuals.
+
+    The volume of water in the ocean is not considered in scope of water resources because the stock of water is too large to be meaningful for analytical purposes. The exclusion of the ocean in terms of the volume of water resources does not in any way limit the measurement of ocean-related individual assets such as aquatic resources (including fish stocks on the high seas over which a country has harvesting rights) and mineral and energy resources on the ocean floor.
+
+* _Ecosystems_ are a dynamic complex of plant, animal and micro-organism communities and their non-living environment interacting as a functional unit.[^DefineEcosystem] Ecosystems make three types of  contributions to economic and other human activity:
+
+    (a) _Provisioning services_ (such as the provision of timber from forests); 
+
+        Provisioning services are related to the material benefits of environmental assets, whereas the other types of ecosystem services are related to the non-material benefits of environmental assets.
+    
+    (b) _Regulating services_ (provided, for example, by forests when they act as a sink for carbon); and 
+
+    (c) _Cultural services_ (such as the enjoyment provided to visitors to a national park).
+
+* _Natural inputs_ are all physical inputs that are moved from their location in the environment as a part of economic production processes or that are directly used in production:
+
+    (a) Natural resource inputs, such as mineral and energy resources or timber resources, 
+
+    (b) Inputs from renewable energy sources, such as solar energy captured by economic units, or 
+
+    (c) Other natural inputs such as inputs from soil (e.g., soil nutrients) and inputs from air (e.g., oxygen absorbed in combustion processes).
+
+* _Products_ are goods and services that result from a process of production in the economy.
+
+* _Residuals_ are flows of solid, liquid and gaseous materials, and energy, that are discarded, discharged or emitted to the environment (e.g., emission to air) by establishments and households through processes of production, consumption or accumulation but may also flow within the economy,
+
+
+# The Structure of SEEA-CF accounts {-}
+
+The Central Framework comprises the following types of tables and accounts: 
+
+(a) Supply and use tables in physical (PSUT) and monetary terms (MSUT) showing flows of natural inputs, products and residuals; 
+
+    Physical flows are recorded by compiling supply and use tables in physical units of measurement. These tables are used to assess how an economy supplies and uses energy, water and materials[^flows], as well as to examine changes in production and consumption patterns over time. 
+
+    In combination with data from monetary supply and use tables, changes in productivity and intensity in the use of natural inputs and the release of residuals can be examined.
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Physical Supply and Use Table"}
+
+knitr::include_graphics(paste0(BaseDir, "Physical_SUT.png"))
+
+```
+
+(b) Asset accounts for individual environmental assets in physical and monetary terms showing the stock of environmental assets at the beginning and the end of each accounting period and the changes in the stock; 
+
+    Asset accounts are compiled for individual types of environmental assets and record the opening and closing stock of environmental assets and the different types of changes in the stock over an accounting period. Environmental asset accounts also assess whether current patterns of economic activity are depleting and degrading the available environmental assets. The valuations of environmental assets in asset accounts combined with valuations of produced and financial assets to provide broader estimates of a national's wealth. 
+
+    The capacity to account for and analyse the state of and changes in environmental assets is a fundamental component of the Central Framework. 
+
+    In monetary terms, supply and use tables and asset accounts record much of the information of interest in the assessment of the interactions between the economy and the environment. However, there are a range of other transactions and flows that are of interest, such as payments of rent for the extraction of natural resources, payments of environmental taxes, and payments of environmental subsidies and grants from government units together economic units to support environmental protection activity.  
+      
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Connections between supply and use tables and asset accounts"}
+
+knitr::include_graphics(paste0(BaseDir, "PSUT_and_Asset_Accounts.png"))
+
+```   
+
+(c) A sequence of economic accounts highlighting depletion-adjusted economic aggregates; and 
+
+
+(d) Functional accounts recording transactions and other information about economic activities undertaken for environmental purposes. 
+
+
+## Other technical bits
+
+### Subsistance and own-production consumption
+
+The column for households in the PSUT relates solely to the consumption activity of households. 
+
+Many PICT households undertake a range of activity for their own consumption, including subsistance fishing or other forms of agricultural. In the SEEA, all products that are consumed must first be recorded as being produced, including own-production or subsistance fishing. Hence, all of this production activity and the associated flows of natural inputs and products should be recorded in the first column, industries. 
+
+The consumption activity of households recorded in the PSUT extends to the generation of solid waste and other residuals as a consequence of consumption. In practical terms, the limits of the data measures will dictate the limits of activities collected.
+
+
+### Valuing in basic, producer's and purchaser's prices
+
+Two kinds of prices are used within the context of supply, namely, basic prices and producers’ prices. The basic price is the amount receivable by the producer from the purchaser for a unit of a good or service produced as output, minus any taxes payable on the product plus any subsidy receivable by the producer as a consequence of its production or sale. The basic price excludes any transport charges invoiced separately by the producer and any wholesale and retail margins that may be applicable.
+
+The producers' price is the amount receivable by the producer from the purchaser for a unit of a good or service produced as output minus any VAT, or similar deductible tax, invoiced to the purchaser. The producers’ price excludes any transport charges invoiced separately by the producer. Unlike the basic price, the producers’ price includes any taxes on products other than a deductible VAT, and excludes any product subsidies.
+
+The purchasers' price is the amount paid by the purchaser, excluding any VAT or similar tax deductible by the purchaser, in order to take delivery of a unit of a good or service at the time and place required by the purchaser. The purchasers’ price of a good includes any transport charges paid separately by the purchaser to take delivery at the required time and place. This is the price most relevant for the purchaser.    
+
+In the compilation of monetary supply and use tables in basic prices, the transport charges and wholesale and retail margins are allocated to the relevant services (transport, wholesale and retail services) rather than deducted from the table as a whole.
+
+      
+### Employment, demographic and social information     
+
+The usefulness of the information in the various tables and accounts can be enhanced by relating different environmental and economic data to estimates of employment, estimates of population, various demographic breakdowns (such as age, household income levels and household characteristics related to material well-being) and measures of societal interest such as health and education.    
+
+
+### Geographical boundaries for economic units
+
+The geographical boundary that defines the scope of an economy is based on the concept of economic territory, which is the area under effective control of a single government. It includes the land area of a country, including islands, airspace, territorial waters and territorial enclaves7 in the rest of the world. Economic territory excludes territorial enclaves of other countries and international organizations located in the reference country.
+
+A national economy comprises the set of all institutional units that are resident in an economic territory, i.e., the unit has its centre of predominant economic interest in a particular economic territory. In general, there will be a large overlap between those units that are resident and those units located within the geographically defined boundaries of a country.
+
+There are three primary exceptions:
+
+(a) Units intending to operate in a country for less than a year, for example, specialized construction firms or aid and relief agencies. These are considered residents of their home country;
+
+(b) Resident producing units that may operate outside of the national territory, for example, ships and aircraft, and **fishing operations in international and other nations' waters**. In these cases, they are regarded as remaining residents of their national economy regardless of their location of operation;
+
+(c) Residents of a national territory that may stay temporarily in other countries for work or leisure. The consumption undertaken by such residents in other countries is considered to be resident consumption abroad, which is recorded as an import of the country in which the person is resident and an export of the country visited.
+
+
+# Physical flow metrics
+
+Related to the three metrics of energy, water and product. I'm just focusing on the ocean related dimensions.
+
+
+## Physical flow accounts for energy {-}
+
+### Treatment of international flows - Transport related fuel and pollution
+
+The treatment of physical flows to and from the rest of the world needs a careful articulation. An underlying principle applied in the SEEA is that relevant flows are attributed to the country of residence of the producing or consuming unit. This differs from the territory principle of recording, which is applied in a number of statistical frameworks. The territory principle attributes the relevant flows to the country in which the producing or consuming unit is located at the time of the flow.
+
+In accordance with both the SNA and the Balance of Payments and International Investment Position Manual, 6th ed. (BPM6) (International Monetary Fund, 2009), the residence of an institutional unit is determined by the economic territory with which it has the strongest connection.18 In the majority of situations, the concepts of territory and residence are closely aligned; but there are important activities, in particular international transport, that need to be considered individually so that the appropriate treatment can be decided. This subsection discusses international transport, tourist activity and natural resource inputs.
+
+The appropriate recording of international transport activity is important, particularly for information concerning the use of energy and the associated release of emissions. The appropriate and consistent attribution of physical flows relating to international transport to individual countries is an important component of the SEEA.
+
+
+**Does this mean I should think about estimating transport and fishing-related pollution in the Ocean Accounts? - Probably yes!**
+
+To ensure consistency with other parts of the accounts, the treatment is centred on the residence of the operator of the transport equipment. Usually, this will be the location of the headquarters of the transport operator. 
+
+(a) A ship, whose operator is a resident of country A, transports goods from country B to country C, and refuels in country C before returning home. In this case, purchases of fuel are attributed to country A (being exports of fuel from country C and imports of fuel by country A). Payments for transport service by country C are exports of services by country A. All emissions by the ship are attributed to country A;
+
+(b) A passenger aircraft, whose operator is a resident of country X, transports people from country X to country Y and returns to country X. The passengers are from countries X, Y and Z. In this case, any purchases of fuel are attributed to country X and are recorded as imports if purchased in country Y. Payments by the passengers are recorded as exports of services by country X if the passengers are resident in country Y or Z. All emissions by the aircraft are attributed to country X.
+
+Special attention must be paid to the bunkering of fuel, primarily for ships and aircraft. Special arrangements may be entered into whereby a unit resident in a country stores fuel in another country while still retaining ownership of the fuel itself. Following the principles of the SNA and the BPM, the location of the fuel is not the primary consideration. Instead, the focus must be on the ownership of the fuel. Thus, if country A establishes a bunker in country B and transports fuel to that country in order to refuel a ship that it operates, then the fuel is considered to have remained in the ownership of country A and no export of fuel to country B is recorded. Thus, the fuel stored in country B is not necessarily all attributable to country B. This treatment is likely to differ from the recording utilized in international trade statistics; and adjustments to source data may therefore be needed to align recording to this treatment.
+
+
+### Tourist activity
+
+The recording of tourist activity is consistent with the recording of international transport activity in that the concept of residence is central. Tourists include all those travelling outside their country of residence, including short-term students (i.e., those studying abroad for less than 12 months), people travelling for medical reasons and those travelling for business or pleasure. The consumption activity of a tourist travelling abroad is attributed to the tourist's country of residence and not to the location of the tourist when the consumption is undertaken. Thus, purchases by the tourist in other countries are recorded as an export by the country visited and as an import of the country of residence of the tourist.
+
+Solid waste generated by tourists will generally be attributed to local enterprises (e.g., hotels and restaurants). Emissions from local transport used by tourists in a foreign country (e.g., taxis and minibuses) are attributed to the local transport company and, as noted in regard to international transport, emissions from aircraft and other long-distance transport equipment are attributed to the country of residence of the operator. In neither case are the emissions attributed to the tourist. 
+
+Emissions from cars are also attributed to the country of residence of the operator (in this case, the driver of the car), whether the car is owned by the driver or hired from a car rental firm.
+
+
+### Illegal Harvesting
+Where illegal extraction takes place — for example, when non-residents illegally harvest timber resources — the reduction in the country's resources should be recorded in the asset account (see chap. V) as part of extractions of natural resources. However, the associated natural resource input in the PSUT should be shown only in the accounts of the country in which the illegal extractor is resident. No exports should be recorded.
+
+**The major exception to this kind of treatment occurs with respect to natural aquatic resources.**
+
+Following accounting conventions, the harvest of aquatic resources is allocated to the residence of the operator of the vessel undertaking the harvesting rather than to the location of the resources. Thus, the amount of natural resource input that should be recorded for a country is equal to the quantity of aquatic resources caught by vessels whose operator is resident in that country, regardless of where the resources are caught. Natural resource inputs are not recorded for the harvest of aquatic resources by vessels operated by non-residents in national waters and neither are exports recorded in this situation. In the accounts of the country to which the non-resident operator is connected, there should be entries for natural resource inputs for aquatic resources caught in non-national waters but no reduction in national aquatic resources in the asset accounts for this harvest.
+
+
+### Treatment of goods for processing (Transshipment activity)
+It is increasingly common for goods from one country to be sent to another country for further processing before being:
+
+(a) returned to the original country, 
+
+(b) sold in the processing country or 
+
+(c) sent to other countries.
+
+In situations where the unprocessed goods are sold to a processor in a second country, there are no particular recording issues. However, in situations where the processing is undertaken on a fee-for-service basis and there is no change of ownership of the goods (i.e., the ownership remains with the original country), the financial flows are unlikely to relate directly to the physical flows of goods being processed.
+
+
+## Physical flow accounts for water {-}
+The focus of the SEEA is the inland water system, with provision for the inclusion of sea or **ocean water abstracted for production and consumption** (e.g., saline water for desalinization or cooling).
+
+Physical supply and use tables can be compiled at various levels of detail, depending on the required policy and analytical focus and data availability. A basic PSUT for water contains information on the supply and use of water and provides an overview of water flows. 
+
+The PSUT is divided into five sections which organize information on:
+
+(a) abstraction of water from the environment; 
+
+(b) distribution and use of abstracted water across enterprises and households; 
+
+(c) flows of wastewater and reused water (between households and enterprises); 
+
+(d) return flows of water to the environment; and 
+
+(e) evaporation, transpiration and water incorporated into products.
+
+The breakdown of the economic activities, classified according to the ISIC, distinguishes the following groups:
+
+* ISIC divisions 01-03: Agriculture, forestry and fishing (it may be relevant to distinguish among the uses of water by these different industries)
+
+* ISIC divisions 05-33 and 41: Mining and quarrying; manufacturing; and construction, respectively
+
+* ISIC division 35: Electricity, gas, steam and air conditioning supply
+
+* ISIC division 36: Water collection, treatment and supply; sewerage, waste management and remediation activities
+
+* ISIC division 37: Sewerage
+
+* ISIC divisions: 38, 39 and 45-99: Other industries
+
+
+## Physical flow accounts of materials {-}
+
+The third subsystem of physical flow accounting encompasses flows of materials. In contrast to energy and water, materials are a far more diverse set of natural inputs, products and residuals.
+
+The present section discusses the main areas in which development of physical flow accounting for materials has taken place: 
+
+(a) product flow accounting, 
+
+(b) accounting for air emissions, 
+
+(c) accounting for emissions to water and associated releases to economic units, 
+
+(d) accounting for solid waste and 
+
+(e) economy-wide material flow accounting (EW-MFA)
+
+Lots of blah blah in this section. An interesting dimension would be to include a species split into the extracted fish.
+
+\newpage
+
+
+# Incorporating the Environment into the SNA {-}
+
+The general approach to identifying transactions related to a particular theme or topic is described in the SNA in its discussion of satellite accounts.
+
+An important component of environmental-economic accounting is the recording of transactions in monetary terms between economic units that may be considered environmental. Generally, these transactions concern activity undertaken to preserve and protect the environment. Further, there are a range of transactions, such as taxes and subsidies, that reflect efforts by governments, on behalf of society, to influence the behaviour of producers
+and consumers with respect to the environment.
+
+## The environmental protection expenditure account (EPEA) {-}
+
+Environmental protection activities are those activities whose primary purpose is the prevention, reduction and elimination of pollution and other forms of degradation of the environment. Activities undertaken specifically for biodiversity or landscape protection (e.g., management of protected forests) and activities aimed at preserving certain functions or the quality of the natural environment should be treated as environmental protection. These activities include, but are not limited to: 
+
+* The prevention, reduction or treatment of waste and wastewater; 
+
+* The prevention, reduction or elimination of air emissions; 
+
+* The treatment and disposal of contaminated soil and groundwater; 
+
+* The prevention or reduction of noise and vibration levels; 
+
+* The protection of biodiversity and landscapes, including of their ecological functions; 
+
+* Monitoring of the quality of the natural environment (air, water, soil and groundwater); 
+
+* Research and development on environmental protection; and 
+
+* The general administration, training and teaching activities oriented towards environmental protection.
+
+Resource management activities are those activities whose primary purpose is preserving and maintaining the stock of natural resources and hence safeguarding against depletion. These activities include, but are not limited to, reducing the withdrawals of natural resources (including through the recovery, reuse, recycling and substitution of natural resources); restoring natural resource stocks (increases or recharges of natural resource stocks); **the general management of natural resources (including monitoring, control, surveillance and data collection)**; and the production of goods and services used to manage or conserve natural resources.
+
+(The cost of the FFA allocated to countries?)
+
+
+#### Classification of environmental activities
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Classification of Environmental Activities: overview of groups and classes"}
+
+knitr::include_graphics(paste0(BaseDir, "ClassificationEnvironmentActivities.png"))
+
+```   
+
+I think the big thing to get out of this section if the concept that fisheries protection and enforcement costs are ocean accounts information. Things like environmental sole-purpose products are goods (durable or non-durable) or services whose use directly serves an environmental protection or resource management purpose and that have no use except for environmental protection or resource management.
+
+
+## Fixed assets used in economic activities related to the environment {-}
+
+Fixed assets cover the range of produced assets that contribute to production processes over a number of accounting periods. They include buildings, machines, various types of equipment—including transportation equipment—land improvements, and intellectual property products such as software and research and development expenditure. Different economic activities will entail the use of different types of fixed assets. Often, there is interest in the fixed assets used to extract and harvest natural resources as well as in the amount of investment that takes place in fixed assets for environmental protection or resource management purposes. For example, information on the amount of investment in equipment to capture energy from renewable energy sources may be of interest.
+      
+Probably definitely includes things like port infrastructure.
+
+\newpage
+
+# Asset accounts {-}
+
+There are seven individual components of the environment that are considered environmental assets in the Central Framework. They are mineral and energy resources, land, soil resources, timber resources, aquatic resources, other biological resources (excluding timber and aquatic resources), and water resources.
+
+In physical terms, the measurement scope for each individual component is broad, extending to include all of the resources that may provide benefits to humanity. However, in monetary terms, the scope is limited to those individual components that have an economic value based on the valuation principles of the SNA.
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Classification of environmental assets in the SEEA Central Framework"}
+
+knitr::include_graphics(paste0(BaseDir, "ClassificationofEnvironmentalAssets.png"))
+
+```         
+      
+Biological resources include timber and aquatic resources and a range of other animal and plant resources such as livestock, orchards, crops and wild animals. Like most environmental assets, they provide physical inputs to economic activity. However, for biological resources, a distinction is made between whether the resources are cultivated or natural, based on the extent to which there is active management over the growth of the resource.
+
+In principle, all of the benefits delivered by environmental assets can be valued in monetary terms. In the Central Framework, consistent with the SNA, the scope of valuation is limited to the benefits that accrue to economic owners. An economic owner is the institutional unit entitled to claim the benefits associated with the use of an asset in the course of an economic activity by virtue of accepting the associated risks. Further, following the SNA, an asset is a store of value representing a benefit or series of benefits accruing to the economic owner by holding or using the entity over a period of time.
+
+Many environmental assets are also economic assets. In particular, natural resources and land are considered non-produced assets, and cultivated biological resources may be either fixed assets or inventories, depending on their role in production.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "General structure of the physical asset account for environmental assets (physical units)"}
+
+knitr::include_graphics(paste0(BaseDir, "Structure of physical assets accounts.png"))
+
+```     
+
+## Depletion of fisheries {-}
+
+The depletion of environmental assets relates to the physical using up of environmental assets through extraction and harvest by economic units, including households, resulting in a reduced availability of the resource. For natural biological resources, such as timber resources and aquatic resources, the equality in physical terms between depletion and extraction does not hold. 
+
+The ability for these resources to regenerate naturally means that in certain management and extraction situations, the quantity of resources extracted may be matched by a quantity of resources that are regenerated and, in this situation, there is no overall physical depletion of the environmental asset. More generally, only the amount of extraction that is above the level of regeneration is recorded as depletion.
+
+Depletion is not recorded when there is a reduction in the quantity of an environmental asset owing to unexpected events such as losses due to extreme weather or pandemic outbreaks of disease. These reductions are recorded as catastrophic losses. In contrast, depletion must be seen as a consequence of the extraction of natural resources by economic units.
+
+To estimate depletion, it is necessary to consider both the extraction and the regeneration of biological resources. While the rates of extraction can be observed directly, measurement of the rates of regeneration can be complex and usually requires consideration of biological models. These models will usually account for both the structure and the size of populations; and exhibited by their general form, when the stock or population of the specific type of resource is small, the rate of growth will be small but, as the population increases, the rate of growth will also increase. Eventually, as the population within a given area reaches the carrying capacity of the area, i.e., as the density reaches a maximum, the rate of growth in the population will slow substantially.
+
+For a given population, if the amount of extraction is less than the sustainable yield, no depletion should be recorded. In this situation, assuming no catastrophic losses or other changes, it would be expected that the stock would increase over the accounting period. Depletion is recorded wherever the amount of extraction is greater than the sustainable yield corresponding to the population size and structure.
+
+
+## Degradation of fisheries {-}
+
+Degradation considers changes in the capacity of environmental assets to deliver a broad range of contributions known as ecosystem services (e.g., air filtration services from forests) and the extent to which this capacity may be reduced through the action of economic units, including households. 
+
+The measurement of degradation is complicated because the capacity of environmental assets to deliver ecosystem services is not attributable solely to individual assets, and because individual assets may deliver a number of different ecosystem services. To assess whether a body of water has been degraded, assessments might be made of the various pollutants in the water as part of a broader assessment of the overall change in condition. 
+
+
+
+## The measurement of returns on environmental assets {-}
+
+The most commonly applied method is the Residual Value method. Resource rent is estimated by deducting user costs of produced assets from gross operating surplus after adjustment for any specific subsidies and taxes. Gross output less IC, COE, CFK, IT, Subsidies, less some estimate of "return to produced assets" (return on capital).
+
+The Appropriation Method estimates the resource rent using the actual payments made to owners of environmental assets. The collection of resource rent is generally undertaken by governments through mechanisms such as fees, taxes and royalties. In practice, the fees, taxes and royalties actually collected tend to understate total resource rent, as the rates may be set with other priorities in mind, for example, encouraging investment and employment in extracting industries. These alternative motivations should be considered before use of the appropriation method.
+
+The Access Price method is based on the fact that access to resources may be controlled through the purchase of licences and quotas, as is commonly observed in the forestry and fishing industries. When these resource access rights are freely traded, it is possible to estimate the value of the relevant environmental asset from the market prices of the rights. The economic logic parallels the residual value method, since it is expected that, in a free market, the value of the rights should be equivalent to the future returns from the environmental asset (after deducting all costs, including user costs of produced assets).
+
+The critical factor in the valuation of assets is not the past or current returns but the expected returns. An asset with no expected returns has no value in economic terms. Expected returns are, by definition, not observed and hence assumptions concerning these flows must be made.
+
+
+## Estimates of the net present value of the environmental asset {-}
+
+Estimates of the value of an environmental asset are obtained based on the following basic steps and assuming the employment of the residual value method to calculate resource rent:
+
+(a) Obtain estimates of GOS, specific subsidies and taxes on extraction, and the user cost of produced assets for the extractive activity, from relevant sources, most likely based on national accounts data, relevant activity-specific information and assumptions regarding rates of return on produced assets;
+
+(b) Estimate resource rent as GOS less specific subsidies plus specific taxes less user cost of produced assets;
+
+(c) Estimate the asset life based on physical assessment of the stock and projected rates of extraction and growth;
+
+(d) Project the estimate of resource rent over the life of the asset, taking into account any expected changes in extraction pattern;
+
+(e) Apply the NPV formula using an appropriate discount rate:
+
+$V_{t} = \sum_{\tau = 1}^{N_{t}} \frac{RR_{t+\tau}}{(1+r_{t})^\tau}$
+      
+\newpage
+
+# Physical asset accounts for mineral and energy resources {-}
+Things get a bit murky here because there are three types of mineral deposit classification:
+
+(a) Class A: Commercially recoverable resources. This class includes deposits for projects that fall in categories E1 and F1 and where the level of confidence in the geologic knowledge is high (G1), moderate (G2) or low (G3);
+
+(b) Class B: Potentially commercially recoverable resources. This class includes deposits for those projects that fall in the category E2 (or eventually E1) and at the same time in F2.1 or F2.2 and where the level of confidence in the geologic knowledge is high (G1), moderate (G2) or low (G3);
+
+(c) Class C: Non-commercial and other known deposits. These are resources for those projects that fall into category E3 and for which the feasibility is categorized as F2.2, F2.3 or F4 and where the level of confidence in the geologic knowledge is high (G1), moderate (G2) or low (G3)
+
+Lets park mineral and energy resources for a little bit.
+
+\newpage
+
+# Asset accounts for land {-}
+There are two primary aspects of land for environmental accounting purposes: land use and land cover. A particular focus is placed on physical land accounts for forest and other wooded land.
+
+Land is a unique environmental asset that delineates the space in which economic activities and environmental processes take place and within which environmental assets and economic assets are located. While the term "land" is commonly meant to refer only to terrestrial areas, in the SEEA, the term may also apply to areas covered by water.
+
+Of particular interest in respect of statistics on land use and land cover is the means by which data are collected. Broadly, two methods are used; field surveys and satellite images. Land use consists of seven main categories: agriculture, forestry, land used for aquaculture, use of built-up and related areas, land used for maintenance and restoration of environmental functions, other uses of land n.e.c. (not elsewhere classified), and land not in use. 
+
+For inland waters, there are four main categories: inland waters used for aquaculture or holding facilities; inland waters used for maintenance and restoration of environmental functions; other uses of inland waters n.e.c.; and inland waters not in use.
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Land use classification"}
+
+knitr::include_graphics(paste0(BaseDir, "LandUse.png"))
+
+```     
+
+Land cover refers to the observed physical and biological cover of the Earth’s surface and includes natural vegetation and abiotic (non-living) surface. The Food and Agriculture Organization of the United Nations (FAO) has developed an international standard classification system, the Land Cover Classification System, version 3 (LCCS 3) which can be used to systematically record the biophysical characteristics of all areas of land within any territory.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Land cover classification"}
+
+knitr::include_graphics(paste0(BaseDir, "LandcoverClassification.png"))
+
+```     
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Physical account for land cover (hectares)"}
+
+knitr::include_graphics(paste0(BaseDir, "Physical_Account_for_Land.png"))
+
+```     
+\newpage
+
+
+# Asset accounts for aquatic resources {-}
+
+Asset accounts for aquatic resources organize information on the stocks and changes in stocks of the quantity and value of aquatic resources within a country’s economic territory, including stocks within a country’s EEZ or on the high seas over which the country holds ownership rights.
+
+In principle, all aquatic resources are in scope of the asset accounts in the Central Framework; but in practice, the scope is limited to those aquatic resources that are subject to commercial activity. Asset accounts cover both cultivated aquatic resources and natural aquatic resources, thus enabling a comparison of trends in both resources.
+
+The asset accounts presented in the present section do not cover the assessment of general aquatic ecosystems that support the various resources and provide a wide range of ecosystem services. The measurement of ecosystems is described in **SEEA Experimental Ecosystem Accounting.**
+
+## Definition and classification of aquatic resources {-}
+
+The aquatic resources for a given country comprise those resources that are considered to live within the exclusive economic zone (EEZ) of a country throughout their life cycles, in both coastal and inland fisheries. **Migrating and straddling fish stocks are considered to belong to a country during the period when those stocks inhabit its EEZ**
+
+The Aquatic Sciences and Fisheries Information System (ASFIS) list of species contains over 11,500 species, and is commonly used as the standard reference for fisheries production. It is linked to the FAO International Standard Classification for Aquatic Animals and Plants (ISCAAP) which divides commercial species into 50 groups on the basis of their taxonomic, ecological and economic characteristics.
+
+All aquatic resources produced within aquaculture facilities are considered cultivated biological resources. All other aquatic resources harvested as part of capture production processes are considered natural biological resources.
+
+## Physical asset accounts for aquatic resources {-}
+
+A physical asset account for aquatic resources shows the total biomass of all species that are subject to harvesting activity or cultivated within the national boundary, including within the country’s EEZ, and a portion of shared resources biomass to which a country has access rights either through traditional practice, international agreement or provision of part of the distribution areas. 
+
+The scope of harvesting includes commercial sea- and freshwater operations, aquaculture, and subsistence and recreational harvesting of aquatic resources. Aquatic resources that exist within other countries’ EEZ but are harvested by operators that are resident in the reference country should not be included in the asset accounts. The physical asset account also shows the changes due to harvest, normal loss, growth (in size and in number) and other changes.
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Physical asset account for aquatic resources (tonnes)"}
+
+knitr::include_graphics(paste0(BaseDir, "Aquatic_Physical_Asset_Accounts.png"))
+
+```     
+
+## Measuring stocks and changes in stocks of natural aquatic resources {-}
+
+Asset accounts for natural aquatic resources should be compiled separately for freshwater aquatic resources, and marine aquatic resources within a country’s EEZ or that over which the country has ownership rights. 
+
+Fishery biologists define a “stock” as a group of individuals from the same species that constitute a unit in breeding new offspring. If mating between members of different groups occurs to the level required to modify their gene pools in the long term, those groups should be regarded as belonging to one stock. The resource management should be based on this concept of stock. The boundary of a stock in this sense does not correspond to national boundaries and when aquatic resources belonging to a stock move around multiple countries’ boundaries, international collaboration in management is needed and the national asset account of such stock can be defined based on the share of access to the stock.
+
+There are several dimensions that should be considered in measuring the size of the resources. An important one is the measurement of the sexually mature part of the stock (i.e., the spawning stock or parental biomass). Another relevant measurement dimension is the exploitable stock size. This corresponds to the proportion of the stock that is subject to harvesting activity, which ignores the cohorts that are younger than those being harvested about which little is known.
+
+Various methods can be used by fishery biologists to estimate the absolute size of natural aquatic stocks, including virtual population analysis (VPA), tag-recapture analysis, and direct and indirect measurement with line-transect surveys or at randomly sampled areas (e.g., echo-sounders, trawl surveys and sighting surveys), according to the behaviour and distribution of the target species, the harvesting patterns, and available data.
+
+When scientific assessment of the absolute stock size is not available, an alternative approach is to measure the gross catch for a certain harvesting operation in relation to the amount of effort required to obtain the catch for a given species (e.g., days at sea, number and type of fishing gear, size and power of vessel, and expenditure on catch effort, including wages and fuel). The ratio of catch per unit effort (CPUE) may provide a good indicator of the relative change in stock size, assuming that population density and population size are closely correlated and that CPUE is higher at higher population densities. Importantly, not all species have the same ratios between population structure and the associated CPUE and this needs to be taken into account in using this technique. Further, CPUE measures may be affected by changes in quota and other administrative arrangements, and changes in technology.
+
+## Accounting for the harvest of natural aquatic resources {-}
+
+In physical terms, all aquatic resources harvested and all efforts used to realize the harvest (e.g., in terms of fishing days multiplied by vessel power) should be recorded. Records should differentiate between species and the type of fishing/harvesting fleet (i.e., vessels operating in a similar way with similar gear). Further, the aquatic resources harvested in the open seas, coastal waters or inland waters by commercial, subsistence or recreational fishing should be counted as production at the time they are harvested, regardless of whether they are sold in the market or used for own consumption.
+
+
+```{r SEEAAnnexA54, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Catch concepts: a diagrammatic presentation"}
+
+knitr::include_graphics(paste0(BaseDir, "SEEA_AnnexA5_4.png"))
+
+```    
+
+FAO has defined the different stages of the catch, extending from when fish encounter fishing gear to when they are landed. They are summarized here, with a complete depiction of the relationships presented in a diagram in Figures \@ref(fig:SEEAAnnexA54). 
+
+(a) Gross removal: the total live weight of fish caught or killed during fishing operations;
+
+(b) Gross catch: the total live weight of fish caught (gross removal less pre-catch losses);
+
+(c) Retained catch: the total live weight of fish retained (gross catch less discarded catch);
+
+(d) Landings: the net weight of the quantities landed as recorded at the time of landing;
+
+(e) Nominal catch: the live weight equivalent of the landings.
+
+For the SEEA, the measurement of discarded catch is an important contributory factor to a full understanding of the linkages between economic activity and the impact on aquatic resources. For this reason, it is recommended that the concept of “gross catch” be used to measure the extraction of fish resources. Conceptually, "gross removal" is the most appropriate concept for measuring the
+impact on aquatic resources and the damage to aquatic ecosystems, e.g., to coral reefs, as a result of fishing activity. However, the measurement of gross removal is not possible in practice.
+
+## Depletion of natural aquatic resources {-}
+
+Depletion for renewable resources is shown to be equal to gross catch less sustainable yield. It is recommended that estimates from biological models be compared with indicators of stock size, such as CPUE, and also that estimation be carried out on an ongoing basis so that the dynamics of the various populations (natural growth, natural losses, etc.) can be better understood.
+
+## Capture fishing by non-residents {-}
+
+Given the nature of aquatic resources and harvesting activity, there will be capture fishing undertaken by non-residents within another country’s EEZ. Following the principles of the SNA, the location of the aquatic resource is not the key determinant of the attribution of economic production. Production is allocated instead to the country of residence of the harvesting operation.
+
+In the assessment of the change in the aquatic resources belonging to a country over an accounting period, **it is not sufficient or accurate to focus only on the catch by operations of residents of that country.** This estimate will exclude changes in the national aquatic resource due to catch by non-residents and will include catch by residents in other countries. 
+
+For the purposes of accounting for the national aquatic resource, the focus must be on the total catch from the country's aquatic resources, including any resources on the high seas over which ownership rights exist, regardless of the residency of the harvesting operation.
+
+## Illegal fishing {-}
+
+Illegal harvest should still be recorded as production with an income accruing to the fisherman. Where non-residents harvest aquatic resources illegally, either without a licence or by taking catch in excess of their allocated quota, the physical removals should be recorded. These flows should be recorded as uncompensated seizures. In recording such flows, care must be taken to exclude them from estimates of gross catch of the country in whose EEZ the fish were caught.
+
+
+## Valuation of natural aquatic resources
+There are two main options. One is to value the aquatic resource using the value of long-term fishing licences and quotas where realistic market values are available. The other is to base the value on the net present value of the resource rent of the aquatic resources. 
+
+
+
+
+
+
+\newpage 
+
+# References
+
+```{r results = "asis", echo = FALSE}
+PrintBibliography(Biib, .opts = list(check.entries = FALSE, sorting = "ynt"))
+```
