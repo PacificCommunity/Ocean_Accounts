@@ -39,6 +39,10 @@
       library(extrafont)
       library(tictoc)
       library(RefManageR)
+
+      library(sysfonts)
+      library(showtext)
+      library(viridis)                  
       
    ##
    ##    Project-specific libraries
@@ -51,7 +55,6 @@
    ##
       setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
       
-      source("Programmes/Adhoc_Data.r")                  # Th
       source("Programmes/Organise_Input_Spatial_Data.r") # This calculates the ratio of land to EEZ internationally and makes a picture
       
       ##

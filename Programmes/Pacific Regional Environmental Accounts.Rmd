@@ -113,7 +113,9 @@ load('Data_Output/Land_and_EEZ.rda')
  
 # Introduction 
 
-For a long time, the environment received little economic attention and was not viewed as an essential input into the economic production process. Since its inception in 1947 up until 1987, the standard international economic measurement "textbook", the System of National Accounts[^SNA] (SNA) continued its original focus of measuring how countries might recover from the 1930's economic depression, and fund the second world war (WW2). For decades, its focus remained on measuring the economic fundimentals of production, consumption, and exchange. The environment was recognised to the extent it could be contained within property rights and capable of monetarised measurement. It was something ancillary-to the economy and within-which economies undertook the serious stuff of production, consumption and exchange.
+For much of the 20th century the environment received little statistical measurement attention and was not viewed as an essential input into the economic production process; however, the advent of the System of Environmental-Economic Accounts (SEEA) environment to economic activity. For Pacific Countries, it also represents a more pertinent lens for understanding their value of their productive environmental capital in the delivering of economic value to their countries. This paper outlines how the Pacific Community's data sources might be leveraged to create an initial suite of Environmental-Economic Accounts for our Pacific member countries.
+
+Since its inception in 1947 up until 1987, the standard international economic measurement "textbook", the System of National Accounts[^SNA] (SNA) continued its original focus of measuring how countries might recover from the 1930's economic depression, and fund the second world war (WW2). For decades, its focus remained on measuring the economic fundimentals of production, consumption, and exchange. The environment was recognised to the extent it could be contained within property rights and capable of monetarised measurement. It was something ancillary-to the economy and within-which economies undertook the serious stuff of production, consumption and exchange.
 
 The limits of the environment moved the SNA's focus beyond 1930's depression and WW2 economics. Extractive processes from the environment were recognised as exhaustible and the feedback relationships  between the environment and the economic systems were acknowledged. "Sustainability" and is material progress in an economic-based welfare system depends on "non-exhaustibility" within the environmental system that economies reside within. However, the environmental system is itself limited by economic-system-derived pollution and degradation. The feedback relationships between the two systems are binding constraints on each other. Climate change only reinforces the impact of this inter-dependency.
 
@@ -131,19 +133,16 @@ While the economic system is the overwhelming source of pollution and depopulati
 
 The "Dutch Disease"[^DutchDisease] is an example where the environmental component of the environment/economic co-relationship comes to dominate the mix of activity in the economic system component. Significant stocks of natural resources make extractive industries the overwhelming dominant industries within affected economics. Consequently, labour markets, and capital investment become biased towards those industries and away from other productive processes. In the long-run, affected economies become stunted through "path-dependancy", as unbalanced labour markets, and over-investment in single industries limiting the country' ability to change economic direction from extraction other activities.
 
+\newpage
 
 ## Implications for Pacific Countries
 
 Lacking the economic complexity of high income econonomies, Pacific Countries are more sensitive than others to the interactions of the environment into their economies.
 
 
-```{r LandSize, echo=FALSE, fig.pos='h', out.width = '100%'}
+```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Distribution of countries, by land size relative to EEZ size (World Bank Groupings)"}
 
-knitr::kable(Land_and_EEZ, 
-             row.names = FALSE,
-             booktabs = TRUE,
-             align = c('lrrrr'),
-             caption = "Land and exclusive economic zone (EEZ) areas for each of the 22 Pacific Island Countries and Territories (PICTs).")
+knitr::include_graphics(paste0(BaseDir, "Relative Land Area to EEZ.png"))
 
 ```
 
