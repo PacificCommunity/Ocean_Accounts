@@ -52,7 +52,7 @@
                                  sum, 
                                  na.rm = TRUE))         
 
-         Countries$CONTINENT <- ifelse(Countries$CONTINENT == "Seven seas (open ocean)", "Seven Seas", str_wrap(Countries$CONTINENT, 8))
+         Countries$CONTINENT <- ifelse(Countries$CONTINENT == "Seven seas (open ocean)", "Seven Seas*", str_wrap(Countries$CONTINENT, 8))
 
          Countries[Countries$CONTINENT == "Seven seas",]
          
@@ -144,12 +144,16 @@
                 scale_x_log10() +
                 xlab("\nRatio of Land Area to EEZ\nLog Scale\n") +
                 ylab("") +      
-                #geom_vline(xintercept = mean(Plot_Me$Ratio))+                
                 theme_bw(base_size=12, base_family =  "Calibri") %+replace%
                 theme(legend.title.align=0.5,
                       plot.margin = unit(c(6,6,6,6),"mm"),
                       panel.border = element_blank(),
-                      strip.background =  element_rect(fill   = SPCColours("Light_Blue")),
+                      panel.background = element_blank(),
+                      plot.background  = element_blank(),
+                      strip.background = element_blank(),
+#                      panel.background = element_rect(fill = "grey90", colour = "black", linewidth = 1),
+#                      plot.background  = element_rect(fill = "grey90", colour = "black", linewidth = 1),
+#                      strip.background = element_rect(fill = SPCColours("Light_Blue")),
                       strip.text = element_text(colour = "white", 
                                                 size   = 13,
                                                 family = "MyriadPro-Bold",
