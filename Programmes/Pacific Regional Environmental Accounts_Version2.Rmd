@@ -104,12 +104,9 @@ load('Data_Output/Land_and_EEZ.rda')
 [^DefineEnrivonAssets]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.17, page 13
 [^DefineEcosystem]: `r AutoCite(Biib, "united_nations_system_2014")` section 2.21, page 14
 [^KiribatiClaimateChange]: `r AutoCite(Biib, "kiribati_national_statistics_office_kiribati_2025")`
-[^BiodiversityMarkets]: `r AutoCite(Biib, "villasenor-derbez_market_2024")`
 [^flows]: The three flow measures captured through the SEEA-CF.
 [^SNA]: https://unstats.un.org/unsd/nationalaccount/sna.asp
-[^Solow]: `r AutoCite(Biib, "solow_contribution_1956")` `r AutoCite(Biib, "solow_technical_1957")` 
 [^SNA93]: https://unstats.un.org/unsd/nationalaccount/docs/1993sna.pdf
-[^DutchDisease]: https://en.wikipedia.org/wiki/Dutch_disease 
 [^Brudtland]: https://www.are.admin.ch/are/en/home/media/publications/sustainable-development/brundtland-report.html
 [^SEEAEA]: `r AutoCite(Biib, "united_nations_system_2014")`
 [^SNA25]: https://unstats.un.org/unsd/nationalaccount/docs/2025_SNA_Pre-edit.pdf Chapter 2, section 5 "Measures concerning the environment"
@@ -124,7 +121,7 @@ What was becoming _Issue de Jure_ for countries - climate change -  was not on t
 
 SEEA-CF and its theoretical companion, the System of Environmental-Economic Accounts - Exosystem Accounting (SEEA-EA), create a suite of environment statistical measures that are designed to complement the economics metrics from the SNA. Countries now have the _theoretical_ tools for connecting changes in their economic systems to environmental changes, and (importantly) **_vice versa_**.
 
-## Remote sensing is relatively cheap
+## Remote sensing is relatively cheap {-}
 
 In an age where earth-observing satellite systems encompass the planet, the cost of employing remote-sensing satellite technologies for statistically measuring the environment is now relatively low. 
 
@@ -132,7 +129,7 @@ The Pacific Community's (SPC) Digital Earth Pacific (DEP) platform is capable of
 
 ## The value of simulatenously measuring both the enviromental and the economic system is high {-}
 
-Unlike large countries with larger land-bases, the scarcity of  land areas relative to the areas of their Exclusive Economic Zones (EEZ) implies the bulk of Pacific Island Countries and Territories (PICTs) exploitable economic resources are be marine-based.
+Unlike large countries with larger land-bases, the scarcity of land areas relative to the areas of their Exclusive Economic Zones (EEZ) implies the bulk of Pacific Island Countries and Territories (PICTs) exploitable economic resources are marine-based.
 
 For PICTs, SEEA-CF allows countries to understanding how value is created within their environment, and how their environment also shapes their economic opportunities. Understanding the impact of economic change on their environmental capital enables alternative choices, trade-offs and opportunities to be considered. 
 
@@ -144,10 +141,12 @@ knitr::include_graphics(paste0(BaseDir, "Relative Land Area to EEZ.png"))
 
 _Note:* These are: Clipperton Island, Maldives, Mauritius, Saint Helena, Seychelles, South Georgia and the South Sandwich Islands_
 
-## PICTs weather extremes regularly destroys their land-based capital{-}
+##  Weather extremes regularly destroy PICTs land-based capital{-}
 
-Rising sea levels and coastal erosion, together with increasingly violent and frequent weather extremes, decimate PICT land-based productive physical capital reducing their land-based capital stock, and lowering their economic growth potential. Recovering from tropical cyclones and rebuilding buildings and equipment also saps scarce resources. The lastest statistics from Kiribati' "Kiribati Natural Disasters and Climate Change Survey Report 2023–2024"[^KiribatiClaimateChange] provides some scale to how climate change is impacting PICTs.
+The twin issues of rebuilding from and adapting to present day climate change, and securing meaningful and valuable sources of economic value are hot topics for PICTs policy-makers. Rising sea levels and coastal erosion, together with increasingly violent and frequent weather extremes, decimate PICT land-based productive physical capital reducing their land-based capital stock, and lowering their economic growth potential. 
 
+Recovering from tropical cyclones and rebuilding buildings and equipment also saps scarce resources. The lastest statistics from Kiribati' "Kiribati Natural Disasters and Climate Change Survey Report 2023–2024"[^KiribatiClaimateChange] provides some scale to how climate change is impacting PICTs.
+ 
 During the 2023–2024 period:
 
 * A quarter (25%) of households reported being impacted by at least one natural disaster.
@@ -162,10 +161,9 @@ During the 2023–2024 period:
 
 * Nearly 4,000 people were temporarily relocated due to natural disasters.
 
-
 ## Ocean-based capital is more weather resilent {-}
 
-Fishing stocks and mineral deposits - ocean-based capital - present opportunities for PICTs to tap into overseas sources of funding, and generate value export incomes and licencing revenues independent of their land-based capital. 
+Environmental within and Ocean perspective offer PICTs an economic alternative. Through estimating the volume and type of ocean-based capital, the estimated value of ocean-based economic production can be quantified and potentially tapped. Fishing stocks and mineral deposits - ocean-based capital - present opportunities for PICTs to tap into overseas sources of funding, and generate value export incomes and licencing revenues independent of their land-based capital. 
 
 Unlike physical productive capital - factories, farms and land-based mechinery - ocean-based capital is less weather dependent and more resiliant against weather extremes.
 
@@ -186,9 +184,11 @@ The end-goal for introducing SEEA measurement into Pacific countries is to creat
 
 ### Markets in biodiversity {-}
 
-Biodiversity, centrally and consistent measured using authoratative and sciencifically valid data sources, offers a new potential source for new markets in conservation and biodiversity protection. 
+Biodiversity, centrally and consistent measured using authoratative and sciencifically valid data sources, offers a new potential source for new markets in conservation and biodiversity protection. Potentially (and ironically), as climate change worsens, the most valuable aspect of the Pacific Ocean could be the continued existance of its rich and life-sustaining biodiversity. 
 
-If biodiversity and biodiverses areas could be readily identified, and their "level" and "difference" in biodiversity readily assessed, then the protection and expansion in those areas is potentially valueable to the world, and a future PICT revenue sources. Not only could biodiverse areas be identified, but _non-biodiverse_ areas could also be identified. In non-biodiverse areas, alternative uses of the marine environment (like offshore oil exploration, or maritime transport paths) might be activities whose benefits outweigh their impacts on the environment.
+Environmental Accounts provide an evidence-based frameworks for the development of markets in the protection of biodiversity, potentially another source of funding running counter to climate change: as climate change negatively impacts habitats, protecting existing habitats and preserving biodiversity becomes increasingly more valueable in a more harsh and extreme world environment.
+
+If biodiversity and biodiverses areas could be readily identified, and their "level" and "difference" in biodiversity readily assessed, then the protection and expansion in those areas is potentially valueable to the world, and a future PICT revenue source. Not only could biodiverse areas be identified, but _non-biodiverse_ areas could also be identified. In non-biodiverse areas, alternative uses of the marine environment (like offshore oil exploration, or maritime transport paths) might be activities whose benefits outweigh their impacts on the environment.
 
 > _The main allure of a market-based approach is its potential to achieve any given conservation goal at the lowest possible cost._
 >
@@ -219,107 +219,32 @@ This paper outlines how SPC's data sources might be leveraged to create an initi
 
 # Statistically measuring the environment {-}
 
-## The veil of the National Accounts {-}
-Since its inception in 1947, the System of National Accounts[^SNA] has been the international standard for how countries measure their economic production, consumption, and exchange activity. Together with the Balance of Payments, (reflecting inter-country trade and economic flows) the SNA was the first international framework for the consistent measurement of economic systems. It was a massive advance in the theory and practice of economics and has created commonly defined metrics for cross-country comparative analysis into the mechanics of economic growth and development. 
+## The System of National Accounts, Capital and the Environment{-}
+Since its inception in 1947, the System of National Accounts[^SNA] has been the international standard for how countries, including PICTs, measure their economic production, consumption, and exchange activity. Together with the Balance of Payments, (reflecting inter-country trade and economic flows) the SNA is the framework for measuring economic systems. It was a massive advance in the theory and practice of economics and has created commonly defined metrics for cross-country comparative analysis into the mechanics of economic growth and development. 
 
-As powerful as the SNA is, it is not without its deficiencies. Up until recently, the "boundaries of production" meant that if activity was not be monetised, then it was not measured: 
+The environment is recognised to the extent it could be captured within property rights and monetarily valued. Under the existing and previous SNA manuals, the environment is not seen as an input into a production process. The environment is something _ancillary-to_ the economy and _within-which_ economies undertake production, consumption and exchange. 
 
-* Domestic cleaning, if brought as a service and remunerated through arms-length transactions was economic "production", while, the same activity performed by a spouse and indirectly remumerated through household income, was "not production". 
+### Capital Services {-}
 
-* The "Black Economy" (for example, the illicit drugs trade) is an economic activity just like any other industry. It produces well-defined goods and services which are traded for value in its markets. It has its own labour force, uses capital in production, and engages in imports and exports. And because its illegal the Black Economy does not form part of a nation's economic accounts. 
+The concept that man-made capital generated "capital services" as inputs into the production was acknowledged in the 1993 version of the SNA;[^SNA93] however, the SNA93 stopped short of measuring environmental capital services as also inputs into production. 
 
-* Until relatively recently, arms and weapons manufacturing and stockpiling was not deemed to be "investment". The ultimately destructive purpose of stockpile equipment, when used, was deemed to not be "production" so the manufactured weapons could not be considered "investment" .
+Physical capital; for example, a motor vehicle, provides "transport services": the ability to move inputs and outputs between locations. The transport services from a car differ from those of a truck. Similarly, the transport services of a new truck differ significantly from transport services of a vintage truck. Not only do the levels of inherent technology differ between vintage capital, but vintage capital also experiences economic depreciation, which reduces the _quantity_ of the capital services it provides.
 
-### The System of National Accounts, Capital and the Environment{-}
+## Environmental assets and environmental services {-}
 
-The environment was recognised to the extent it could be captured within property rights and monetarily valued. Yet even then, the environment was not seen as an input into a production process. The environment was something _ancillary-to_ the economy and _within-which_ the economies described by the SNA undertook production, consumption and exchange. 
-
-The concept that man-made capital generated "capital services" which are the inputs into the production processes was acknowledged in the 1993 version of the SNA;[^SNA93] however, the SNA93 stopped short of 
-measuring natural capital generated equivalent capital services as also inputs into economic production. 
-
-Physical capital; for example, a motor vehicle, provides "transport services": the ability to move inputs and outputs between locations. The transport services from a car differ from those of a truck. Similarly, the transport services of a new truck differ significantly from transport services of a vintage truck. Not only do the levels of inherent technology differ between vintage capital, but vintage capital also experiences economic depreciation, which
- reduces the _quantity_ of the capital services it provides.
-
-There are direct parallels between man-made and environmental capital, yet until **_very recently_**[^SNA25] enviromental assets were not recognised as providing capital services into production processes, and changes to the environment from the economy were not reflected as economic costs from productive activity. 
-
-The most immediate environment asset - land - still features in national balance sheets only, rather than as a capital factor of production. "Capital inputs" into the agricultural industry are limited to its plant, machinery and equipment and other man-made assets that derive from Gross Fixed Capital Formation (investment) despite inherent differences in _land productivity_ being the largest factor determining the success of a farming venture. 
-
-### Environmental capital{-}
+There are direct parallels between man-made and environmental capital, yet until **_very recently_**[^SNA25] enviromental assets were not recognised as providing economic services into production. Likewise, changes to the environment from economic activity were not reflected as economic costs of production. 
 
 Environmental capital, measured in environmental assets, generate environmental services which are inputs into economic production processes. Fish biomass stocks are the enviromental capital inputs into the fishing industry. Their capital services are the continuous supply of a maximum sustainable catch: the annual quantity of catch that can be extracted from the stock while still maintaining the reproductive capacity of the overall population. 
 
 Where man-made capital services are degraded from economic depreciation, environmental capital services are degraded through pollution and depletion. While man-made capital services are improved through technology, enviromental capital services have a regenerative capability.
 
-
 \newpage
 
-# The System of Environmental-Economic Accounts: a framework for measuring Environmental / Economic co-dependency {-}
+## The System of Environmental-Economic Accounts: a framework for measuring Environmental / Economic co-dependency {-}
 
-Within the System of Environmental-Economic Accounts - Central Framework (SEEA-CF), economic production, consumption, and exchange _a la_ SNA remain important, but SEEA-CF also recognised the quantity and quality of the change in the environment is simultanously important. The SEEA-CF framework seeks to record each system _simultaneously_ through companion economic and environmental supply/use tables reflecting simultanous changes within the two systems. 
+Both the SEEA-CF and SNA systems operate together - one measuring the environment, and the other the economy. Changes in the "stock" of environmental assets over a period of time are matched to the economic flows derived from an associated industry through SNA supply/use tables. Specific environment assets, like Timber Resources, might be harvested as inputs into the forestry industry. 
 
-The System of Environmental-Economic Accounts - Ecosystem Accounting (SEEA-EA) extends the environmental measurement framework by considering clusters of environmental assets grouped together as being collectively important to each other and the economy. In Ecosystem accounting, 
-
-Changes in the "stock" of cultivated timber resources (otherwise known as "forests") over a period of time, are compared to the economic flows derived within the forestry industry through SNA supply/use tables, and the subsequent economic impact forestry activity has on the construction industry, employment, exports and economic welfare. The SNA system measures can be further extended into the related financial flows through the monetary/credit transmission mechanism and the economic levers of government policy.
-
-### Two way traffic with co-dependency: the Dutch Disease {-}
-
-While the economic system is the overwhelming source of pollution and depopulation affecting the environmental system, the co-dependency between the systems means the direction of change isn't all one-way, with many economic problems having their cause in the environment. 
-
-The "Dutch Disease"[^DutchDisease] is an example where the environmental component of the environment/economic co-relationship comes to dominate the mix of activity in the economic system component. Significant stocks of natural resources make extractive industries the overwhelming dominant industries within affected economics. Consequently, labour markets, and capital investment become biased towards those industries and away from other productive processes. In the long-run, affected economies become stunted through "path-dependancy", as unbalanced labour markets, and over-investment in single industries limiting the country' ability to change economic direction from extraction other activities.
-
-\newpage
-
-
-
-The SEEA Central Framework captures the relationship between the economy and the environment through measuring the quantity, change and value of environmental assets, energy 
-
-
-The , introduced in 1947, pioneered the concept of National Accounting - the idea that you can express the economic activity and the progress of a country in a suite of statistical reports much like a map describes the contours of a landscape or a road. As initially, conceived the metrics focused on the income "flow" information needed to address economic problems of the great 1930 depression, financing the Second World War, and describing the "flow" of money and products _between_ countries. The economic system had a "cadence" of boom-bust cycles. The role of national account was to support the developed of counter-cyclical policy advice which smoothed out these economic cycles which were so destructive to economies. 
-
-Within the National Accounts, production economics - the relationship between economic output and labour/capital inputs - was expressed as "flows". Gross Domestic Production are the sums paid _over a specific period of time_ to labour, the Government and capital owners through economic profit. The concept of a "stock" of capital and a stock of "labour" received less attention until Robert Solow's seminal work into economic growth[^Solow] - how countries economically grow. 
-
-Understanding the nature of economic growth, and how growth generates development and welfare improvements is relates to the _quality_ of the capital and labour services generated by the capital and labour stocks. The size of the "flow" measures captured in the National Accounts, directly reflected the quality of the labour and capital services derived from the stocks. High technology in both capital and labour generated the 
-
-Measuring the "net capital stock", the physical quantity of productive capital available for production only become an explicit component of National Accounting in 1993.[^SNA93]
-
-
-
-
-
-. It wasn't until 1993 
-
-
-
-
-The concept of a productive "capital stock" to estimate "capital services" used in the economic production process, only formally entered the SNA in 1993. 
-
-Prior to 1993, capital inputs into production were either entire consumed in the production process (intermediate consumption), or were the _change in value_ a measure of the "consumption of fixed capital" during production. Environmental assets were recognised but only as balance sheet items if property rights were established, and not as inputs into the production process. 
-
-
-Since then, the metrics have expanded to fit different user needs.
-
-costs of maintaining intact the stock of fixed assets used in production
-
-
-The twin issues of rebuilding from and adapting to present day climate change, and securing meaningful and valuable sources of economic value are hot topics for Pacific Island Countries and Territories (PICTs) policy-makers. Ocean Accounts offer PICTs an economic alternative. Through estimating the volume and type of ocean-based capital, the estimated value of ocean-based economic production can be quantified and potentially tapped. 
-
-Secondly, potentially (and ironically) as climate change worsens, the most valuable aspect of the Pacific Ocean could be the continued existance of its rich and life-sustaining biodiversity. Ocean Accounts provide an evidence-based frameworks for the development of markets in the protection of biodiversity, potentially another source of funding running counter too climate change: as climate change negatively impacts habitats, protecting existing habitats and preserving biodiversity becomes increasingly more valueable in a more harsh and extreme world environment.
- 
- 
-## Climate change destroys land-based capital {-} 
-
-
-## Land Based economic production is dependent on PICT labour markets {-} 
-
-PICTs labour markets are impacted by the effects of hurricanes and drought on domestic employment options, making the most capable seek income from overseas countries, sending remittences back to home country dependences.
-
-
-# Ocean Accounts are numerically SEEA-CF and spatially SEEA-EA {-}
- 
- 
-
-# System of National Accounts fundamentals {-}
-
+The System of Environmental-Economic Accounts - Ecosystem Accounting (SEEA-EA) extends the environmental measurement framework by considering clusters of environmental assets grouped together as "ecosystems" are collectively important to each other and the collectively supply enviromental services. For example, mangroves are considered collective environments that support the fisheries, while filtering pollutants from waterways and provide erosion protection to onshore activities.
 
  
 # System of Environmental-Economic Account 2012 - Central Framework (SEEA-CF) {-}
@@ -334,7 +259,7 @@ The Central Framework covers three main measurement areas:
 
 (c) economic activity and transactions related to the environment.      
 
-## Economy and environment dependency
+## Economy and environment dependency {-}
 From the perspective of environmental flows, the environment is the source of all natural inputs to the economy, including natural resource inputs (minerals, timber, fish, water, etc.) and other natural inputs absorbed by the economy, for example, energy from solar and wind sources and the air used in combustion processes. Both produced and non-produced assets provide inputs to the production of goods and services. While many economic assets are produced from economic activity (e.g., buildings and machines), many environmental assets are non-produced (e.g. land, mineral resources and water resources). 
 
 Both the economic and the environment are recorded as "stocks" and "flows" and measured in both physical units and monetary values. The analysis of these both environment and economic data can also be extended by linking the tables and accounts to relevant employment, demographic and social information.
@@ -353,7 +278,7 @@ knitr::include_graphics(paste0(BaseDir, "Physical flows of natural inputs, produ
 
 ```
 
-## Environmental assets and ecosystem services: Terminology
+## Environmental assets and ecosystem services: Terminology{-}
       
 * _Environmental assets_ are the naturally occurring living and non-living components of the Earth, together constituting the biophysical environment, which may provide benefits to humanity.[^DefineEnrivonAssets] 
 
@@ -425,9 +350,9 @@ knitr::include_graphics(paste0(BaseDir, "PSUT_and_Asset_Accounts.png"))
 (d) Functional accounts recording transactions and other information about economic activities undertaken for environmental purposes. 
 
 
-## Other technical bits
+## Other technical bits{-}
 
-### Subsistance and own-production consumption
+### Subsistance and own-production consumption{-}
 
 The column for households in the PSUT relates solely to the consumption activity of households. 
 
@@ -436,7 +361,7 @@ Many PICT households undertake a range of activity for their own consumption, in
 The consumption activity of households recorded in the PSUT extends to the generation of solid waste and other residuals as a consequence of consumption. In practical terms, the limits of the data measures will dictate the limits of activities collected.
 
 
-### Valuing in basic, producer's and purchaser's prices
+### Valuing in basic, producer's and purchaser's prices{-}
 
 Two kinds of prices are used within the context of supply, namely, basic prices and producers’ prices. The basic price is the amount receivable by the producer from the purchaser for a unit of a good or service produced as output, minus any taxes payable on the product plus any subsidy receivable by the producer as a consequence of its production or sale. The basic price excludes any transport charges invoiced separately by the producer and any wholesale and retail margins that may be applicable.
 
@@ -447,12 +372,12 @@ The purchasers' price is the amount paid by the purchaser, excluding any VAT or 
 In the compilation of monetary supply and use tables in basic prices, the transport charges and wholesale and retail margins are allocated to the relevant services (transport, wholesale and retail services) rather than deducted from the table as a whole.
 
       
-### Employment, demographic and social information     
+### Employment, demographic and social information{-} 
 
 The usefulness of the information in the various tables and accounts can be enhanced by relating different environmental and economic data to estimates of employment, estimates of population, various demographic breakdowns (such as age, household income levels and household characteristics related to material well-being) and measures of societal interest such as health and education.    
 
 
-### Geographical boundaries for economic units
+### Geographical boundaries for economic units{-}
 
 The geographical boundary that defines the scope of an economy is based on the concept of economic territory, which is the area under effective control of a single government. It includes the land area of a country, including islands, airspace, territorial waters and territorial enclaves7 in the rest of the world. Economic territory excludes territorial enclaves of other countries and international organizations located in the reference country.
 
@@ -467,14 +392,14 @@ There are three primary exceptions:
 (c) Residents of a national territory that may stay temporarily in other countries for work or leisure. The consumption undertaken by such residents in other countries is considered to be resident consumption abroad, which is recorded as an import of the country in which the person is resident and an export of the country visited.
 
 
-# Physical flow metrics
+# Physical flow metrics{-}
 
 Related to the three metrics of energy, water and product. I'm just focusing on the ocean related dimensions.
 
 
 ## Physical flow accounts for energy {-}
 
-### Treatment of international flows - Transport related fuel and pollution
+### Treatment of international flows - Transport related fuel and pollution{-}
 
 The treatment of physical flows to and from the rest of the world needs a careful articulation. An underlying principle applied in the SEEA is that relevant flows are attributed to the country of residence of the producing or consuming unit. This differs from the territory principle of recording, which is applied in a number of statistical frameworks. The territory principle attributes the relevant flows to the country in which the producing or consuming unit is located at the time of the flow.
 
@@ -494,7 +419,7 @@ To ensure consistency with other parts of the accounts, the treatment is centred
 Special attention must be paid to the bunkering of fuel, primarily for ships and aircraft. Special arrangements may be entered into whereby a unit resident in a country stores fuel in another country while still retaining ownership of the fuel itself. Following the principles of the SNA and the BPM, the location of the fuel is not the primary consideration. Instead, the focus must be on the ownership of the fuel. Thus, if country A establishes a bunker in country B and transports fuel to that country in order to refuel a ship that it operates, then the fuel is considered to have remained in the ownership of country A and no export of fuel to country B is recorded. Thus, the fuel stored in country B is not necessarily all attributable to country B. This treatment is likely to differ from the recording utilized in international trade statistics; and adjustments to source data may therefore be needed to align recording to this treatment.
 
 
-### Tourist activity
+### Tourist activity{-}
 
 The recording of tourist activity is consistent with the recording of international transport activity in that the concept of residence is central. Tourists include all those travelling outside their country of residence, including short-term students (i.e., those studying abroad for less than 12 months), people travelling for medical reasons and those travelling for business or pleasure. The consumption activity of a tourist travelling abroad is attributed to the tourist's country of residence and not to the location of the tourist when the consumption is undertaken. Thus, purchases by the tourist in other countries are recorded as an export by the country visited and as an import of the country of residence of the tourist.
 
@@ -503,7 +428,7 @@ Solid waste generated by tourists will generally be attributed to local enterpri
 Emissions from cars are also attributed to the country of residence of the operator (in this case, the driver of the car), whether the car is owned by the driver or hired from a car rental firm.
 
 
-### Illegal Harvesting
+### Illegal Harvesting{-}
 Where illegal extraction takes place — for example, when non-residents illegally harvest timber resources — the reduction in the country's resources should be recorded in the asset account (see chap. V) as part of extractions of natural resources. However, the associated natural resource input in the PSUT should be shown only in the accounts of the country in which the illegal extractor is resident. No exports should be recorded.
 
 **The major exception to this kind of treatment occurs with respect to natural aquatic resources.**
@@ -511,7 +436,7 @@ Where illegal extraction takes place — for example, when non-residents illegal
 Following accounting conventions, the harvest of aquatic resources is allocated to the residence of the operator of the vessel undertaking the harvesting rather than to the location of the resources. Thus, the amount of natural resource input that should be recorded for a country is equal to the quantity of aquatic resources caught by vessels whose operator is resident in that country, regardless of where the resources are caught. Natural resource inputs are not recorded for the harvest of aquatic resources by vessels operated by non-residents in national waters and neither are exports recorded in this situation. In the accounts of the country to which the non-resident operator is connected, there should be entries for natural resource inputs for aquatic resources caught in non-national waters but no reduction in national aquatic resources in the asset accounts for this harvest.
 
 
-### Treatment of goods for processing (Transshipment activity)
+### Treatment of goods for processing (Transshipment activity){-}
 It is increasingly common for goods from one country to be sent to another country for further processing before being:
 
 (a) returned to the original country, 
@@ -608,7 +533,7 @@ Resource management activities are those activities whose primary purpose is pre
 (The cost of the FFA allocated to countries?)
 
 
-#### Classification of environmental activities
+#### Classification of environmental activities{-}
 
 ```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Classification of Environmental Activities: overview of groups and classes"}
 

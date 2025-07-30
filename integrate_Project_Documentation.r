@@ -67,7 +67,7 @@
       ##    
       ##
         # rmarkdown::render("Programmes/Day1_Thinking.rmd",                           output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Day1_Thinking.docx")                
-          rmarkdown::render("Programmes/Pacific Regional Environmental Accounts.Rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Pacific Regional Environmental Accounts.docx")                
+          rmarkdown::render("Programmes/Pacific Regional Environmental Accounts_Version2.Rmd", output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Pacific Regional Environmental Accounts.docx")                
 
 
 ##
