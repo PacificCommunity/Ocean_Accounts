@@ -55,7 +55,7 @@
    ##
       setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
       
-      source("Programmes/Organise_Input_Spatial_Data.r") # This calculates the ratio of land to EEZ internationally and makes a picture
+      # source("Programmes/Organise_Input_Spatial_Data.r") # This calculates the ratio of land to EEZ internationally and makes a picture
       
       ##
       ##    This is the content that went to Palau back in November 2024 
