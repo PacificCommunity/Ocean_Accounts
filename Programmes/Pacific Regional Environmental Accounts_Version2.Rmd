@@ -170,7 +170,7 @@ For most of the 20th century and up until relatively recently into the 21st cent
 
 What was becoming _Issue de Jure_ for countries - climate change -  came onto the national accounting statistical radar in 1987 with the publication of the _Brudtland Report_.[^Brudtland] The latest statistical framework with its origins from that report is the United Nations System of Environmental-Economic Accounts - Central Framework (SEEA-CF)[^SEEAEA]: a robust suite of measures that both supports the System of National Accounts[^SNA] (SNA) measures and reflects SNA principals. 
 
-SEEA-CF and its theoretical companion, the System of Environmental-Economic Accounts - Exosystem Accounting (SEEA-EA), create a suite of environmental statistical measures that complement the economics metrics from the SNA. Countries now have the _theoretical_ tools for connecting changes in their economic systems to environmental changes, and (importantly) **_vice versa_**.
+SEEA-CF and its theoretical companion, the System of Environmental-Economic Accounts - ecosystem Accounting (SEEA-EA), create a suite of environmental statistical measures that complement the economics metrics from the SNA. Countries now have the _theoretical_ tools for connecting changes in their economic systems to environmental changes, and (importantly) **_vice versa_**.
 
 ##  Weather extremes regularly destroy PICT land-based capital... {-}
 
@@ -310,7 +310,7 @@ _Environmental assets_ are the naturally occurring living and non-living compone
 
 In principle, all of the benefits delivered by environmental assets can be valued in monetary terms. In the Central Framework, consistent with the SNA, the scope of valuation is limited to the benefits that accrue to economic owners. An economic owner is the institutional unit entitled to claim the benefits associated with the use of an asset during an economic activity by virtue of accepting the associated risks. Further, following the SNA, an asset is a store of value representing a benefit or series of benefits accruing to the economic owner by holding or using the entity over a period of time.
 
-## Creating exosystem accounts is currently too hard {-}
+## Creating ecosystem accounts is currently too hard {-}
 
 SEEA-EA extends the environmental measurement framework by considering clusters of environmental assets grouped together as "ecosystems" which are collectively important and collectively supply enviromental services to the economy. Ecosystems are the dynamic complex of plant, animal and micro-organism communities and their non-living environment interacting as a functional unit.[^DefineEcosystem] Ecosystems make three types of contributions to economic and other human activity:
 
@@ -324,7 +324,7 @@ SEEA-EA extends the environmental measurement framework by considering clusters 
 
 For example, mangrove areas are considered collective environments that support fisheries, filter pollutants from waterways and provide erosion protection to onshore areas.
 
-The difficulty with developing SEEA-EA exosystem accounts is defining the boundary of the exosystem. SEEA-EA suggests five distinct measurement perspectives are relevant, each of which could be the basis of its own body of work within a Pacific context. None of these are "easy":
+The difficulty with developing SEEA-EA ecosystem accounts is defining the boundary of the ecosystem. SEEA-EA suggests five distinct measurement perspectives are relevant, each of which could be the basis of its own body of work within a Pacific context. None of these are "easy":
 
 * _Spatial:_ a comprehensive measurement base of statistical units is formed through use of the ecosystem concept to establish the number of occurrences of ecosystems within a defined territory that can be classified in mutually exclusive ways.
 
