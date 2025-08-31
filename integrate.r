@@ -1,32 +1,26 @@
-##    Programme:  NAME OF PROJECT IN HERE.r
+##    Programme:  Ocean_Accounts.r
 ##
-##    Objective:  A brief description of what this project is trying to do.
-##                This part of the documentation is about describing the big
-##                picture purpose of the work. 
+##    Objective:  This project is about developing Ocean Accounts according to the System of 
+##                Environment-Economic Accounts - Central Framework using remote sensing data. 
 ##
-##    Plan of  :  What are the steps in this programme's execution? What does
-##    Attack   :  each step do?
+##    Plan of  :  The original plan was to use Digital Earth Pacific, but I've now got doubts
+##    Attack   :  about it. I'm not getting any traction getting access to it, and its making 
+##                me suspicious about its production-level status. I haven't seen it in github
+##                either, so I'm thinking I will try an alternative data source, and build this
+##                outside of DEP.
 ##
-##                Be explicit about writing the programming steps here - how are
-##                you going to start from nothing, and move through the stages 
-##                that ultimately result in the final thing.  These steps are 
-##                mirrored in the code down below.
+##                The data source for this work is here: https://livingatlas.arcgis.com/landcoverexplorer/#mapCenter=39.18600%2C9.04200%2C10.00&mode=step&timeExtent=2017%2C2022&year=2020&downloadMode=true
 ##
-##                Step 1:
-##                Step 2:
-##                Step 3:
-##                Step 4:
-##                Step xxx:
+##                This code is being stored here: https://github.com/JamesHoganNZ/Ocean_Accounts
 ##
-##    Important:  Does this programme make any important cross-project data 
-##    Linkages :  connections? For example, does it read HIES data from PHD?
-##                Or does it write data which affects other people's work areas?
 ##
-##                The focus here is on the important data linkages between this
-##                project and something else, so that if that something changes,
-##                we can figure out the impact it has on this project.
+##                This piece of analysis will build off the spatial analysis work delivered for 
+##                Sense Partners.
 ##
-##    Author   :  <PROGRAMMER>, <TEAM>, <DATE STARTED>
+##    Important:  The documentation for this project is written here: S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Pacific Regional Environmental Accounts.docx,
+##    Linkages :  created in the programme Intergrate_Project_Documentation.r
+##
+##    Author   :  James Hogan, Senior Marine Resource Economist, 1 September 2025
 ##
 ##    Peer     :  <PROGRAMMER>, <TEAM>, <PEER REVIEWED COMPLETED>
 ##    Reviewer :
