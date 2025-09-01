@@ -88,7 +88,8 @@
    ##
    ##    Set working directory
    ##
-      setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
+      #setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
+      setwd("c:\\From BigDisk\\GIT\\Ocean_Accounts")
 
 
       source("Programmes/Experiments_in_Tiff.r") # Builds of the programme Experiements in Lidar.r
