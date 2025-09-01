@@ -60,12 +60,14 @@
    ##
    ##    Project-specific libraries
    ##
-      library(raster)
+      #library(raster)
+      library(terra)
       library(tmap)
       library(tmaptools)
       library(lidR)
       library(RStoolbox)
       library(sf)
+      library(fasterize)
       library(parallel)   
       library(data.table)
       library(XML)
