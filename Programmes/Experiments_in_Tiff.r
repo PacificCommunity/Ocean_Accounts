@@ -9,31 +9,31 @@
 ##                and this https://rspatial.org/rs/4-unsupclassification.html
 ##                and this https://datacarpentry.github.io/r-raster-vector-geospatial/01-raster-structure.html
 ##
+##                Converting from UTM to Latitude/Longitude: https://stackoverflow.com/questions/30018098/how-to-convert-utm-coordinates-to-lat-and-long-in-r
+##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 1 September 2025
 ##
 ##
    ##
    ##    Clear the memory
    ##
-      rm(list=ls(all=TRUE))
 
-      NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
-      
-      describe("Data_Spatial/58K_20240101-20241231.tif")
-      #summary(values(NewCal))   #very data intensive. A less intensive is summary(NewCal) which takes a sample
-      NewCal_df <- as.data.frame(NewCal, xy = TRUE)
-      
+rm(list=ls(all=TRUE))
 
-      xy <- rbind(c(1, 10), c(1, 10))
-      p <- vect(xy, crs=crs(NewCal))
+NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
 
-      subNewCal <- extract(NewCal, xy)
+#describe("Data_Spatial/58K_20240101-20241231.tif")
+subNewCal <- crop(NewCal, ext(178910, (178910+100), 7342530, (7342530+100)))
+subNewCal <- as.points(subNewCal, values = TRUE, na.rm = FALSE)
+y <- project(subNewCal, "+proj=longlat +datum=WGS84")
+lonlat <- st_as_sf(y)   
 
-      
-      
-NewCal
 
-subNewCal <- crop(NewCal, extent(NewCal, 1, 10, 1, 10))
+
+
+
+
+
 
       
       xmin(subNewCal) <- 620000
@@ -62,3 +62,19 @@ subNewCal <- crop(NewCal, extent(NewCal, 1, 10, 1, 10))
 ##
 ##    And we're done
 ##
+
+rm(list=ls(all=TRUE))
+
+NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
+
+#describe("Data_Spatial/58K_20240101-20241231.tif")
+subNewCal <- crop(NewCal, ext(178910, (178910+100), 7342530, (7342530+100)))
+subNewCal <- as.points(subNewCal, values = TRUE, na.rm = FALSE)
+y <- project(subNewCal, "+proj=longlat +datum=WGS84")
+lonlat <- geom(y)[, c("x", "y")]
+head(lonlat, 100)
+
+
+NewCal <- vect("Data_Spatial/58K_20240101-20241231.tif")
+
+
