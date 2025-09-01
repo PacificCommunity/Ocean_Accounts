@@ -10,6 +10,16 @@
 ##                outside of DEP.
 ##
 ##                The data source for this work is here: https://livingatlas.arcgis.com/landcoverexplorer/#mapCenter=39.18600%2C9.04200%2C10.00&mode=step&timeExtent=2017%2C2022&year=2020&downloadMode=true
+##                More Useful links: https://www.arcgis.com/home/item.html?id=cfcb7609de5f478eb7666240902d4d3d
+##                                   https://www.impactobservatory.com/maps-for-good/
+##
+##                The AI which does the classifying is here: https://www.impactobservatory.com/maps-for-good/ 
+##                and they offer different types of maps with different resolutions. I'm going to 
+##                start building with their free version "Maps for Good" which gives 9 classes of 
+##                land use.
+##
+##                Impact Observatory offers two other different levels of resolution but at cost.
+##                If the pilot works, then this might be an option as a data source.
 ##
 ##                This code is being stored here: https://github.com/JamesHoganNZ/Ocean_Accounts
 ##
@@ -25,11 +35,10 @@
 ##    Peer     :  <PROGRAMMER>, <TEAM>, <PEER REVIEWED COMPLETED>
 ##    Reviewer :
 ##
-   ##
-   ##    Clear the decks and load up some functionality
-   ##
       rm(list=ls(all=TRUE))
-      options(scipen = 999)
+      options(max.print=999999)
+      options(scipen = 100)
+     
    ##
    ##    Core libraries
    ##
@@ -51,51 +60,46 @@
    ##
    ##    Project-specific libraries
    ##
-      library(xxxx)
-      library(xxxx)
-      library(xxxx)
+      library(raster)
+      library(tmap)
+      library(tmaptools)
+      library(lidR)
+      library(RStoolbox)
+      library(sf)
+      library(parallel)   
+      library(data.table)
+      library(XML)
+      library(RCurl)
+      library(RJSONIO)
+      library(elevatr)
+
+      library(Rcpp)
+      library(RcppParallel)
+      library(inline) 
+      
+      library(quadmesh)
+      library(rgl)
+      library(REdaS)
+      
+      library(RSelenium)
+      library(XML)
+      library(rlas)
 
    ##
    ##    Set working directory
    ##
-      setwd("C:\\SOMEWHERE\\SOMEPROJECT")
-      # setwd("C:\\From BigDisk\\GIT\\R_Fundamentals_Training\\Fundamentals Graphics and Reporting")
-   ##
-   ##   Modular-programmed code from here down. Each following programme
-   ##      needs to be able to 'stand alone' in the sense that it starts of 
-   ##       reading all the data it needs, it processes it, and it concludes
-   ##       either writing data for a following programme, or creating a final
-   ##       output. 
-   ##
-      ##
-      ##    STEP 1:
-      ##
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
+      setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
 
-      ##
-      ##    STEP 2:
-      ##
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
-      ##
-      ##    STEP 3:
-      ##
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
-      ##
-      ##    STEP 4:
-      ##
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
-      ##
-      ##    STEP x: Final output
-      ##
-         source("Programmes/xxxxxxxx.r") # This does blah blah blah
 
-      ##
-      ##    Write up of results
-      ##      
-         rmarkdown::render("Programmes/SSAP_Value_Report.rmd", output_file = "C:\\From BigDisk\\GIT\\R_Fundamentals_Training\\Fundamentals Graphics and Reporting\\Product_Output\\Value of Good Science.docx")                
+      source("Programmes/Experiments_in_Tiff.r") # Builds of the programme Experiements in Lidar.r
+
+
+      DTM_pre  <- raster("Data_Spatial/wellington-city-lidar-1m-dem-2019-2020/DEM_BQ31_2019_1000_2035.tif")
+
+
+
+
+
 
 
 ##
