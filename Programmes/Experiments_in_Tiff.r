@@ -23,9 +23,18 @@
       #summary(values(NewCal))   #very data intensive. A less intensive is summary(NewCal) which takes a sample
       NewCal_df <- as.data.frame(NewCal, xy = TRUE)
       
+
+      xy <- rbind(c(1, 10), c(1, 10))
+      p <- vect(xy, crs=crs(NewCal))
+
+      subNewCal <- extract(NewCal, xy)
+
       
       
-      subNewCal <- NewCal
+NewCal
+
+subNewCal <- crop(NewCal, extent(NewCal, 1, 10, 1, 10))
+
       
       xmin(subNewCal) <- 620000
       xmax(subNewCal) <- 700000
@@ -46,7 +55,8 @@
 
 
 
-NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif",nrows=180, ncols=360
+      NewCal <- raster("Data_Spatial/58K_20240101-20241231.tif")
+
 
 
 ##
