@@ -92,14 +92,13 @@
    ##
       #setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
       setwd("c:\\From BigDisk\\GIT\\Ocean_Accounts")
+      setwd("c:\\Git_Projects\\Ocean_Accounts")
 
 
       source("Programmes/Experiments_in_Tiff.r") # Builds of the programme Experiements in Lidar.r
 
 
       DTM_pre  <- raster("Data_Spatial/wellington-city-lidar-1m-dem-2019-2020/DEM_BQ31_2019_1000_2035.tif")
-
-
 
 
 

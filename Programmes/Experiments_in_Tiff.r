@@ -19,7 +19,7 @@
 
       NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
       
-      describe(NewCal)
+      describe("Data_Spatial/58K_20240101-20241231.tif")
       #summary(values(NewCal))   #very data intensive. A less intensive is summary(NewCal) which takes a sample
       NewCal_df <- as.data.frame(NewCal, xy = TRUE)
       
@@ -44,6 +44,9 @@
     download.file("https://geodata.ucdavis.edu/rspatial/rs.zip", dest = "Data_Spatial/rs.zip")
     unzip("data/rs.zip", exdir="data")
 
+
+
+NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif",nrows=180, ncols=360
 
 
 ##
