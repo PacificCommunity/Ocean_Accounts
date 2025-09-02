@@ -64,7 +64,8 @@
    ##
 
       e <- ext(NewCal)
-   
+      rm(NewCal)
+      
       Size_of_Loops <- ceiling((as.numeric(e[2]) - as.numeric(e[1]))/ 1000)
 
 #      cl <- makeCluster(detectCores())
@@ -75,7 +76,7 @@
       Start_Min_Y <- as.numeric(e[3])
       Start_Max_Y <- as.numeric(e[4])
 
-      cl <- makeCluster(10)
+      cl <- makeCluster(12)
       clusterEvalQ(cl, { c(library(sf), library(terra)) }) 
 
       
@@ -111,10 +112,10 @@
                      
             NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
 
-            Fistful_of_Data <- crop(NewCal, ext(min(Fistful), max(Fistful), Start_Min_Y, Start_Max_Y))
+            NewCal <- crop(NewCal, ext(min(Fistful), max(Fistful), Start_Min_Y, Start_Max_Y))
             #Fistful_of_Data <- crop(NewCal, ext(178910, 178910+10, 7342530, 8231060))
             
-            subNewCal <- as.points(Fistful_of_Data, values = TRUE, na.rm = FALSE)
+            subNewCal <- as.points(NewCal, values = TRUE, na.rm = FALSE)
             y <- project(subNewCal, "+proj=longlat +datum=WGS84")
             lonlat <- st_as_sf(y)   
             
@@ -131,7 +132,7 @@
          assign(paste0("Obs_split_", i, "XXNewCal_Split"), New_VMS)
          save(list = paste0("Obs_split_", i, "XXNewCal_Split"), 
               file = paste0("Parallel/Obs_split_", i, "XXNewCal_Split.rda"))
-          rm(list=c(paste0("Obs_split_", i, "XXNewCal_Split")))
+          rm(list=c("ll", "New_VMS", paste0("Obs_split_", i, "XXNewCal_Split")))
        toc()
       }
       stopCluster(cl)

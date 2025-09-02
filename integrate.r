@@ -95,13 +95,10 @@
       setwd("c:\\Git_Projects\\Ocean_Accounts")
 
 
-      source("Programmes/Experiments_in_Tiff.r") # Builds of the programme Experiements in Lidar.r
+      source("Programmes/Experiments_in_Tiff.r")      # Builds of the programme Experiements in Lidar.r
 
-
-      DTM_pre  <- raster("Data_Spatial/wellington-city-lidar-1m-dem-2019-2020/DEM_BQ31_2019_1000_2035.tif")
-
-
-
+      source("Programmes/Parallel_Process_in_Tiff.r") # This version works, but it takes 8.6 mins to 1 of 100 loops, and it produces a 710 meg dataset for each
+                                                      # I need to make this way more efficient
 
 
 ##
