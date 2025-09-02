@@ -95,10 +95,10 @@
       setwd("c:\\Git_Projects\\Ocean_Accounts")
 
 
-      source("Programmes/Experiments_in_Tiff.r")      # Builds of the programme Experiements in Lidar.r
+      source("Programmes/Experiments_in_Tiff.r")   # Builds of the programme Experiements in Lidar.r
 
-      source("Programmes/Parallel_Process_in_Tiff.r") # This version works, but it takes 8.6 mins to 1 of 100 loops, and it produces a 710 meg dataset for each
-                                                      # I need to make this way more efficient
+      source("Programmes/Parallel_Process_Tiff.r") # This version works, but it takes 8.6 mins to 1 of 100 loops, and it produces a 710 meg dataset for each
+                                                   # I need to make this way more efficient
 
 
 ##
