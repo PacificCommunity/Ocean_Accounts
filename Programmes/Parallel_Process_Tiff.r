@@ -131,6 +131,7 @@
          assign(paste0("Obs_split_", i, "XXNewCal_Split"), New_VMS)
          save(list = paste0("Obs_split_", i, "XXNewCal_Split"), 
               file = paste0("Parallel/Obs_split_", i, "XXNewCal_Split.rda"))
+          rm(list=c(paste0("Obs_split_", i, "XXNewCal_Split")))
        toc()
       }
       stopCluster(cl)
