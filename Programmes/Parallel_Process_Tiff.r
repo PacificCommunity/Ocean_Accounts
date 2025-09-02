@@ -18,7 +18,6 @@
 ##    Author:     James Hogan, Senior Marine Resource Economist, 2 September 2025
 ##
 ##
-5,705,961,954
 
    ##
    ##    Clear the memory
@@ -45,30 +44,20 @@
    ##
 
       NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
-      
-      subNewCal <- crop(NewCal, ext(178910, (178910+100), 7342530, (7342530+100)))
-      subNewCal <- as.points(subNewCal, values = TRUE, na.rm = FALSE)
-      y <- project(subNewCal, "+proj=longlat +datum=WGS84")
-      lonlat <- st_as_sf(y)   
-
-      NewCal <- as.points(rast("Data_Spatial/58K_20240101-20241231.tif"), values = TRUE, na.rm = FALSE)
-      NewCal <- project(NewCal, "+proj=longlat +datum=WGS84")
-      lonlat <- st_as_sf(y)   
-
 
    ##
    ##    find locations already processed
    ##
-         Contents <- as.data.frame(list.files(path = "Parallel/",  pattern = "*.rda"))
-         names(Contents) = "DataFrames"
-         Contents$Dframe <- str_split_fixed(Contents$DataFrames, "\\.", n = 2)[,1]
-         Contents$Dframe <- str_replace_all(Contents$Dframe, "Obs_split_", "")
-         Contents <- Contents[str_detect(Contents$DataFrames, "XXNewCal_Split"),]
+         # Contents <- as.data.frame(list.files(path = "Parallel/",  pattern = "*.rda"))
+         # names(Contents) = "DataFrames"
+         # Contents$Dframe <- str_split_fixed(Contents$DataFrames, "\\.", n = 2)[,1]
+         # Contents$Dframe <- str_replace_all(Contents$Dframe, "Obs_split_", "")
+         # Contents <- Contents[str_detect(Contents$DataFrames, "XXNewCal_Split"),]
          
-         To_Process <- 0:999
-         Already_Processed <- as.numeric(str_split_fixed(Contents$Dframe, "XX", n = 2)[,1])
+         # To_Process <- 0:99
+         # Already_Processed <- as.numeric(str_split_fixed(Contents$Dframe, "XX", n = 2)[,1])
 
-         To_Process <- To_Process[!(To_Process %in% Already_Processed)]
+         # To_Process <- To_Process[!(To_Process %in% Already_Processed)]
          
    ##
    ##    Restart the parallel process if it crashed
@@ -79,8 +68,6 @@
       Size_of_Loops <- ceiling((as.numeric(e[2]) - as.numeric(e[1]))/ 1000)
 
 #      cl <- makeCluster(detectCores())
-#      cl <- makeCluster(20)
-#      clusterEvalQ(cl, { c(library(sf), library(terra)) }) 
 
       Start_Min_X <- as.numeric(e[1])-1
       Start_Max_X <- as.numeric(e[2])
@@ -88,70 +75,62 @@
       Start_Min_Y <- as.numeric(e[3])
       Start_Max_Y <- as.numeric(e[4])
 
-for(i in 0:99)
-{
-Start = ((i*Size_of_Loops*10) + Start_Min_X + 1) 
-Finish = min(((((i+1)*Size_of_Loops)*10)  + Start_Min_X ), (Start_Min_X + 1 + (as.numeric(e[2]) - as.numeric(e[1]))))
-print(paste(Start, Finish, Start_Min_Y, Start_Max_Y))
-}
-
-
-
-      subNewCal <- crop(NewCal, ext(Start_Min_X, (178910+100), Start_Min_Y, Start_Max_Y))
-
-
-[(i*Size_of_Loops + 1):min(((i+1)*Size_of_Loops), nrow(RAWDATA_XXVMS_2024)),]
+      cl <- makeCluster(10)
+      clusterEvalQ(cl, { c(library(sf), library(terra)) }) 
 
       
-      for(i in To_Process)
+#      for(i in To_Process)
+      for(i in 0:1)
       {
-         i = 0
+       Start = ((i*Size_of_Loops*10) + Start_Min_X + 1) 
+       Finish = min(((((i+1)*Size_of_Loops)*10)  + Start_Min_X ), (Start_Min_X + 1 + (as.numeric(e[2]) - as.numeric(e[1]))))
+       print(paste(i,Start, Finish, Start_Min_Y, Start_Max_Y))
       
-         (i*Size_of_Loops + 1)
-      
-         New_Y <- Start_Min_Y + ceiling(Size_of_Loops / (Max_X - Min_X))
-         New_X <- Start_Min_X + (Size_of_Loops %% (Max_X - Min_X))
-
-(New_X - Start_Min_X) * (New_Y - Start_Min_Y)
-
-      subNewCal <- crop(NewCal, ext(Start_Min_X, New_X, Start_Min_Y, New_Y))
-
-
-
-      
-         ext(Min_X, (178910+100), 7342530, (7342530+100))
-      
-      
-      
-       Grab_Obs <- crop(NewCal, ext(178910, (178910+100), 7342530, (7342530+100)))
-      
-       Grab_Obs <- RAWDATA_XXVMS_2024[(i*Size_of_Loops + 1):min(((i+1)*Size_of_Loops), nrow(RAWDATA_XXVMS_2024)),]
-       Grab_Obs$longitude <- as.numeric(Grab_Obs$longitude)
-       Grab_Obs$latitude  <- as.numeric(Grab_Obs$latitude)
-       
+       #Grab_Obs <- crop(NewCal, ext(Start, Finish, Start_Min_Y, Start_Max_Y))
+             
         Peg_Me <- function(Fistful)
          {
-            Fistful_of_Data <- Grab_Obs[Fistful,]
-            Fistful_of_Data <- Fistful_of_Data[as.numeric(Fistful_of_Data$longitude) > -190,]
+            # The error message "external pointer is not valid" in R typically indicates an issue with an object that relies on an external resource 
+               # or compiled code, particularly when that object is being used in a context where its connection to that resource or code is broken 
+               # or not properly maintained. This often occurs in parallel processing, when saving/loading R objects, or when dealing with specific 
+               # packages that manage external connections.
+               
+            # Common Scenarios and Solutions:
+            # Parallel Processing (e.g., parallel, future, foreach):
+            # Problem: When using parallel workers, objects with external pointers (like database connections, compiled models, or certain data structures 
+            # from packages like arrow or udpipe) are not automatically transferred or re-initialized in the new processes. The pointer becomes invalid 
+            # in the new environment.
             
-            coordinates(Fistful_of_Data) <- ~ longitude + latitude
-            proj4string(Fistful_of_Data) <- CRS("+proj=longlat +datum=WGS84")
+            # Solutions:
+            # Explicitly export or re-create objects: Ensure that any objects with external pointers are either explicitly exported to the parallel 
+            # workers or re-created within each worker's environment.
             
-            Fistful_of_Data <- st_as_sf(Fistful_of_Data)               
-            Fistful_of_Data <- st_rotate(Fistful_of_Data)
+            # Pass data, not objects: If possible, pass the underlying data to the parallel function and re-create the object within the function on each worker.
+            # Use model_dir argument: For packages like udpipe, specify the model_dir argument to point to the model files on disk, allowing each worker 
+            # to load the model independently.         
+                     
+            NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
+
+            Fistful_of_Data <- crop(NewCal, ext(min(Fistful), max(Fistful), Start_Min_Y, Start_Max_Y))
+            #Fistful_of_Data <- crop(NewCal, ext(178910, 178910+10, 7342530, 8231060))
             
-            return(Fistful_of_Data)
+            subNewCal <- as.points(Fistful_of_Data, values = TRUE, na.rm = FALSE)
+            y <- project(subNewCal, "+proj=longlat +datum=WGS84")
+            lonlat <- st_as_sf(y)   
+            
+            return(lonlat)
          }
-         sp <- parallel::clusterSplit(cl, 1:nrow(Grab_Obs))
-         clusterExport(cl, c("sp", "Grab_Obs", "Peg_Me", "st_rotate"))  # each worker is a new environment, you will need to export variables/functions to
+         sp <- parallel::clusterSplit(cl, Start:Finish)
+#         clusterExport(cl, c("sp", "Grab_Obs", "Peg_Me", "Start_Min_Y", "Start_Max_Y"))  # each worker is a new environment, you will need to export variables/functions to
+         clusterExport(cl, c("sp", "Peg_Me", "Start_Min_Y", "Start_Max_Y"))  # each worker is a new environment, you will need to export variables/functions to
          
        tic(print(paste("Starting to process loop", i)))
          system.time(ll <- parallel::parLapply(cl, sp, Peg_Me))
          New_VMS <- do.call(rbind, ll)
 
-         assign(paste0("Obs_split_", (i+50), "XXNewCal_Split"), New_VMS)
-         save(list = paste0("Obs_split_", (i+50), "XXNewCal_Split"), 
-              file = paste0("Parallel/Obs_split_", (i+50), "XXNewCal_Split.rda"))
+         assign(paste0("Obs_split_", i, "XXNewCal_Split"), New_VMS)
+         save(list = paste0("Obs_split_", i, "XXNewCal_Split"), 
+              file = paste0("Parallel/Obs_split_", i, "XXNewCal_Split.rda"))
        toc()
       }
       stopCluster(cl)
@@ -210,3 +189,21 @@ print(paste(Start, Finish, Start_Min_Y, Start_Max_Y))
 ##
 ##    And we're done
 ##
+
+
+
+        Peg_Me <- function(Fistful)
+         {
+            Fistful_of_Data <- crop(Grab_Obs, ext(min(Fistful), max(Fistful), Start_Min_Y, Start_Max_Y))
+            
+            subNewCal <- as.points(Fistful_of_Data, values = TRUE, na.rm = FALSE)
+            y <- project(subNewCal, "+proj=longlat +datum=WGS84")
+            lonlat <- st_as_sf(y)   
+            
+            return(lonlat)
+         }
+         
+wonder <- Peg_Me(sp[[1]])
+
+
+
