@@ -11,6 +11,12 @@
 ##
 ##                Converting from UTM to Latitude/Longitude: https://stackoverflow.com/questions/30018098/how-to-convert-utm-coordinates-to-lat-and-long-in-r
 ##
+##                The Living Atlas website is going to serve as the primary data source for this analysis.
+##                It provides from free a 10meter x 10meter land use coded value which will work fine for a prototype.
+##                I'll read the raster into the R. There's WAY too much data for holding in memory all at once, so it will need
+##                chopped down into parallel processed chunks. The Z value of the raster is the land use measure
+##
+##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 1 September 2025
 ##
 ##
@@ -18,63 +24,19 @@
    ##    Clear the memory
    ##
 
-rm(list=ls(all=TRUE))
+      rm(list=ls(all=TRUE))
 
-NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
+      NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
 
-#describe("Data_Spatial/58K_20240101-20241231.tif")
-subNewCal <- crop(NewCal, ext(178910, (178910+100), 7342530, (7342530+100)))
-subNewCal <- as.points(subNewCal, values = TRUE, na.rm = FALSE)
-y <- project(subNewCal, "+proj=longlat +datum=WGS84")
-lonlat <- st_as_sf(y)   
-
-
-
-
-
-
-
-
+      #describe("Data_Spatial/58K_20240101-20241231.tif")
       
-      xmin(subNewCal) <- 620000
-      xmax(subNewCal) <- 700000
-      
-      ymin(subNewCal) <- 7520000
-      ymax(subNewCal) <- 7600000
-      
-      plot(NewCal, ylim=c(7600000, 7520000), xlim=c(620000, 700000))
-      
-   ##
-   ##    Chop it back while I figure this new library out
-   ##
-      
-      
-
-    download.file("https://geodata.ucdavis.edu/rspatial/rs.zip", dest = "Data_Spatial/rs.zip")
-    unzip("data/rs.zip", exdir="data")
+      subNewCal <- crop(NewCal, ext(178910, (178910+100), 7342530, (7342530+100)))
+      subNewCal <- as.points(subNewCal, values = TRUE, na.rm = FALSE)
+      y <- project(subNewCal, "+proj=longlat +datum=WGS84")
+      lonlat <- st_as_sf(y)   
 
 
 
-      NewCal <- raster("Data_Spatial/58K_20240101-20241231.tif")
-
-
-
-##
-##    And we're done
-##
-
-rm(list=ls(all=TRUE))
-
-NewCal <- rast("Data_Spatial/58K_20240101-20241231.tif")
-
-#describe("Data_Spatial/58K_20240101-20241231.tif")
-subNewCal <- crop(NewCal, ext(178910, (178910+100), 7342530, (7342530+100)))
-subNewCal <- as.points(subNewCal, values = TRUE, na.rm = FALSE)
-y <- project(subNewCal, "+proj=longlat +datum=WGS84")
-lonlat <- geom(y)[, c("x", "y")]
-head(lonlat, 100)
-
-
-NewCal <- vect("Data_Spatial/58K_20240101-20241231.tif")
-
-
+      NewCal <- as.points(rast("Data_Spatial/58K_20240101-20241231.tif"), values = TRUE, na.rm = FALSE)
+      NewCal <- project(NewCal, "+proj=longlat +datum=WGS84")
+      lonlat <- st_as_sf(y)   
