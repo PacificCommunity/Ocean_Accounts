@@ -61,4 +61,10 @@
       plot(NewCal)
       head(values(NewCal))
 
+   ##
+   ##    Ok, with the python programme, DEP_Play_Code_Version2.py, I can extract GeoMAD datasets from DEP data sources.
+   ##       The programme will pop them into my Data_Spatial directory where I can pick them up and read them. Now lets
+   ##       incorporate the code from my kindle book "Deep Learning in R" to see if can group these images into a land
+   ##       use metric. At least a basic one.
+   ##
       

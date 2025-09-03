@@ -30,6 +30,11 @@
 ##    Important:  The documentation for this project is written here: S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Pacific Regional Environmental Accounts.docx,
 ##    Linkages :  created in the programme Intergrate_Project_Documentation.r
 ##
+##                    Ok, with the python programme, DEP_Play_Code_Version2.py, I can extract GeoMAD datasets from DEP data sources.
+##                       The programme will pop them into my Data_Spatial directory where I can pick them up and read them. Now lets
+##                       incorporate the code from my kindle book "Deep Learning in R" to see if can group these images into a land
+##                       use metric. At least a basic one.
+##
 ##    Author   :  James Hogan, Senior Marine Resource Economist, 1 September 2025
 ##
 ##    Peer     :  <PROGRAMMER>, <TEAM>, <PEER REVIEWED COMPLETED>
