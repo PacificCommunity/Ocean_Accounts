@@ -45,6 +45,7 @@
       library(tensorflow)
       library(GPUmatrix)
       library(Matrix)
+      library(keras3)
       
       library(tictoc)
       library(terra)
@@ -67,4 +68,63 @@
    ##       incorporate the code from my kindle book "Deep Learning in R" to see if can group these images into a land
    ##       use metric. At least a basic one.
    ##
+      ##
+      ##    Load the data from the book 
+      ##
+         mnist <- dataset_mnist()
+         train_images <- mnist$train$x
+         train_labels <- mnist$train$y
+         test_images <- mnist$test$x
+         test_labels <- mnist$test$y
+
+         train_images[1,,]
+         train_images[2,,]
+
+      ##
+      ##    Create the layers
+      ##
+         network <- keras_model_sequential() %>% 
+                    layer_dense(units = 512, activation = "relu", input_shape = c(28 * 28)) %>%
+                    layer_dense(units = 10, activation = "softmax")
+
+      ##
+      ##    Define the loss function and the optimiser and the metrics to monitor during training (accuracy)
+      ##
+         network %>% compile(optimizer = "rmsprop",
+                             loss = "categorical_crossentropy",
+                             metrics = c("accuracy"))
+
+      ##
+      ##    Reshape the images so rather than a 28 x 28 array, it becomes a 1 X 784 vector
+      ##    Rescale the data to be a proportion of 1
+      ##
+         train_images[1,,]
+         train_images <- array_reshape(train_images, c(60000, 28 * 28))
+         train_images[1,]
+         
+         train_images <- train_images / 255
       
+         Test_Images <- test_images
+         test_images <- array_reshape(test_images, c(10000, 28 * 28))
+         test_images <- test_images / 255
+
+      ##
+      ## Categorically recode the labels
+      ##
+         train_labels <- to_categorical(train_labels)
+         test_labels  <- to_categorical(test_labels)
+
+      ##
+      ## Train the model
+      ##
+         network %>% fit(train_images, train_labels, epochs = 5, batch_size = 128)
+         
+      ##
+      ## Test the model
+      ##
+         metrics <- network %>% evaluate(test_images, test_labels)
+
+      ##
+      ## Predict the model
+      ##
+         network %>% predict_on_batch(test_images[1:10,])
