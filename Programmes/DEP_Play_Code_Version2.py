@@ -45,11 +45,11 @@ current_directory = os.getcwd()
 ##  Try out some of Sachin's code
 ##
 catalog = "https://stac.digitalearthpacific.org"  # DE Pacific STAC Catalog
-collection = "dep_s2_geomad"  # Collection for mangroves
+collection = "dep_s2_geomad"  # Collection for GeoMAD files
 
 # Define Coordinates, in lat, lon
-lower_left = (-10.590125, 149.844629)
-upper_right = (-10.360110, 150.195631)
+lower_left = (-22.351142, 166.173569)
+upper_right = (-21.895303, 166.932652)
 
 bbox = (lower_left[1], lower_left[0], upper_right[1], upper_right[0])
 
