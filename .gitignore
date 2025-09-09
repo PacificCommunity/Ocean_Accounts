@@ -1,2 +1,6 @@
 *.shp
 *.dbf
+*.tif
+*.rda
+Obs_split_*.*
+ESACCI*.*
