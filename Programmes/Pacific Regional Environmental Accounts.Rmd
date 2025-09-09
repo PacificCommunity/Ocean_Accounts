@@ -1,11 +1,11 @@
 ---
 title: "Pacific Regional Environmental Accounts\nIncorporating Ocean Accounts"
-subtitle: "An SPC Digital Earth Pacific Foundation Augmented with FAME and GEM Data Sources"
+subtitle: "An SPC Digital Earth Pacific Data Source and Foundation Augmented with FAME and GEM Data"
 author: FAME Economics
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
    bookdown::word_document2:
-      reference_docx: "C:\\GIT_Projects\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
+      reference_docx: "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
       toc: false  
       fig_caption: true
       number_sections: true
@@ -50,7 +50,7 @@ output:
 
       library(RefManageR)
 
-      BaseDir <- "C:\\GIT_Projects\\Ocean_Accounts\\Graphical_Output\\"
+      BaseDir <- "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Graphical_Output\\"
   
   
 ##
@@ -64,16 +64,16 @@ output:
       BibOptions(check.entries = FALSE, style = "markdown", cite.style = "authoryear", bib.style = "numeric",first.inits = TRUE)
       
       
-load("C:\\Work_Related_Projects\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2022.rda")
+load("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Oceanic_Fisheries\\COMTRADE\\Data_Intermediate\\FFA_Compendium_of_Economic_and_Development_Statistics_2024.rda")
 load('Data_Output/Land_and_EEZ.rda')
 ##
 ##    Calculate the licensing revenues
 ##
-      License_Revenues <- FFA_Compendium_of_Economic_and_Development_Statistics_2022[SecondHeading == "Licence and access fee revenue",
+      License_Revenues <- FFA_Compendium_of_Economic_and_Development_Statistics_2024[SecondHeading == "Licence and access fee revenue",
                                                                                      list(Value = sum(Value,na.rm = TRUE)),
                                                                                       by = .(Year = Year,
                                                                                              Country = Country)]
-      License_Revenues_Agg <- FFA_Compendium_of_Economic_and_Development_Statistics_2022[SecondHeading == "Licence and access fee revenue",
+      License_Revenues_Agg <- FFA_Compendium_of_Economic_and_Development_Statistics_2024[SecondHeading == "Licence and access fee revenue",
                                                                                      list(Value = sum(Value,na.rm = TRUE),
                                                                                           Country = "Total Fishing License Revenue"),
                                                                                       by = .(Year = Year)]
@@ -112,68 +112,148 @@ load('Data_Output/Land_and_EEZ.rda')
 [^DutchDisease]: https://en.wikipedia.org/wiki/Dutch_disease 
 [^Brudtland]: https://www.are.admin.ch/are/en/home/media/publications/sustainable-development/brundtland-report.html
 [^SEEAEA]: `r AutoCite(Biib, "united_nations_system_2014")`
-
+[^SNA25]: https://unstats.un.org/unsd/nationalaccount/docs/2025_SNA_Pre-edit.pdf Chapter 2, section 5 "Measures concerning the environment"
 
 # Introduction {-}
 
-For most of the 20th century, and until relatively recently into the 21st century, the environment's contribution to economic production had received little statistical measurement attention. 
+For most of the 20th century, and up until relatively recently into the 21st century, the environment's contribution to economic production had received little statistical measurement attention. 
 
-Measuring countries economic processes had, since 1947, been guided by the United Nations Systems of National Accounts (SNA):[^SNA] a statistical methodological framework that maintained a robust adherance to a standard suite of economic measures that enabled countries to recover from the 1930's Great Depression and fund the Second World War, despite a growing body of evidence that these issues had indeed been solved, and the world was now facing a new set of issues needing an expanded suite of economic metrics.
+Measuring countries economic processes had, since 1947, been guided by the United Nations Systems of National Accounts (SNA)[^SNA]: a statistical methodological framework that maintained a robust adherance to a standard suite of economic measures that enabled countries to recover from the 1930's Great Depression and fund the Second World War, despite a growing body of evidence that these issues had indeed been solved, and the world was now facing a new set of issues needing an expanded suite of economic metrics.
 
-What was becoming _Issue de Jure_ for countries - climate change -  was not on the national accounting statistical radar until 1987 and the publication of the _Brudtland Report_.[^Brudtland] The latest statistical framework with is origins in that report is the United Nations System of Environmental-Economic Accounts - Central Frame (SEEA-CF)[^SEEAEA]: a robust suite of measures that both supports SNA measures and reflects SNA principals. 
+What was becoming _Issue de Jure_ for countries - climate change -  was not on the national accounting statistical radar until 1987 and the publication of the _Brudtland Report_.[^Brudtland] The latest statistical framework with its origins from that report is the United Nations System of Environmental-Economic Accounts - Central Frame (SEEA-CF)[^SEEAEA]: a robust suite of measures that both supports SNA measures and reflects SNA principals. 
 
-SEEA-CF and its theoretical companion, the System of Environmental-Economic Accounts - Exosystem Accounting (SEEA-EA), create a suite of environment statistical measures that are designed to complement the economics metrics from the SNA. Taken together countries now have the theoretical tools for connecting changes in their economic systems to environmental changes, and (importantly) **_vice versa_**.
+SEEA-CF and its theoretical companion, the System of Environmental-Economic Accounts - Exosystem Accounting (SEEA-EA), create a suite of environment statistical measures that are designed to complement the economics metrics from the SNA. Countries now have the _theoretical_ tools for connecting changes in their economic systems to environmental changes, and (importantly) **_vice versa_**.
 
-The value of simulatenously measuring both enviromental and economic systems impacting the welfare of their populations is high. For Pacific Countries, SEEA-CF represents the most pertinent lens for understanding how value created in their environments can shape their economic opportunities. In turn, as their economies change their through economic or climatic forces, understanding the impact of change on their environmental capital enables alternative choices, trade-offs and opportunities to be considered. 
+## Remote sensing is relatively cheap
 
-Secondly, in an age where earth-observing satellite systems encompass the planet, the cost of employing remote-sensing satellite technologies for statistically measuring the environment is low. This paper outlines how the Pacific Community's (SPC) data sources might be leveraged to create an initial suite of Environmental-Economic Accounts for our Pacific member countries. 
+In an age where earth-observing satellite systems encompass the planet, the cost of employing remote-sensing satellite technologies for statistically measuring the environment is now relatively low. 
 
-\newpage
+The Pacific Community's (SPC) Digital Earth Pacific (DEP) platform is capable of measuring member country environmental assets through remote-sensing. DEP can measure both land and some near-shore ocean-based environmental assets for all SPC member countries at the same time. DEP can also take repeated periodic measures, enabling change measures to be derived, and capture the impact of climate on member countries. In the future, DEP might also create measures of ocean-based pollution.
 
-## This paper is the product from almost all of the Pacific Community's divisions.  {-}
+## The value of simulatenously measuring both the enviromental and the economic system is high {-}
 
-* Its impetus started in Fisheries, Aquatic and Marine Environment (FAME), who is also guiding the ocean-based aquatic life data sources and measures. 
+Unlike large countries with larger land-bases, the scarcity of  land areas relative to the areas of their Exclusive Economic Zones (EEZ) implies the bulk of Pacific Island Countries and Territories (PICTs) exploitable economic resources are be marine-based.
 
-* Digital Earth Pacific, mineral resources and maritime transport activity data is supplied by Geoscience, Energy and Marine (GEM). 
+For PICTs, SEEA-CF allows countries to understanding how value is created within their environment, and how their environment also shapes their economic opportunities. Understanding the impact of economic change on their environmental capital enables alternative choices, trade-offs and opportunities to be considered. 
 
-* The Land Resources Division (LRD) is guiding the development of land use metrics. 
+```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Distribution of countries, by land size relative to EEZ size (World Bank Groupings)"}
 
-* Climate Change and Environmental Sustainability (CCES) are guiding the use of the metrics for member countries, and finally, being an informationa product about statistical systems, 
+knitr::include_graphics(paste0(BaseDir, "Relative Land Area to EEZ.png"))
+
+```
+
+_Note:* These are: Clipperton Island, Maldives, Mauritius, Saint Helena, Seychelles, South Georgia and the South Sandwich Islands_
+
+## PICTs weather extremes regularly destroys their land-based capital{-}
+
+Rising sea levels and coastal erosion, together with increasingly violent and frequent weather extremes, decimate PICT land-based productive physical capital reducing their land-based capital stock, and lowering their economic growth potential. Recovering from tropical cyclones and rebuilding buildings and equipment also saps scarce resources. The lastest statistics from Kiribati' "Kiribati Natural Disasters and Climate Change Survey Report 2023–2024"[^KiribatiClaimateChange] provides some scale to how climate change is impacting PICTs.
+
+During the 2023–2024 period:
+
+* A quarter (25%) of households reported being impacted by at least one natural disaster.
+
+* The estimated economic losses from climate change totaled $1.25 million (AUD), with housing and agriculture most affected.
+
+* Three-fifths (60%) of affected households experienced damage to their homes — mostly due to strong winds and heavy rain.
+
+* A quarter (26%) of households affected by disasters reported agricultural losses, with drought the leading cause.
+
+* One in 10 (10%) of households affected by disasters experienced health issues linked to climate events, including extreme heat and flooding.
+
+* Nearly 4,000 people were temporarily relocated due to natural disasters.
+
+
+## Ocean-based capital is more weather resilent {-}
+
+Fishing stocks and mineral deposits - ocean-based capital - present opportunities for PICTs to tap into overseas sources of funding, and generate value export incomes and licencing revenues independent of their land-based capital. 
+
+Unlike physical productive capital - factories, farms and land-based mechinery - ocean-based capital is less weather dependent and more resiliant against weather extremes.
+
+As seen from Table \@ref(tab:LicenseRevenues), PICTs have generated an average $US`r sum(License_Revenues[License_Revenues$Country == "Total Fishing License Revenue",c((length(License_Revenues)-9):length(License_Revenues))])/10` million per year over the last 10 years from fishing license fees of tuna alone, 
+
+```{r LicenseRevenues, echo=FALSE, fig.pos='h', out.width = '100%'}
+
+knitr::kable(License_Revenues[,c(1,(length(License_Revenues)-9):length(License_Revenues))], 
+             booktabs = TRUE,
+             caption = paste0('Tuna Revenues: Access fees for offshore fishing ', names(License_Revenues)[(length(License_Revenues)-9)], "–", names(License_Revenues)[length(License_Revenues)], ' - $US Millions'))
+print("Forum Fisheries Authority, Compendium of Economic and Development Statistics 2024.xlsx, https://www.ffa.int/download/economic-development-indicators-and-statistics/")
+```
+
+The Pacific Ocean is facing its own climate-related issues. Despite this fishing revenues generated from fishing stocks have been a constant source of PICT revenue.
+
+## Estimating, preserving and restoring biodiversity: Unlocking Blue Pacific Prosperity {-}
+The end-goal for introducing SEEA measurement into Pacific countries is to create a capability for developing the data sources around, and a technical platform that supports the measure of pacific-oceanwide _biodiversity_ to potentially enable economic markets in biodiversity conservation. 
+
+### Markets in biodiversity {-}
+
+Biodiversity, centrally and consistent measured using authoratative and sciencifically valid data sources, offers a new potential source for new markets in conservation and biodiversity protection. 
+
+If biodiversity and biodiverses areas could be readily identified, and their "level" and "difference" in biodiversity readily assessed, then the protection and expansion in those areas is potentially valueable to the world, and a future PICT revenue sources. Not only could biodiverse areas be identified, but _non-biodiverse_ areas could also be identified. In non-biodiverse areas, alternative uses of the marine environment (like offshore oil exploration, or maritime transport paths) might be activities whose benefits outweigh their impacts on the environment.
+
+> _The main allure of a market-based approach is its potential to achieve any given conservation goal at the lowest possible cost._
+>
+> _Market-based policies have led to substantial improvements in air quality, reduced overfishing, and increased water provisioning and quality. Some coastal nations are already engaging in trade-based schemes to protect the marine environment—for example, The Nature Conservancy and the Republic of Seychelles’ "Blue Bonds for Ocean Conservation" program, or the "Ocean Conservation Commitments" scheme recently announced by the Pacific Island nation of Niue._
+>
+> _Both models have something in common: A deal is struck between a coastal nation that conserves a portion of the marine environment and an interested party who helps pay for the costs of conserving. These schemes show that nations are interested in innovative financing approaches that take advantage of trades in which buyers place higher values on conservation than sellers. Although these examples are promising, they do not fully harness the cost reductions that could be achieved with a global market for conservation._
+
+>
+> --- `r AutoCite(Biib, "villasenor-derbez_market_2024")`
+
+
+## Our collective efforts {-}
+ 
+This paper outlines how SPC's data sources might be leveraged to create an initial suite of Environmental-Economic Accounts for our Pacific member countries. It is the collective product from almost all of SPC's divisions
+
+* Its impetus started in Fisheries, Aquatic and Marine Environment (FAME) Division, who is also contributing the ocean-based aquatic life data sources and measures. 
+
+* Digital Earth Pacific, mineral resources and maritime transport activity data is supplied by the Geoscience, Energy and Marine (GEM) Division. 
+
+* The Land Resources Division (LRD) is guiding the development of the land use metrics. 
+
+* Climate Change and Environmental Sustainability (CCES) Division are guiding the use of the metrics for member countries.
 
 * The Statistics for Development Division (SDD) is providing oversight of the validity and compliance of the SEEA-based statistical measures.
 
-## Plan of attack {-}
-
-### Statistically measuring the environment {-}
-
-A brief outline of both SEEA-CF and SEEA-EA are presented. 
-
-### Introduction to Digital Earth Pacific {-}
-
-Secondly, the paper outlines how The Pacific Community's Digital Earth Pacific (DEP) platform might measure member environmental assets through remote-sensing. DEP has the capability to measure both land and ocean-based environmental assets for all SPC member countries _contemporanously_, creating common measures for countries and enabling comparisons to be drawn. DEP can take repeat periodic measures, enabling change measures to be derived, and capture the impact of climate on member countries. 
-
-Prospectively, DEP might also create measures of ocean-based pollution which reflect the impact of existing pressures on the environment, and the sustainability of existing processes for absorbing the products from human or economic polluting activities.
-
-### Fisheries, Aquatic and Marine Environment metrics(FAME) {-}
-
-This paper outlines how SPC's Fisheries, Aquatic and Marine Environment  and  might enrich the measures of ocean-based environmental assets.
-
-
-
-### Geoscience, Energy and Marine (GEM) data sources {-}
-
-
-### Estimating, preserving and restoring biodiversity: Unlocking Blue Pacific Prosperity {-}
-Finally, this paper suggests the end-goal for the whole SEEA measuring system process is to create the capability to allow the development of data sources that measure _biodiversity_ and create the data foundation for supporting economic markets in biodiversity conservation as a ocean-based source of member-country economic activity. 
 
 \newpage
 
-# Foundation {-}
-Since its inception in 1947 up until 1987, the standard international economic measurement "textbook", the System of National Accounts[^SNA] (SNA) continued its original focus of measuring how countries might recover from the 1930's economic depression, and fund the second world war (WW2). For decades, its focus remained on measuring the economic fundimentals of production, consumption, and exchange. The environment was recognised to the extent it could be contained within property rights and capable of monetarised measurement. It was something ancillary-to the economy and within-which economies undertook the serious stuff of production, consumption and exchange.
+# Statistically measuring the environment {-}
 
-The limits of the environment moved the SNA's focus beyond 1930's depression and WW2 economics. Extractive processes from the environment were recognised as exhaustible and the feedback relationships  between the environment and the economic systems were acknowledged. "Sustainability" and is material progress in an economic-based welfare system depends on "non-exhaustibility" within the environmental system that economies reside within. However, the environmental system is itself limited by economic-system-derived pollution and degradation. The feedback relationships between the two systems are binding constraints on each other. Climate change only reinforces the impact of this inter-dependency.
+## The veil of the National Accounts {-}
+Since its inception in 1947, the System of National Accounts[^SNA] has been the international standard for how countries measure their economic production, consumption, and exchange activity. Together with the Balance of Payments, (reflecting inter-country trade and economic flows) the SNA was the first international framework for the consistent measurement of economic systems. It was a massive advance in the theory and practice of economics and has created commonly defined metrics for cross-country comparative analysis into the mechanics of economic growth and development. 
 
-## The System of Environmental-Economic Accounts: a framework for measuring Environmental / Economic co-dependency {-}
+As powerful as the SNA is, it is not without its deficiencies. Up until recently, the "boundaries of production" meant that if activity was not be monetised, then it was not measured: 
+
+* Domestic cleaning, if brought as a service and remunerated through arms-length transactions was economic "production", while, the same activity performed by a spouse and indirectly remumerated through household income, was "not production". 
+
+* The "Black Economy" (for example, the illicit drugs trade) is an economic activity just like any other industry. It produces well-defined goods and services which are traded for value in its markets. It has its own labour force, uses capital in production, and engages in imports and exports. And because its illegal the Black Economy does not form part of a nation's economic accounts. 
+
+* Until relatively recently, arms and weapons manufacturing and stockpiling was not deemed to be "investment". The ultimately destructive purpose of stockpile equipment, when used, was deemed to not be "production" so the manufactured weapons could not be considered "investment" .
+
+### The System of National Accounts, Capital and the Environment{-}
+
+The environment was recognised to the extent it could be captured within property rights and monetarily valued. Yet even then, the environment was not seen as an input into a production process. The environment was something _ancillary-to_ the economy and _within-which_ the economies described by the SNA undertook production, consumption and exchange. 
+
+The concept that man-made capital generated "capital services" which are the inputs into the production processes was acknowledged in the 1993 version of the SNA;[^SNA93] however, the SNA93 stopped short of 
+measuring natural capital generated equivalent capital services as also inputs into economic production. 
+
+Physical capital; for example, a motor vehicle, provides "transport services": the ability to move inputs and outputs between locations. The transport services from a car differ from those of a truck. Similarly, the transport services of a new truck differ significantly from transport services of a vintage truck. Not only do the levels of inherent technology differ between vintage capital, but vintage capital also experiences economic depreciation, which
+ reduces the _quantity_ of the capital services it provides.
+
+There are direct parallels between man-made and environmental capital, yet until **_very recently_**[^SNA25] enviromental assets were not recognised as providing capital services into production processes, and changes to the environment from the economy were not reflected as economic costs from productive activity. 
+
+The most immediate environment asset - land - still features in national balance sheets only, rather than as a capital factor of production. "Capital inputs" into the agricultural industry are limited to its plant, machinery and equipment and other man-made assets that derive from Gross Fixed Capital Formation (investment) despite inherent differences in _land productivity_ being the largest factor determining the success of a farming venture. 
+
+### Environmental capital{-}
+
+Environmental capital, measured in environmental assets, generate environmental services which are inputs into economic production processes. Fish biomass stocks are the enviromental capital inputs into the fishing industry. Their capital services are the continuous supply of a maximum sustainable catch: the annual quantity of catch that can be extracted from the stock while still maintaining the reproductive capacity of the overall population. 
+
+Where man-made capital services are degraded from economic depreciation, environmental capital services are degraded through pollution and depletion. While man-made capital services are improved through technology, enviromental capital services have a regenerative capability.
+
+
+\newpage
+
+# The System of Environmental-Economic Accounts: a framework for measuring Environmental / Economic co-dependency {-}
 
 Within the System of Environmental-Economic Accounts - Central Framework (SEEA-CF), economic production, consumption, and exchange _a la_ SNA remain important, but SEEA-CF also recognised the quantity and quality of the change in the environment is simultanously important. The SEEA-CF framework seeks to record each system _simultaneously_ through companion economic and environmental supply/use tables reflecting simultanous changes within the two systems. 
 
@@ -189,56 +269,9 @@ The "Dutch Disease"[^DutchDisease] is an example where the environmental compone
 
 \newpage
 
-## Implications for Pacific Countries {-}
-
-Lacking the economic complexity of high income econonomies, Pacific Countries are more sensitive than others to the interactions of the environment into their economies.
-
-
-```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Distribution of countries, by land size relative to EEZ size (World Bank Groupings)"}
-
-knitr::include_graphics(paste0(BaseDir, "Relative Land Area to EEZ.png"))
-
-```
-
-
-
-
-Rising sea levels and coastal erosion combine with increasingly violent and frequent weather extremes to decimating PICT economic physical productive capital. The impact of destructive weather conditions on their economic production base lessen their economic growth potential, while increasing their increasing their rebuild and climate change adaptation cost. With a lower economic growth potential from their land-based capital PICTs increasingly dependent on international donor aid funding for their continued existance.
-
-The lastest statistics for Kiribati during 2023-2024 showed:[^KiribatiClaimateChange]
-
-* A quarter (25%) of households reported being impacted by at least one natural disaster.
-
-* The estimated economic losses from climate change totaled $1.25 million (AUD), with housing and agriculture most affected.
-
-* Three-fifths (60%) of affected households experienced damage to their homes — mostly due to strong winds and heavy rain.
-
-* A quarter (26%) of households affected by disasters reported agricultural losses, with drought the leading cause.
-
-* One in 10 (10%) of households affected by disasters experienced health issues linked to climate events, including extreme heat and flooding.
-
-* Nearly 4,000 people were temporarily relocated due to natural disasters.
-
-
-
-
-
 
 
 The SEEA Central Framework captures the relationship between the economy and the environment through measuring the quantity, change and value of environmental assets, energy 
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 The , introduced in 1947, pioneered the concept of National Accounting - the idea that you can express the economic activity and the progress of a country in a suite of statistical reports much like a map describes the contours of a landscape or a road. As initially, conceived the metrics focused on the income "flow" information needed to address economic problems of the great 1930 depression, financing the Second World War, and describing the "flow" of money and products _between_ countries. The economic system had a "cadence" of boom-bust cycles. The role of national account was to support the developed of counter-cyclical policy advice which smoothed out these economic cycles which were so destructive to economies. 
@@ -281,35 +314,6 @@ Secondly, potentially (and ironically) as climate change worsens, the most valua
 PICTs labour markets are impacted by the effects of hurricanes and drought on domestic employment options, making the most capable seek income from overseas countries, sending remittences back to home country dependences.
 
 
-## Ocean-based capital is less weather resilent {-}
-
-Fishing stocks and mineral deposits - ocean-based capital - present opportunities for PICTs to tap into overseas sources of funding, and generate value export incomes and licencing revenues independent of their land-based capital. Unlike physical productive capital - factories, farms and land-based mechinery - ocean-based capital is less weather dependent and more resiliant against weather extremes.
-
-As seen from Table \@ref(tab:LicenseRevenues), PICTs have generated an average $US`r sum(License_Revenues[License_Revenues$Country == "Total",c((length(License_Revenues)-9):length(License_Revenues))])/10` million per year over the last 10 years from fishing license fees of tuna alone, 
-
-```{r LicenseRevenues, echo=FALSE, fig.pos='h', out.width = '100%'}
-
-knitr::kable(License_Revenues[,c(1,(length(License_Revenues)-9):length(License_Revenues))], 
-             booktabs = TRUE,
-             caption = paste0('Tuna Revenues: Access fees for offshore fishing ', names(License_Revenues)[(length(License_Revenues)-9)], "–", names(License_Revenues)[length(License_Revenues)], ' - $US Millions'))
-print("Forum Fisheries Authority, Compendium of Economic and Development Statistics 2024.xlsx, https://www.ffa.int/download/economic-development-indicators-and-statistics/")
-```
-
-The Pacific Ocean is facing its own climate-related issues, but despite this and increasing weather-related climate change land-based loss and damage, fishing revenues generated from fishing stocks have been a constant source of PICT revenue.
-
-## Markets in biodiversity {-}
-
-Pacfic-wider biodiversity, centrally measured from authoratative and sciencifically valid data sources, and directly comparable _between_ PICTs makes rich and life-sustaining biodiversity sources valueable opening the potential for establishing _economic markets_ in protecting and enhancing ocean-based biodiversity.[^BiodiversityMarkets]
-
-> _The main allure of a market-based approach is its potential to achieve any given conservation goal at the lowest possible cost._
->
-> _Market-based policies have led to substantial improvements in air quality, reduced overfishing, and increased water provisioning and quality. Some coastal nations are already engaging in trade-based schemes to protect the marine environment—for example, The Nature Conservancy and the Republic of Seychelles’ "Blue Bonds for Ocean Conservation" program, or the "Ocean Conservation Commitments" scheme recently announced by the Pacific Island nation of Niue._
->
-> _Both models have something in common: A deal is struck between a coastal nation that conserves a portion of the marine environment and an interested party who helps pay for the costs of conserving. These schemes show that nations are interested in innovative financing approaches that take advantage of trades in which buyers place higher values on conservation than sellers. Although these examples are promising, they do not fully harness the cost reductions that could be achieved with a global market for conservation._
-
->
-> --- `r AutoCite(Biib, "villasenor-derbez_market_2024")`
- 
 # Ocean Accounts are numerically SEEA-CF and spatially SEEA-EA {-}
  
  
