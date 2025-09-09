@@ -101,47 +101,6 @@
    ##    Clear the memory
    ##
       rm(list=ls(all=TRUE))
-      options(max.print=999999)
-      options(scipen = 100)
-     
-
-   ##
-   ##    Core libraries
-   ##
-      library(ggplot2)
-      library(plyr)
-      library(stringr)
-      library(reshape2)
-      library(lubridate)
-      library(calibrate)
-      library(Hmisc)
-      library(RColorBrewer)
-      library(stringi)
-      library(sqldf)
-      library(extrafont)
-      library(scales)
-      library(RDCOMClient)
-      library(extrafont)
-      library(tictoc)   
-
-   ##
-   ##    Special Libraries
-   ##      
-      library(tensorflow)
-      library(GPUmatrix)
-      library(Matrix)
-      library(keras3)
-      library(terra)
-      library(raster)
-      library(sf)
-      library(parallel)   
-      library(stats)   
-      library(MASS)
-
-   ##
-   ##    Set working directory
-   ##
-      setwd("c:\\Git_Projects\\Ocean_Accounts")
 
    ##
    ##    Read in the ESA data
