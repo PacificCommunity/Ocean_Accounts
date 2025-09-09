@@ -1,2 +1,9 @@
 *.shp
 *.dbf
+<<<<<<< HEAD
+=======
+*.tif
+*.rda
+Obs_split_*.*
+ESACCI*.*
+>>>>>>> HeavyLifterVersion
