@@ -39,7 +39,7 @@ pandas.options.display.max_rows = 1000
 pandas.options.display.width = 1500
 
 current_directory = os.getcwd()
-#print(f"Current Working Directory: {current_directory}")
+print(f"Current Working Directory: {current_directory}")
 
 ##
 ##  Try out some of Sachin's code
