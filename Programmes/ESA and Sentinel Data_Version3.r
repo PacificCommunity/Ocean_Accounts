@@ -106,7 +106,7 @@
    ##    Read in the ESA data
    ##
       ESA   <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
-      describe("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
+#      describe("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
      
    ##
    ##    Read in the Sentinel-2 data
@@ -145,20 +145,18 @@
    ##
    ## Draw a sample from the Sentinel-2 data
    ##
-      #Sample <- sample(1:(nrow(Red)*ncol(Red)), (nrow(Red)*ncol(Red))*.1)
-      Sample <- sample(1:(nrow(Red)*ncol(Red)), 10000)
+      Sample <- sample(1:(nrow(Red)*ncol(Red)), ((nrow(Red)*ncol(Red))*.2))
 
    ##
    ##    Try with parallel processing
    ##         
-      Size_of_Loops <- ceiling(length(Sample) / 10)
+      Size_of_Loops <- ceiling(length(Sample) / 100)
       
-      #cl <- makeCluster(detectCores())
-      cl <- makeCluster(5)
+      cl <- makeCluster(10)
       
       clusterEvalQ(cl, { c(library(terra), library(sf)) }) 
 
-      for(Parcycle in 0:9)
+      for(Parcycle in 0:99)
         {
         
           Grab_Target_Samples <- Sample[(Parcycle*Size_of_Loops + 1):min(((Parcycle+1)*Size_of_Loops),  length(Sample))]
@@ -239,68 +237,21 @@
       Regression_Set <- Regression_Set[!is.nan(Regression_Set$Red_Values),]
       save(Regression_Set, file = "Data_Spatial/Regression_Set.rda")
 
-
-
-   ##
-   ## Generate categorical variables (the hard way)
-   ##
-      Regression_Set$Is_10  <- ifelse(Regression_Set$ESA_Value ==  10, 1,0)
-      Regression_Set$Is_11  <- ifelse(Regression_Set$ESA_Value ==  11, 1,0)
-      Regression_Set$Is_12  <- ifelse(Regression_Set$ESA_Value ==  12, 1,0)
-      Regression_Set$Is_20  <- ifelse(Regression_Set$ESA_Value ==  20, 1,0)
-      Regression_Set$Is_30  <- ifelse(Regression_Set$ESA_Value ==  30, 1,0)
-      Regression_Set$Is_40  <- ifelse(Regression_Set$ESA_Value ==  40, 1,0)
-      Regression_Set$Is_50  <- ifelse(Regression_Set$ESA_Value ==  50, 1,0)
-      Regression_Set$Is_80  <- ifelse(Regression_Set$ESA_Value ==  80, 1,0)
-      Regression_Set$Is_100 <- ifelse(Regression_Set$ESA_Value == 100, 1,0)
-      Regression_Set$Is_110 <- ifelse(Regression_Set$ESA_Value == 110, 1,0)
-      Regression_Set$Is_120 <- ifelse(Regression_Set$ESA_Value == 120, 1,0)
-      Regression_Set$Is_121 <- ifelse(Regression_Set$ESA_Value == 121, 1,0)
-      Regression_Set$Is_130 <- ifelse(Regression_Set$ESA_Value == 130, 1,0)
-      Regression_Set$Is_150 <- ifelse(Regression_Set$ESA_Value == 150, 1,0)
-      Regression_Set$Is_160 <- ifelse(Regression_Set$ESA_Value == 160, 1,0)
-      Regression_Set$Is_170 <- ifelse(Regression_Set$ESA_Value == 170, 1,0)
-      Regression_Set$Is_190 <- ifelse(Regression_Set$ESA_Value == 190, 1,0)
-      Regression_Set$Is_210 <- ifelse(Regression_Set$ESA_Value == 210, 1,0)
-      
-   ##
-   ## Step 2: Run a regression
-   ##
-      model_10  <- glm(Is_10  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_11  <- glm(Is_11  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_12  <- glm(Is_12  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_20  <- glm(Is_20  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_30  <- glm(Is_30  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_40  <- glm(Is_40  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_50  <- glm(Is_50  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_80  <- glm(Is_80  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_100 <- glm(Is_100 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_110 <- glm(Is_110 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_120 <- glm(Is_120 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_121 <- glm(Is_121 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_130 <- glm(Is_130 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_150 <- glm(Is_150 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_160 <- glm(Is_160 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_170 <- glm(Is_170 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_190 <- glm(Is_190 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      model_210 <- glm(Is_210 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
-      
-
    ##
    ## Step 3: Pull out a test set with parallel processing
    ##
       Not_Regressed <- (1:(nrow(Red)*ncol(Red)))[-unique(Regression_Set$Red_Cell_Number)]
 
-      Sample <- sample(Not_Regressed, 10000)
+      Sample <- sample(Not_Regressed, length(Not_Regressed) * .2)
       
-      Size_of_Loops <- ceiling(length(Sample) / 10)
+      Size_of_Loops <- ceiling(length(Sample) / 100)
       
       #cl <- makeCluster(detectCores())
-      cl <- makeCluster(5)
+      cl <- makeCluster(10)
       
       clusterEvalQ(cl, { c(library(terra), library(sf)) }) 
 
-      for(Parcycle in 0:9)
+      for(Parcycle in 0:99)
         {
         
           Grab_Target_Samples <- Sample[(Parcycle*Size_of_Loops + 1):min(((Parcycle+1)*Size_of_Loops),  length(Sample))]
@@ -381,6 +332,53 @@
       Test_Set <- Test_Set[!is.nan(Test_Set$Red_Values),]
       save(Test_Set, file = "Data_Spatial/Test_Set.rda")
 
+
+   ##
+   ## Generate categorical variables (the hard way)
+   ##
+      Regression_Set$Is_10  <- ifelse(Regression_Set$ESA_Value ==  10, 1,0)
+      Regression_Set$Is_11  <- ifelse(Regression_Set$ESA_Value ==  11, 1,0)
+      Regression_Set$Is_12  <- ifelse(Regression_Set$ESA_Value ==  12, 1,0)
+      Regression_Set$Is_20  <- ifelse(Regression_Set$ESA_Value ==  20, 1,0)
+      Regression_Set$Is_30  <- ifelse(Regression_Set$ESA_Value ==  30, 1,0)
+      Regression_Set$Is_40  <- ifelse(Regression_Set$ESA_Value ==  40, 1,0)
+      Regression_Set$Is_50  <- ifelse(Regression_Set$ESA_Value ==  50, 1,0)
+      Regression_Set$Is_80  <- ifelse(Regression_Set$ESA_Value ==  80, 1,0)
+      Regression_Set$Is_100 <- ifelse(Regression_Set$ESA_Value == 100, 1,0)
+      Regression_Set$Is_110 <- ifelse(Regression_Set$ESA_Value == 110, 1,0)
+      Regression_Set$Is_120 <- ifelse(Regression_Set$ESA_Value == 120, 1,0)
+      Regression_Set$Is_121 <- ifelse(Regression_Set$ESA_Value == 121, 1,0)
+      Regression_Set$Is_130 <- ifelse(Regression_Set$ESA_Value == 130, 1,0)
+      Regression_Set$Is_150 <- ifelse(Regression_Set$ESA_Value == 150, 1,0)
+      Regression_Set$Is_160 <- ifelse(Regression_Set$ESA_Value == 160, 1,0)
+      Regression_Set$Is_170 <- ifelse(Regression_Set$ESA_Value == 170, 1,0)
+      Regression_Set$Is_190 <- ifelse(Regression_Set$ESA_Value == 190, 1,0)
+      Regression_Set$Is_210 <- ifelse(Regression_Set$ESA_Value == 210, 1,0)
+      
+   ##
+   ## Step 2: Run a regression
+   ##
+      model_10  <- glm(Is_10  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_11  <- glm(Is_11  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_12  <- glm(Is_12  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_20  <- glm(Is_20  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_30  <- glm(Is_30  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_40  <- glm(Is_40  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_50  <- glm(Is_50  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_80  <- glm(Is_80  ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_100 <- glm(Is_100 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_110 <- glm(Is_110 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_120 <- glm(Is_120 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_121 <- glm(Is_121 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_130 <- glm(Is_130 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_150 <- glm(Is_150 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_160 <- glm(Is_160 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_170 <- glm(Is_170 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_190 <- glm(Is_190 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      model_210 <- glm(Is_210 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
+      
+
+
    ##
    ## Reorder the test set
    ##
@@ -451,6 +449,9 @@
    save(Test_Set, file = "Data_Intermediate/Test_Set.rda")
    save(Regression_Set, file = "Data_Intermediate/Regression_Set.rda")
    write.table(Estimated_Predicted, file = "Data_Output/Estimated_Predicted.csv", sep=",", row.names = FALSE)
+
+
+
    write.table(head(Test_Set[Test_Set$Observation_Number == 368,]), file = "Data_Output/Example_Final_Predictions.csv", sep=",", row.names = FALSE)
    
 
