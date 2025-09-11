@@ -152,7 +152,8 @@
    ##         
       Size_of_Loops <- ceiling(length(Sample) / 100)
       
-      cl <- makeCluster(10)
+      cl <- makeCluster(20)
+#      cl <- makeCluster(detectCores())
       
       clusterEvalQ(cl, { c(library(terra), library(sf)) }) 
 
@@ -247,7 +248,7 @@
       Size_of_Loops <- ceiling(length(Sample) / 100)
       
       #cl <- makeCluster(detectCores())
-      cl <- makeCluster(10)
+      cl <- makeCluster(20)
       
       clusterEvalQ(cl, { c(library(terra), library(sf)) }) 
 
