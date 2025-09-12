@@ -150,30 +150,60 @@
    ##
    ##    Try with parallel processing
    ##         
-      Size_of_Loops <- ceiling(length(Sample) / 100)
+      Size_of_Loops <- ceiling(length(Sample) / 10)
       
-      cl <- makeCluster(20)
+      cl <- makeCluster(13)
 #      cl <- makeCluster(detectCores())
       
       clusterEvalQ(cl, { c(library(terra), library(sf)) }) 
+      ##
+      ##    Load up the clusters with data
+      ##
+      Load_Me <- function(){
+                  if(!exists("ESA")){ ESA <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif") }
+                     
+                  if(!exists("Red")){ 
+                     Red    <- rast("Data_Spatial/dep_s2_geomad_red_2017.tif")
+                     Red    <- project(Red,   crs(ESA))}
+                     
+                  if(!exists("Green")){ 
+                     Green  <- rast("Data_Spatial/dep_s2_geomad_green_2017.tif")
+                     Green  <- project(Green, crs(ESA))}
+                     
+                  if(!exists("Blue")){ 
+                     Blue   <- rast("Data_Spatial/dep_s2_geomad_blue_2017.tif")
+                     Blue   <- project(Blue,  crs(ESA))}
+                     
+                  Extent <- ext(Red)
+                  ESA    <- crop(ESA, Extent)
+      }
+   clusterExport(cl, c("Load_Me")) 
+#   system.time(parallel::clusterCall(cl, Load_Me))
 
-      for(Parcycle in 0:99)
+      for(Parcycle in 0:9)
         {
         
           Grab_Target_Samples <- Sample[(Parcycle*Size_of_Loops + 1):min(((Parcycle+1)*Size_of_Loops),  length(Sample))]
 
           Peg_Me <- function(Fistful)
                {
-                  ESA    <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
-                  Red    <- rast("Data_Spatial/dep_s2_geomad_red_2017.tif")
-                  Green  <- rast("Data_Spatial/dep_s2_geomad_green_2017.tif")
-                  Blue   <- rast("Data_Spatial/dep_s2_geomad_blue_2017.tif")
-                  Red    <- project(Red,   crs(ESA))
-                  Green  <- project(Green, crs(ESA))
-                  Blue   <- project(Blue,  crs(ESA))
+                  if(!exists("ESA")){ ESA <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif") }
+                     
+                  if(!exists("Red")){ 
+                     Red    <- rast("Data_Spatial/dep_s2_geomad_red_2017.tif")
+                     Red    <- project(Red,   crs(ESA))}
+                     
+                  if(!exists("Green")){ 
+                     Green  <- rast("Data_Spatial/dep_s2_geomad_green_2017.tif")
+                     Green  <- project(Green, crs(ESA))}
+                     
+                  if(!exists("Blue")){ 
+                     Blue   <- rast("Data_Spatial/dep_s2_geomad_blue_2017.tif")
+                     Blue   <- project(Blue,  crs(ESA))}
+                     
                   Extent <- ext(Red)
                   ESA    <- crop(ESA, Extent)
-
+                  
                  return(
                         Regression_Set <- do.call(rbind,
                                                  lapply(Fistful, 
@@ -237,6 +267,7 @@
       Regression_Set <- Regression_Set[!is.nan(Regression_Set$Green_Values),]
       Regression_Set <- Regression_Set[!is.nan(Regression_Set$Red_Values),]
       save(Regression_Set, file = "Data_Spatial/Regression_Set.rda")
+      load("Data_Spatial/Regression_Set.rda")
 
    ##
    ## Step 3: Pull out a test set with parallel processing
@@ -245,27 +276,40 @@
 
       Sample <- sample(Not_Regressed, length(Not_Regressed) * .2)
       
-      Size_of_Loops <- ceiling(length(Sample) / 100)
+      Size_of_Loops <- ceiling(length(Sample) / 10)
       
       #cl <- makeCluster(detectCores())
-      cl <- makeCluster(20)
+      cl <- makeCluster(13)
       
       clusterEvalQ(cl, { c(library(terra), library(sf)) }) 
 
-      for(Parcycle in 0:99)
+
+      for(Parcycle in 0:9)
         {
         
           Grab_Target_Samples <- Sample[(Parcycle*Size_of_Loops + 1):min(((Parcycle+1)*Size_of_Loops),  length(Sample))]
 
           Peg_Me <- function(Fistful)
                {
-                  ESA    <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
-                  Red    <- rast("Data_Spatial/dep_s2_geomad_red_2017.tif")
-                  Green  <- rast("Data_Spatial/dep_s2_geomad_green_2017.tif")
-                  Blue   <- rast("Data_Spatial/dep_s2_geomad_blue_2017.tif")
-                  Red    <- project(Red,   crs(ESA))
-                  Green  <- project(Green, crs(ESA))
-                  Blue   <- project(Blue,  crs(ESA))
+               
+                  if(!exists("ESA")){ 
+                     ESA <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
+                     }
+                     
+                  if(!exists("Red")){ 
+                     Red    <- rast("Data_Spatial/dep_s2_geomad_red_2017.tif")
+                     Red    <- project(Red,   crs(ESA))
+                     }
+                  if(!exists("Green")){ 
+                     Green  <- rast("Data_Spatial/dep_s2_geomad_green_2017.tif")
+                     Green  <- project(Green, crs(ESA))
+                     }
+                     
+                  if(!exists("Blue")){ 
+                     Blue   <- rast("Data_Spatial/dep_s2_geomad_blue_2017.tif")
+                     Blue   <- project(Blue,  crs(ESA))
+                     }
+                     
                   Extent <- ext(Red)
                   ESA    <- crop(ESA, Extent)
 
