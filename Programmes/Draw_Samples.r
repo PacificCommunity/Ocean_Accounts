@@ -70,7 +70,7 @@
    ## Exclude the regression obs and draw a test sample
    ##
       Regression_Sample <- sample(1:(nrow(Red)*ncol(Red)), ((nrow(Red)*ncol(Red))*.2))
-      Not_Regressed     <- (1:(nrow(Red)*ncol(Red)))[-unique(Regression_Sample)]
+      Not_Regressed     <-       (1:(nrow(Red)*ncol(Red)))[-unique(Regression_Sample)]
       Test_Sample       <- sample(Not_Regressed, length(Not_Regressed) * .2)
 
       save(Regression_Sample, "Data_Intermediate/Regression_Sample.rda")
