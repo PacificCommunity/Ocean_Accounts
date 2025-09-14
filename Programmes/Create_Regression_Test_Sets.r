@@ -1,97 +1,9 @@
 ##
-##    Programme:  <SAMPLE_PROGRAMME.r>
+##    Programme:  Create_Regression
 ##
-##    Objective:  What is this programme designed to do?
-##                That's a very interesting approach. I'll be very curious to hear your results, whether good or bad.
-##                
-##                Good luck, 
-##                Philippine
-##                ________________________________________
-##                From: James Hogan <jamesh@spc.int>
-##                Sent: Monday, 8 September 2025 14:09
-##                To: Philippine Laroche <philippinel@spc.int>; Sachindra Singh <sachindras@spc.int>
-##                Subject: RE: DEP - Land Use Models 
-##                 
-##                Regarding the ESA product in the last link, the aim of my work is to develop something more tailored 
-##                to our region and at a higher resolution. The ESA product is designed at a global scale, so it doesn’t 
-##                capture the specific characteristics of the Pacific.
-##                 
-##                Nope, it doesn’t – not automatically.  
-##                 
-##                But if you think of the two data sources as a regression where the 300m ESA is an aggregation of the 
-##                underlying 10m Sentinel data with error, then a nice big random sample of the ESA data for pacific 
-##                countries, regressed against the underlying Sentinel data should create an unbiased estimate of the 
-##                underlying sentinel data that equates to the ESA groups.
-##                 
-##                ESA = a + b * Sentinel + error
-##                 
-##                I’ll see if I can make that work… 
-##                 
-##                I might be completely wrong and it might not 😊
-##                
-##                 
-##                James
-##                 
-##                 
-##                –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-##                 
-##                James Hogan
-##                Senior Marine Resource Economist
-##                Économiste principal des ressources marines
-##                Pacific Community | Communauté du Pacifique
-##                CPS – B.P. D5 | 98848 Noumea, New Caledonia | Nouméa, Nouvelle-Calédonie
-##                Tel: (+64) 275 997 999
-##                E: jamesh@spc.int | Website | Twitter | LinkedIn | Facebook | YouTube | Instagram
-##                
-##                
-##                –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-##                As part of our emissions reduction strategy, please only print this email if necessary
-##                Dans le cadre de notre stratégie de réduction des émissions, merci d'imprimer cet e-mail uniquement si nécessaire
-##                 
-##                
-##                From: Philippine Laroche <philippinel@spc.int> 
-##                Sent: Monday, 8 September 2025 2:57 pm
-##                To: James Hogan <jamesh@spc.int>; Sachindra Singh <sachindras@spc.int>
-##                Subject: Re: DEP - Land Use Models
-##                 
-##                I had a quick look at the links. For the first two, it seems the available labels are quite limited. I only 
-##                see buildings and vegetation, whereas we would also need croplands, mangroves, bare soil, etc., to ensure a 
-##                representative land cover classification.
-##                Regarding the ESA product in the last link, the aim of my work is to develop something more tailored to our 
-##                region and at a higher resolution. The ESA product is designed at a global scale, so it doesn’t capture the 
-##                specific characteristics of the Pacific.
-##                You can find attached, the notebook I used and an geopackage file with label points. At the beginning you can 
-##                choose the Area of Interest (AOI), select the training area over fiji to match the gpkg file : # over Viti Levu, 
-##                Fiji : left=177.2, bottom=-18.3, right=178.8, top=-17.2.  Then you can run the notebook, until the part "for later maybe".
-##                I also have gpkg for marshall, cook and palau. My final training dataset is a mixed of the four islands.
-##                 
-##                Kind regards, 
-##                Philippine
-##                ________________________________________
-##                From: James Hogan <jamesh@spc.int>
-##                Sent: Monday, 8 September 2025 12:56
-##                To: Philippine Laroche <philippinel@spc.int>; Sachindra Singh <sachindras@spc.int>
-##                Subject: RE: DEP - Land Use Models 
-##                 
-##                Great – thanks Philippine 😊 Sharing the notebook would be great.
-##                 
-##                I was thinking the same thing around how to creating a training set for how the Sentinel-2 data relates to land use. 
-##                 
-##                My thinking was overlaying the raster data with information from here: https://pacific-data.sprep.org/search?f%5B0%5D=content_type%3Adataset.dataset&f%5B1%5D=format%3Ageojson. 
-##                 
-##                Like this: https://pacific-data.sprep.org/dataset/grassland-vegetationnauru to carve out 
-##                Or from here: https://maps.elie.ucl.ac.be/CCI/viewer/
-##                 
-##                It means, we’re training on their version of the truth, but it should be enough to cut a training set of spatial 
-##                areas and labels for training on the Sentinel-2 data.
-##                 
-##                Yeah? Nah?
-##                 
-##                 
-##                Best regards,
-##                James
-##                
-##                
+##    Objective:  This programme builds on the thinking that we can use ESA data to pre-train
+##                areas using a logistic regression. This programme makes the regression and
+##                test data sets using parallel processing.
 ##                
 ##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 September 2025
@@ -570,7 +482,10 @@ for(i in 1:(31*32))
 ##    Zoom in
 ##
 
-plot(ESA, main="Zoom In",xlim=c(166.4, 166.5),ylim=c(-22.225, -22.3))
+plot(ESA, main="Zoom In",xlim=c(166.4, 166.5),ylim=c(-22.225, -22.32))
+plot(Test_Set[Test_Set$ESA_Value == 50,1], col="red", add=TRUE)
+
+
 
 for(i in 1:(31*32))
 {
@@ -603,19 +518,19 @@ Blue   <- project(Blue,  crs(ESA))
 
 
 
- One_Cell    <- ESA[34350, drop=FALSE]
- Red_Cells   <- intersect(Red,   ext(ESA[34350, drop=FALSE]))
- Green_Cells <- intersect(Green, ext(ESA[34350, drop=FALSE]))
- Blue_Cells  <- intersect(Blue,  ext(ESA[34350, drop=FALSE])) 
+One_Cell    <- ESA[34350, drop=FALSE]
+Red_Cells   <- intersect(Red,   ext(ESA[34350, drop=FALSE]))
+Green_Cells <- intersect(Green, ext(ESA[34350, drop=FALSE]))
+Blue_Cells  <- intersect(Blue,  ext(ESA[34350, drop=FALSE])) 
 
- X <- st_as_sf(as.polygons(Red_Cells))
- X$Green_Values = values(Green_Cells)
- X$Blue_Values  = values(Blue_Cells)
-                 
- X$ESA_Value          <- rep(values(One_Cell), nrow(X))
- X$Observation_Number <- 34350
- 
- 
+X <- st_as_sf(as.polygons(Red_Cells))
+X$Green_Values = values(Green_Cells)
+X$Blue_Values  = values(Blue_Cells)
+              
+X$ESA_Value          <- rep(values(One_Cell), nrow(X))
+X$Observation_Number <- 34350
+
+
  
  
  

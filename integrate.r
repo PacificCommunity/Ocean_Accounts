@@ -186,12 +186,19 @@
       # Regards,
       # James
 
-
-
    ##
    ##    Run "Programmes/DEP_Play_Code_Version2.py" in Python.
    ##    It will download some code shape files into the Data_Spatial directory
    ##
+#      source("Programmes/ESA and Sentinel Data_Version3.r") # This was the prototype programme for the regression analysis
+
+      source("Programmes/Draw_Samples.r")          # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing
+      source("Programmes/Create_Regression_Set.r") # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for regression.
+      source("Programmes/Create_Test_Set.r")       # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for testing the model.
    
-      source("Programmes/ESA and Sentinel Data.r") # This runs some logistic regressions in R
+      source("Programmes/Logistic_Regression.r")   # This estimates the Sentinel-2 RGB values associated with ESA land use. It estimates using the regression set, and tests on the test data.
+
+
+
+
 
