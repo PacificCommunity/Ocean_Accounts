@@ -123,6 +123,9 @@
       library(RDCOMClient)
       library(extrafont)
       library(tictoc)   
+      
+      library(sysfonts)
+      library(showtext)
 
    ##
    ##    Special Libraries
