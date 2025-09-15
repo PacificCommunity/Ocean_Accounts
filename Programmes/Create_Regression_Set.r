@@ -1,5 +1,5 @@
 ##
-##    Programme:  Create_Regression
+##    Programme:  Create_Regression_Set
 ##
 ##    Objective:  This programme builds on the thinking that we can use ESA data to pre-train
 ##                areas using a logistic regression. This programme makes the regression data set from the Sentinel-2 data
