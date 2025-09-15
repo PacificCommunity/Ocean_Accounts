@@ -92,6 +92,31 @@
 ##                James
 ##                
 ##                
+##    Hot Tips:   (1)   I trained the regression dataset on the full raster including the sea - I got a lot of observations of the sea.
+##    for next:         Next time, subset the rasters on the Pacific Coastline dataset from the Pacific Data Hub so that all the samples
+##    time    :         are of land.
+##                
+##                (2)   Spend a lot more effort cutting out the land component of the data. The next iteration of this programme is going 
+##                      to bring all of the Pacific land together and sample from that, rather than just train on a subset of New Caledonia
+##                      and mostly sampling the ocean.
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
+##                
 ##                
 ##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 September 2025
@@ -103,7 +128,6 @@
       rm(list=ls(all=TRUE))
       options(max.print=999999)
       options(scipen = 100)
-     
 
    ##
    ##    Core libraries
@@ -195,12 +219,13 @@
    ##
 #      source("Programmes/ESA and Sentinel Data_Version3.r") # This was the prototype programme for the regression analysis
 
-      source("Programmes/Draw_Samples.r")          # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing
+#      source("Programmes/Draw_Samples.r")         # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing
+      source("Programmes/Draw_Samples_Version2.r") # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing, but now uses the Pacific Coastline data to exclude the sea
       source("Programmes/Create_Regression_Set.r") # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for regression.
       source("Programmes/Create_Test_Set.r")       # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for testing the model.
    
       source("Programmes/Logistic_Regression.r")   # This estimates the Sentinel-2 RGB values associated with ESA land use. It estimates using the regression set, and tests on the test data.
-
+      source("Programmes/Explore_Logistic_Results.r")   # Creates a picture of land use using the test data
 
 
 

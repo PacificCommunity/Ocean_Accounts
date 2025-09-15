@@ -67,7 +67,7 @@
           Grab_Target_Samples <- Test_Sample[(Parcycle*Size_of_Loops + 1):min(((Parcycle+1)*Size_of_Loops),  length(Test_Sample))]
           
           sp <- parallel::clusterSplit(cl, 1:length(Grab_Target_Samples))
-          clusterExport(cl, c("sp", "Grab_Target_Samples", "Peg_Me"))  # each worker is a new environment, you will need to export variables/functions to
+          clusterExport(cl, c("sp", "Grab_Target_Samples", "Peg_Me"))  # each worker is a new environment. Peg_Me lives in the R/functions.r file
          
           tic(print(paste("Starting to process loop", Parcycle)))
             system.time(ll <- parallel::parLapplyLB(cl, sp, Peg_Me))
