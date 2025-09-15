@@ -46,12 +46,15 @@
 
 
       Noumea <- st_union(st_crop(st_make_valid(Countries), c(ymin = -22.32, xmin = 166.38, ymax = -22.16, xmax = 166.61)))
-      Noumea_Set <- st_crop(Test_Set, Noumea)
+      Noumea_Set <- st_intersection(Test_Set, Noumea)
       
       ggplot() + 
-      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 190,1], color = "red",   fill = "Blue") + 
-      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 50,1],  color = "green", fill = "Blue") +
-      geom_sf(data = Noumea, size = 3, fill = NA)+
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 30,1],   color = "brown", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 50,1],   color = "green", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 120,1],  color = "brown", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 190,1],  color = "red",   fill = "Blue") + 
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 210,1],  color = "blue",   fill = "Blue") + 
+      geom_sf(data = Noumea, size = 15, fill = NA)+
         coord_sf(datum = NA) +
           labs(title = "Estimated Land Use - Sentinel-2 Data", 
              caption = "FAME\nThe Pacific Community (SPC)") +
@@ -66,7 +69,7 @@
                                           margin = margin(1.25,1.25,1.25,1.25, unit = "mm")),
                 panel.spacing = unit(1, "lines"),                                              
                 legend.text   = element_text(size = 10, family = "MyriadPro-Regular"),
-                plot.title    = element_text(size = 24, colour = SPCColours("Dark_Blue"),  family = "MyriadPro-Light"),
+                plot.title    = element_text(size = 18, colour = SPCColours("Dark_Blue"),  family = "MyriadPro-Light"),
                 plot.subtitle = element_text(size = 14, colour = SPCColours("Light_Blue"), family = "MyriadPro-Light"),
                 plot.caption  = element_text(size = 10,  colour = SPCColours("Dark_Blue"), family = "MyriadPro-Light", hjust = 1.0),
                 plot.tag      = element_text(size =  9, colour = SPCColours("Red")),
@@ -78,7 +81,7 @@
                 legend.margin = margin(10, 10, 10, 10),
                 legend.position  = "bottom")
                 
-ggsave("Graphical_Output/Estimated Land Use - Sentinel-2 Data.png", height =10.13, width = 20.66, dpi = 165, units = c("cm"))      
+ggsave("Graphical_Output/Estimated Land Use - Sentinel-2 Data.png", height =(2)*10.13, width = (1.75)*20.66, dpi = 300, units = c("cm"))      
       
       
 
