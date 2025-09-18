@@ -222,12 +222,16 @@
 #      source("Programmes/Draw_Samples.r")         # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing
       source("Programmes/Draw_Samples_Version2.r") # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing, but now uses the Pacific Coastline data to exclude the sea
       
-      source("Programmes/Create_Regression_Set.r") # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for regression.
       source("Programmes/Create_Test_Set.r")       # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for testing the model.
+      source("Programmes/Create_Regression_Set.r") # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for regression.
    
-      source("Programmes/Logistic_Regression.r")   # This estimates the Sentinel-2 RGB values associated with ESA land use. It estimates using the regression set, and tests on the test data.
-      source("Programmes/Explore_Logistic_Results.r")   # Creates a picture of land use using the test data
+      source("Programmes/Logistic_Regression.r")           # This estimates the Sentinel-2 RGB values associated with ESA land use. It estimates using the regression set, and tests on the test data.
+      source("Programmes/Logistic_Regression_to_Test.r")   # This applies the Logistic_Regression models to the test data. I separated this from the above programme because I split the regression
+                                                           # and test dataset creation across machines. So the machine that makes the regression data can carry on and estimate the models while the 
+                                                           # machine that makes the test data can finish and then run this programme.
+      source("Programmes/Explore_Logistic_Results.r")      # Creates a picture of land use using the test data
 
+      source("Programmes/Create_a_TimeSeries.r")           # Apply the logistic regression models to timeseries of land to estimate area.
 
 
 

@@ -19,6 +19,10 @@
 ##    Version 1 : and uses its to subset the raster and exclude the sea.
 ##                
 ##
+##    Recommendations: The country shapefile might benefit from having a boarder around it. The regression is struggling
+##                     to identify water.
+##
+##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 September 2025
 ##
 ##

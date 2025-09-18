@@ -49,10 +49,15 @@
       Noumea_Set <- st_intersection(Test_Set, Noumea)
       
       ggplot() + 
-      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 30,1],   color = "brown", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 30,1],   color = "pink", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 40,1],   color = "light green",   fill = "Blue") + 
       geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 50,1],   color = "green", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 100,1],  color = "gold",  fill = "Blue") +
       geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 120,1],  color = "brown", fill = "Blue") +
-      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 190,1],  color = "red",   fill = "Blue") + 
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 130,1],  color = "yellow", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 150,1],  color = "purple", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 160,1],  color = "orange", fill = "Blue") +
+      geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 190,1],  color = "red", fill = "Blue") +
       geom_sf(data = Noumea_Set[Noumea_Set$Predicted_Value == 210,1],  color = "blue",   fill = "Blue") + 
       geom_sf(data = Noumea, size = 15, fill = NA)+
         coord_sf(datum = NA) +
@@ -81,30 +86,8 @@
                 legend.margin = margin(10, 10, 10, 10),
                 legend.position  = "bottom")
                 
-      ggsave("Graphical_Output/Estimated Land Use - Sentinel-2 Data.png", height =(2)*10.13, width = (1.75)*20.66, dpi = 300, units = c("cm"))      
+      ggsave("Graphical_Output/Estimated Land Use - Sentinel-2 Data - Version 2.png", height =(2)*10.13, width = (1.75)*20.66, dpi = 300, units = c("cm"))      
 
-   ##
-   ##    Load the models and apply to all of the data
-   ##
-      ##
-      ##    Load the models
-      ##
-         Contents <- as.data.frame(list.files(path = "Data_Output/",  pattern = "*.rda"))
-         names(Contents) = "DataFrames"
-         Contents$Dframe <- str_split_fixed(Contents$DataFrames, "\\.", n = 2)[,1]
-         Contents <- Contents[str_detect(Contents$DataFrames, "model"),]
-
-         lapply(Contents$DataFrames, function(File){
-                load(paste0("Data_Output/", File))  
-                return(NULL)})
-      ##
-      ##    Load the Sentinel-2 rasters
-      ##
-         Red   <- rast("Data_Spatial/dep_s2_geomad_red_2017.tif")
-         Green <- rast("Data_Spatial/dep_s2_geomad_green_2017.tif")
-         Blue  <- rast("Data_Spatial/dep_s2_geomad_blue_2017.tif")
-   
-      
    
 ##
 ##    And we're done

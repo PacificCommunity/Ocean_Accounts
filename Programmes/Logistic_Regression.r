@@ -28,8 +28,7 @@
    ##    Read in the ESA data
    ##
       load("Data_Spatial/Regression_Set.rda")   
-      load("Data_Spatial/Test_Set.rda")   
-
+      
    ##
    ## Generate categorical variables (the hard way)
    ##
@@ -51,26 +50,6 @@
       Regression_Set$Is_170 <- ifelse(Regression_Set$ESA_Value == 170, 1,0)
       Regression_Set$Is_190 <- ifelse(Regression_Set$ESA_Value == 190, 1,0)
       Regression_Set$Is_210 <- ifelse(Regression_Set$ESA_Value == 210, 1,0)
-      
-      Test_Set$Is_10  <- ifelse(Test_Set$ESA_Value ==  10, 1,0)
-      Test_Set$Is_11  <- ifelse(Test_Set$ESA_Value ==  11, 1,0)
-      Test_Set$Is_12  <- ifelse(Test_Set$ESA_Value ==  12, 1,0)
-      Test_Set$Is_20  <- ifelse(Test_Set$ESA_Value ==  20, 1,0)
-      Test_Set$Is_30  <- ifelse(Test_Set$ESA_Value ==  30, 1,0)
-      Test_Set$Is_40  <- ifelse(Test_Set$ESA_Value ==  40, 1,0)
-      Test_Set$Is_50  <- ifelse(Test_Set$ESA_Value ==  50, 1,0)
-      Test_Set$Is_80  <- ifelse(Test_Set$ESA_Value ==  80, 1,0)
-      Test_Set$Is_100 <- ifelse(Test_Set$ESA_Value == 100, 1,0)
-      Test_Set$Is_110 <- ifelse(Test_Set$ESA_Value == 110, 1,0)
-      Test_Set$Is_120 <- ifelse(Test_Set$ESA_Value == 120, 1,0)
-      Test_Set$Is_121 <- ifelse(Test_Set$ESA_Value == 121, 1,0)
-      Test_Set$Is_130 <- ifelse(Test_Set$ESA_Value == 130, 1,0)
-      Test_Set$Is_150 <- ifelse(Test_Set$ESA_Value == 150, 1,0)
-      Test_Set$Is_160 <- ifelse(Test_Set$ESA_Value == 160, 1,0)
-      Test_Set$Is_170 <- ifelse(Test_Set$ESA_Value == 170, 1,0)
-      Test_Set$Is_190 <- ifelse(Test_Set$ESA_Value == 190, 1,0)
-      Test_Set$Is_210 <- ifelse(Test_Set$ESA_Value == 210, 1,0)
-      
    ##
    ## Estimate the low level land use from the regression set
    ##
@@ -93,65 +72,6 @@
       model_190 <- glm(Is_190 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
       model_210 <- glm(Is_210 ~ Red_Values + Green_Values + Blue_Values, family = binomial, data = Regression_Set)
       
-   ##
-   ## Predict the low level land use on the test set
-   ##
-
-      Test_Set$Predict_Is_50  <- stats::predict(model_50,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_11  <- stats::predict(model_11,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_12  <- stats::predict(model_12,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_20  <- stats::predict(model_20,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_30  <- stats::predict(model_30,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_40  <- stats::predict(model_40,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_50  <- stats::predict(model_50,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_80  <- stats::predict(model_80,  newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_100 <- stats::predict(model_100, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_110 <- stats::predict(model_110, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_120 <- stats::predict(model_120, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_121 <- stats::predict(model_121, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_130 <- stats::predict(model_130, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_150 <- stats::predict(model_150, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_160 <- stats::predict(model_160, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_170 <- stats::predict(model_170, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_190 <- stats::predict(model_190, newdata = Test_Set, type = "response")
-      Test_Set$Predict_Is_210 <- stats::predict(model_210, newdata = Test_Set, type = "response")
-
-   ##
-   ## Find the highest probability
-   ##
-
-      Test_Set$Predicted_Value = NA
-      
-      Values <- as.matrix(st_drop_geometry(Test_Set[, names(Test_Set)[str_detect(names(Test_Set), "Predict_Is_")]]))
-      namez  <- as.numeric(str_replace_all(names(Test_Set)[str_detect(names(Test_Set), "Predict_Is_")], "Predict_Is_",""))
-      
-      Test_Set$Predicted_Value <- apply(Values, 1, function(x){
-                                        namez[which(x == max(x))]
-                                        })
-      Test_Set$Total <- 1
-      
-      Testy <- Test_Set
-      Testy$Predicted_Value <- sapply(1:nrow(Testy), function(x) as.numeric(Test_Set$Predicted_Value[[x]][[1]]))
-      Test_Set <- Testy
-      
-   ##
-   ## Estimate closeness
-   ##
-   
-      Estimated_Predicted <- with(st_drop_geometry(Test_Set),
-                             aggregate(list(Correct   = ifelse(Predicted_Value == ESA_Value, 1,0),
-                                            InCorrect = ifelse(Predicted_Value != ESA_Value, 1,0),
-                                            Total = Total),
-                                       list(ESA_Value = ESA_Value),
-                                     sum, 
-                                     na.rm = TRUE))
-                   
-      Test_Set[Test_Set$Observation_Number == 368,]
-      sum(Estimated_Predicted$Correct)/sum(Estimated_Predicted$Total)
-
-##
-##    Save the regression model and the outputs 
-##
    save(model_10,  file = "Data_Output/model_10.rda")
    save(model_11,  file = "Data_Output/model_11.rda")
    save(model_12,  file = "Data_Output/model_12.rda")
@@ -170,11 +90,6 @@
    save(model_170, file = "Data_Output/model_170.rda")
    save(model_190, file = "Data_Output/model_190.rda")
    save(model_210, file = "Data_Output/model_210.rda")
-   
-   save(Test_Set, file = "Data_Spatial/Test_Set.rda")
-   save(Regression_Set, file = "Data_Spatial/Regression_Set.rda")
-   
-   write.table(Estimated_Predicted, file = "Data_Output/Estimated_Predicted.csv", sep=",", row.names = FALSE)
    
 ##
 ##    And we're done
