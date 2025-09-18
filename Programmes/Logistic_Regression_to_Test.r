@@ -75,7 +75,6 @@
    ## Predict the low level land use on the test set
    ##
 
-      Test_Set$Predict_Is_50  <- stats::predict(model_50,  newdata = Test_Set, type = "response")
       Test_Set$Predict_Is_11  <- stats::predict(model_11,  newdata = Test_Set, type = "response")
       Test_Set$Predict_Is_12  <- stats::predict(model_12,  newdata = Test_Set, type = "response")
       Test_Set$Predict_Is_20  <- stats::predict(model_20,  newdata = Test_Set, type = "response")

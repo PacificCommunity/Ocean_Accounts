@@ -164,7 +164,7 @@
       library(parallel)   
       library(stats)   
       library(MASS)
-
+      library(bigmemory)
    ##
    ##    Set working directory
    ##
