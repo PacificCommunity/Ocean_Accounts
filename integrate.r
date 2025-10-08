@@ -1,40 +1,33 @@
 ##
-##    Programme:  Oceans Accounts.r
+##    Programme:  Oceans Accounts_Version2.r
 ##
-##    Objective:  What is this programme designed to do?
-##                That's a very interesting approach. I'll be very curious to hear your results, whether good or bad.
+##    Objective:  
+##                From: Neville Smith <nevilles@spc.int> 
+##                Sent: Friday, 26 September 2025 2:36 pm
+##                To: James Hogan <jamesh@spc.int>
+##                Subject: RE: REsponse requested: Ocean Accounting for Integrated Ocean Management and NOP implementation
 ##                
-##                Good luck, 
-##                Philippine
-##                ________________________________________
-##                From: James Hogan <jamesh@spc.int>
-##                Sent: Monday, 8 September 2025 14:09
-##                To: Philippine Laroche <philippinel@spc.int>; Sachindra Singh <sachindras@spc.int>
-##                Subject: RE: DEP - Land Use Models 
-##                 
-##                Regarding the ESA product in the last link, the aim of my work is to develop something more tailored 
-##                to our region and at a higher resolution. The ESA product is designed at a global scale, so it doesn’t 
-##                capture the specific characteristics of the Pacific.
-##                 
-##                Nope, it doesn’t – not automatically.  
-##                 
-##                But if you think of the two data sources as a regression where the 300m ESA is an aggregation of the 
-##                underlying 10m Sentinel data with error, then a nice big random sample of the ESA data for pacific 
-##                countries, regressed against the underlying Sentinel data should create an unbiased estimate of the 
-##                underlying sentinel data that equates to the ESA groups.
-##                 
-##                ESA = a + b * Sentinel + error
-##                 
-##                I’ll see if I can make that work… 
-##                 
-##                I might be completely wrong and it might not 😊
+##                Hi James,
 ##                
-##                 
+##                Generally positive indeed. I would suggest replacing Fiji and/or adding a fourth with New Caledonia, as it gives us territory/francophone on top of all of the other benefits/pros identified for Fiji.
+##                
+##                Happy to discuss further.
+##                
+##                Cheers,
+##                Neville 
+##                From: James Hogan <jamesh@spc.int> 
+##                Sent: Friday, 26 September 2025 2:47 AM
+##                To: Neville Smith <nevilles@spc.int>
+##                Subject: Fw: REsponse requested: Ocean Accounting for Integrated Ocean Management and NOP implementation
+##                
+##                Some really good feedback from Sally!
+##                
+##                Bat regards, 
 ##                James
-##                 
-##                 
-##                –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-##                 
+##                
+##                –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––- 
+##                                   
+##                
 ##                James Hogan
 ##                Senior Marine Resource Economist
 ##                Économiste principal des ressources marines
@@ -43,53 +36,98 @@
 ##                Tel: (+64) 275 997 999
 ##                E: jamesh@spc.int | Website | Twitter | LinkedIn | Facebook | YouTube | Instagram
 ##                
-##                
+##                                   
 ##                –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
 ##                As part of our emissions reduction strategy, please only print this email if necessary
 ##                Dans le cadre de notre stratégie de réduction des émissions, merci d'imprimer cet e-mail uniquement si nécessaire
-##                 
+##                                   
 ##                
-##                From: Philippine Laroche <philippinel@spc.int> 
-##                Sent: Monday, 8 September 2025 2:57 pm
-##                To: James Hogan <jamesh@spc.int>; Sachindra Singh <sachindras@spc.int>
-##                Subject: Re: DEP - Land Use Models
-##                 
-##                I had a quick look at the links. For the first two, it seems the available labels are quite limited. I only 
-##                see buildings and vegetation, whereas we would also need croplands, mangroves, bare soil, etc., to ensure a 
-##                representative land cover classification.
-##                Regarding the ESA product in the last link, the aim of my work is to develop something more tailored to our 
-##                region and at a higher resolution. The ESA product is designed at a global scale, so it doesn’t capture the 
-##                specific characteristics of the Pacific.
-##                You can find attached, the notebook I used and an geopackage file with label points. At the beginning you can 
-##                choose the Area of Interest (AOI), select the training area over fiji to match the gpkg file : # over Viti Levu, 
-##                Fiji : left=177.2, bottom=-18.3, right=178.8, top=-17.2.  Then you can run the notebook, until the part "for later maybe".
-##                I also have gpkg for marshall, cook and palau. My final training dataset is a mixed of the four islands.
-##                 
-##                Kind regards, 
-##                Philippine
 ##                ________________________________________
-##                From: James Hogan <jamesh@spc.int>
-##                Sent: Monday, 8 September 2025 12:56
-##                To: Philippine Laroche <philippinel@spc.int>; Sachindra Singh <sachindras@spc.int>
-##                Subject: RE: DEP - Land Use Models 
-##                 
-##                Great – thanks Philippine 😊 Sharing the notebook would be great.
-##                 
-##                I was thinking the same thing around how to creating a training set for how the Sentinel-2 data relates to land use. 
-##                 
-##                My thinking was overlaying the raster data with information from here: https://pacific-data.sprep.org/search?f%5B0%5D=content_type%3Adataset.dataset&f%5B1%5D=format%3Ageojson. 
-##                 
-##                Like this: https://pacific-data.sprep.org/dataset/grassland-vegetationnauru to carve out 
-##                Or from here: https://maps.elie.ucl.ac.be/CCI/viewer/
-##                 
-##                It means, we’re training on their version of the truth, but it should be enough to cut a training set of spatial 
-##                areas and labels for training on the Sentinel-2 data.
-##                 
-##                Yeah? Nah?
-##                 
-##                 
-##                Best regards,
-##                James
+##                From: Sally Bailey <sallyb@spc.int>
+##                Sent: Friday, September 26, 2025 12:08:44 AM
+##                To: James Hogan <jamesh@spc.int>; Jens Kruger <jensk@spc.int>; Tony Kabasi <tonyk@spc.int>; Lisa Green <lisag@spc.int>; Sachindra Singh <sachindras@spc.int>; Litia Gaunavou <litiag@spc.int>
+##                Cc: Duncan Hume <duncanh@spc.int>
+##                Subject: REsponse requested: Ocean Accounting for Integrated Ocean Management and NOP implementation 
+##                
+##                Bula James (and colleagues)
+##                
+##                Thanks again for the paper and the discussion last Monday. Once again apologies for the delayed response, as you know I came straight back into the EQAP meeting and then 
+##                into organising PIOC, EQAP endorsement, and Adaptation Futures, so I haven’t been able to give the paper the time it deserves. That said, I really appreciate you putting 
+##                something together that we can all discuss, hence copying in Tony, Jens, Lisa (who I briefly caught up with in Noumea last week), and Sachin.
+##                
+##                My initial thoughts as discussed,  is that this work should be reframed from a regional initiative into a country codesign process, where Ocean and Environmental Accounts 
+##                are embedded as decision support tools (DSTs) for both IOM and MSP. Fiji, Palau, and Cook Islands could provide the ideal test cases, given their existing governance 
+##                frameworks and political interest. By grounding OA in national priorities and planning systems, SPC can ensure these accounts deliver real policy impact, strengthen 
+##                access to blended finance opportunities, and build durable national ownership.
+##                
+##                Rather than a region wide statistical focus, the opportunity is to codesign Ocean and Environmental Accounts as DSTs with at least one country per sub-region. This would 
+##                allow us to embed them directly into MSP and IOM processes and test their utility in diverse contexts. 
+##                
+##                Suggested pilots:
+##                •	Fiji (Melanesia): EU-funded for IOM, recently completed the MSP Global Rapid Assessment, and working with GOAP on OA. The Permanent Secretary has indicated  interest, 
+##                   which makes Fiji a natural pilot for testing OA integration into both IOM frameworks and MSP planning.
+##                
+##                •	Palau (North Pacific): MSP funded by US and MFAT. While there have been engagement challenges, OA could be positioned as the evidence base for evaluating trade-offs in 
+##                   MSP zoning and for demonstrating the economic value of conservation.
+##                
+##                •	Cook Islands (Polynesia): MFAT funding MSP, EU funding IOM, and the Marae Moana Act provides a legal framework for integrated management. This makes Cooks a ready 
+##                   platform to embed OA as a cross-sector DST that strengthens both MSP zoning and IOM policy monitoring. I know Maria has reached out to you, which shows interest, 
+##                   reinforcing momentum.
+##                
+##                A three-country approach would allow SPC to test and refine methodology in different governance and ecological contexts before scaling up. We are under time pressure, given 
+##                the US DoS project ends September 2026, so plan B would just to do one and I suggest that is Fiji as it is easily accessible and if something not moving easy to go for a 
+##                coffee or Talanoa over bowl of kava.
+##                
+##                •	For MSP: OA can be converted into spatially explicit data layers to inform zoning, sector negotiations, and trade-offs (tourism, fisheries, conservation, etc.).
+##                •	For IOM: OA can provide the evidence base for National Ocean Policies (NOPs), track how economic sectors impact ecosystems, and measure progress toward IOM outcomes.
+##                
+##                By focusing on three contexts, we can develop differentiated approaches:
+##                
+##                •	In Fiji, OA could complement IOM governance frameworks while supporting emerging MSP.
+##                •	In Palau, OA could strengthen MSP by quantifying ecosystem service values and supporting the emerging NOP.
+##                •	In Cook Islands, OA could sit at the interface of MSP (zoning) and IOM (Marae Moana governance), linking both to sustainable finance opportunities.
+##                
+##                The trick is to position accounts as practical policy tools, not just technical outputs. Data generated could support:
+##                
+##                •	Accessing finance (climate, blue carbon, biodiversity credits).
+##                •	Demonstrating ecosystem value in economic terms to strengthen the case for conservation and sustainable use.
+##                •	Reporting progress toward Blue Pacific Continent, SDG14, Paris Agreement, 30x30, and other commitments.
+##                
+##                SPC’s role should be clearly framed as facilitator and technical enabler. The donors I work with are clear they want national governments in the driving seat, with SPC 
+##                providing technical and coordination support. Therefore, I beleive OA should be designed to strengthen national IOM and MSP institutions, with codesign processes engaging 
+##                statistical offices, environment ministries, ocean governance bodies, and communities to ensure both legitimacy and usability.
+##                
+##                Although this work should be country focused, there is a strong opportunity to create a regional learning loop. By linking Fiji, Palau, and Cook Islands through a structured 
+##                Community of Practice on Ocean Accounting for MSP/IOM, or through the existing IOM SC which includes countries beyond the EU project, SPC can ensure that lessons, methods, 
+##                and tools are shared across contexts. 
+##                
+##                This will:
+##                •	Help identify what is transferable between different governance systems.
+##                •	Allow scaling and replication in other Pacific countries.
+##                •	Build a regional narrative on how OA supports the Pacific’s collective priorities (Blue Pacific strategy, SDG14, 30x30, climate resilience, and finance mobilisation).
+##                
+##                This also fits with donor requirements in building capacity and regional coordination and collaboration in both the CR-MSP funded by US DoS and CABSMART – MSP funded by 
+##                NZMFAT
+##                
+##                I would like to move this forward with an internal discussion. I know availability is a challenge: you are on leave, Lisa is in the UK, Sachin won’t be at PIOC, and Jens 
+##                and Tony are busy with other meetings. However, it would be good if @Jens Kruger @Sachindra Singh @James Hogan@Lisa Green@Litia Gaunavou @Tony Kabasi you could all respond 
+##                with your thoughts on James’ paper and my suggestions above.
+##                
+##                Hopefully, we can use the margins of PIOC to meet with GOAP, Fiji and Cook Islands representatives, and agree next steps. From there, we can continue momentum as a small 
+##                working group, also linking with the new IOM Adviser once they start, and with the upcoming consultancy Jens has circulated on maritime work in Solomon Islands.  
+##                
+##                In addition, I have copied in Duncan who has just started as Data Management Adviser and he will be at PIOC.
+##                
+##                Vinaka
+##                Sally
+##                Sally Bailey
+##                Marine Spatial Planning Coordinator 
+##                Coordinatrice - Planification spatiale marine
+##                Pacific Community
+##                SPC - Private Mail Bag - Suva, Fiji
+##                Level 2 - Lotus Building, Ratu Mara Road, Nabua. (18°07'16.4"S 178°27'32.2"E)
+##                Tel: (679) 3381377 Ext 35463 | Direct line: +679 3379463
+##                Email: sallyb@spc.int | Website | Twitter | LinkedIn | Facebook | YouTube | Instagram 
 ##                
 ##                
 ##    Hot Tips:   (1)   I trained the regression dataset on the full raster including the sea - I got a lot of observations of the sea.
@@ -104,22 +142,15 @@
 ##                
 ##                
 ##                
+##                So, we're going to do all this again for four countries: Fiji, Palau, Cook Islands and New Caledonia
 ##                
+##                Alrighty... This code is being saved in a separate branch "Version2MoreCountries"
 ##                
-##                
-##                
-##                
-##                
-##                
-##                
-##                
-##                
-##                
-##                
+##                Lets get into it....
 ##                
 ##                
 ##
-##    Author:     James Hogan, Senior Marine Resource Economist, 8 September 2025
+##    Author:     James Hogan, Senior Marine Resource Economist, 8 October 2025
 ##
 ##
    ##
