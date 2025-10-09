@@ -87,3 +87,8 @@
 ##
 ##    And we're done
 ##
+
+load('Data_Spatial/Countries.rda')
+plot(Countries[Countries$Polygon_ID == 48,"Polygon_ID"])
+
+

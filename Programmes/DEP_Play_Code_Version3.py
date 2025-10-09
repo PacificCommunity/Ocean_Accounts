@@ -57,7 +57,8 @@ print(Bounded_Boxes.head())
 catalog = "https://stac.digitalearthpacific.org"  # DE Pacific STAC Catalog
 collection = "dep_s2_geomad"  # Collection for GeoMAD files
 
-for Counting_Variable in range(0,len(Bounded_Boxes)):
+#for Counting_Variable in range(54,len(Bounded_Boxes)):
+for Counting_Variable in {52,53}:
 #for Counting_Variable in range(0,1):
     bbox = (Bounded_Boxes.iloc[Counting_Variable,0], Bounded_Boxes.iloc[Counting_Variable,1], Bounded_Boxes.iloc[Counting_Variable,2],Bounded_Boxes.iloc[Counting_Variable,3])
     print(bbox)

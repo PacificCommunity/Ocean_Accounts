@@ -215,6 +215,28 @@
       ##
          source("Programmes/Estimate_bounded_boxes.r")
          
+      ##
+      ##    Thats all the data pulled down. Now I've got to make an index which relates the 10x10 spatial location with the 300x300 land use classification for each of the islands of the 
+      ##       countries.
+      ##
+      ##    So, I need to:
+      ##       (1) Chop out the sentinel-2 (S2) data into the shape of the islands, together with a 1 km buffer around the land mass. This excess RASTER data is not needed and is file bloat.
+      ##       (2) Chop out the ESA 2 data for shape of the islands - simplify, simplify, simplify.
+      ##       (3) Figure out the ESA value associated with each S2 cell so those S2 cells inherit the ESA land value
+      ##       (4) Draw a sample of GRB S2 values and their ESA values from the ENTIRE dataset for all four countries. 
+      ##
+      ##           Two concepts spring to mind:
+      ##             (a) The size of the land use varies across the region. To get a good land use estimate, I should stratify by land use and draw a sample proportional to the land use totals so 
+      ##                 each land use has a proportional liklihood of being in the regression data set.
+      ##
+      ##             (b) Second, each country also varies significantly in collect land size. If I draw a sample, even if proportional to Land Use, it will be biased towards the RGB colours from large countries
+      ##                 which will dominate the sample.
+      ##
+      ##           So, I need to draw a stratified random sample from country S2 values with BOTH land use and Country are the strata.
+      ##
+
+
+
          
    
 #      source("Programmes/ESA and Sentinel Data_Version3.r") # This was the prototype programme for the regression analysis
