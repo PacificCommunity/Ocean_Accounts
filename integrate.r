@@ -235,6 +235,10 @@
       ##           So, I need to draw a stratified random sample from country S2 values with BOTH land use and Country are the strata.
       ##
 
+         ##
+         ## (1) Chop out the sentinel-2 (S2) data into the shape of the islands 
+         ##
+            source("Programmes/Sentinel_2_Chop.r")
 
 
          
