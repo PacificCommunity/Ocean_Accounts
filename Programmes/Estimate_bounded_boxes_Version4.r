@@ -16,16 +16,6 @@
 ##                That MIGHT exist in the ESA data, but spliting the countries into their islands turned out to be a bad idea, but this 
 ##                spatial complexity got omitted when the shapefiles were relied upon.
 ##
-##                So this time, I'm going to union the countries before I boundry box them, and just accept, I'm 
-##                going to be pulling a lot of empty water and blowing hard drive space :(
-##
-##                Drop Fiji for the moment
-##
-##
-##                THIS VERSION FAILED BECAUSE THE VOLUME OF DATA DOWNLOADED FOR NEW CALEDONIA BROKE THE INTERNET.
-##                NEXT VERSION, VERSION 4, WILL REVERT TO THE APPROACH OF VERSION 2, BUT WILL PUT 10KM BUFFERS AROUND
-##                THE ISLANDS, AND THEN CHOP IT BACK.
-##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 October 2025
 ##
 ##
@@ -54,7 +44,7 @@
    ##    Subset the EEZs for the countries we care about 
    ##
       EEZ       <- EEZ[EEZ$TERRITORY1 %in% c("Fiji", "Palau", "Cook Islands", "New Caledonia"),]
-      Countries <- Countries[Countries$NAME_EN %in% c("Palau", "Cook Islands", "New Caledonia"),]
+      Countries <- Countries[Countries$NAME_EN %in% c("Fiji", "Palau", "Cook Islands", "New Caledonia"),]
 
    ##
    ##   Move to common CRS
@@ -62,31 +52,33 @@
       st_crs(EEZ) <- st_crs(Countries)              
 
    ##
-   ##       Union all of the countries together with 1 kilometer buffer
+   ##    Lets try breaking Fiji apart... ok that worked
    ## 
-      Hold <- as.character(unique(Countries$NAME_EN))
+      # Fiji <- Countries[Countries$NAME_EN %in% c("Fiji"),]
+      # FijiFiji <- st_sf(st_cast(Fiji, "POLYGON"))
+      # FijiFiji$Polygon_ID <- 1:nrow(FijiFiji)
+   
+   ##
+   ##       Scale it up for all landmasses of all countries
+   ## 
       Countries <- lapply(unique(Countries$NAME_EN), function(X){
                            x <- Countries[Countries$NAME_EN == X,]
-                           x <- st_as_sf(st_union(st_buffer(st_make_valid(x), 1000)))
+                           x <- st_sf(st_cast(x, "POLYGON"))
                      })
       Countries <- do.call(rbind, Countries)
-      Countries$Name <- Hold
+      Countries$Area <- st_area(Countries)
+      Countries$Polygon_ID <- 1:nrow(Countries)                     
 
 
-      st_bbox(Countries[1,])
-      st_bbox(Countries[2,])
-      st_bbox(Countries[3,])
-      st_bbox(Countries[4,])
-      
    ##
-   ##   Estimate the bounded boxes for each landmass - add a 1 km buffer
+   ##   Estimate the bounded boxes for each landmass - add a 10 km buffer around each
    ##
-      BBX <- lapply(unique(Countries$Name), function(X){
-                    return(data.frame(xmin = st_bbox(Countries[Countries$Name == X,])[1],
-                                      ymin = st_bbox(Countries[Countries$Name == X,])[2],
-                                      xmax = st_bbox(Countries[Countries$Name == X,])[3],
-                                      ymax = st_bbox(Countries[Countries$Name == X,])[4],
-                                      Name = X))
+      BBX <- lapply(unique(Countries$Polygon_ID), function(X){
+                    return(data.frame(xmin = st_bbox(st_buffer(Countries[Countries$Polygon_ID == X,], 10000))[1],
+                                      ymin = st_bbox(st_buffer(Countries[Countries$Polygon_ID == X,], 10000))[2],
+                                      xmax = st_bbox(st_buffer(Countries[Countries$Polygon_ID == X,], 10000))[3],
+                                      ymax = st_bbox(st_buffer(Countries[Countries$Polygon_ID == X,], 10000))[4],
+                                      Polygon_ID = X))
                      })
       BBX <- do.call(rbind, BBX)
       rownames(BBX) = NULL
