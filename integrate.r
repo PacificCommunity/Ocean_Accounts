@@ -139,7 +139,7 @@
 ##                      and mostly sampling the ocean.
 ##                
 ##                
-##                
+##                Dropping Fiji for the moment because having difficult getting its satelite data from STAC - issues with 180degrees cutting the country
 ##                
 ##                
 ##                So, we're going to do all this again for four countries: Fiji, Palau, Cook Islands and New Caledonia
@@ -212,8 +212,9 @@
    ##
       ##
       ##    Estimate the bounded boxes for Fiji, Palau, Cook Islands and New Caledonia EEZ so these can be passed to "Programmes/DEP_Play_Code_Version3.py" for data extraction
+      ##       Dropping Fiji for the moment
       ##
-         source("Programmes/Estimate_bounded_boxes.r")
+         source("Programmes/Estimate_bounded_boxes_Version3.r") # I moved onto V2 for issues associated with splitting countries into islands. Read programme notes.
          
       ##
       ##    Thats all the data pulled down. Now I've got to make an index which relates the 10x10 spatial location with the 300x300 land use classification for each of the islands of the 

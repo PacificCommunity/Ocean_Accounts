@@ -57,8 +57,7 @@ print(Bounded_Boxes.head())
 catalog = "https://stac.digitalearthpacific.org"  # DE Pacific STAC Catalog
 collection = "dep_s2_geomad"  # Collection for GeoMAD files
 
-#for Counting_Variable in range(54,len(Bounded_Boxes)):
-for Counting_Variable in {52,53}:
+for Counting_Variable in range(0,len(Bounded_Boxes)):
 #for Counting_Variable in range(0,1):
     bbox = (Bounded_Boxes.iloc[Counting_Variable,0], Bounded_Boxes.iloc[Counting_Variable,1], Bounded_Boxes.iloc[Counting_Variable,2],Bounded_Boxes.iloc[Counting_Variable,3])
     print(bbox)
@@ -80,17 +79,17 @@ for Counting_Variable in {52,53}:
     #)
     print(f"Found {len(items)} items here")
 
-    Polygon_ID = str(int(Bounded_Boxes.iloc[Counting_Variable,4]))
+    Name = str(Bounded_Boxes.iloc[Counting_Variable,4]).replace(" ","_")
 
-    print(Polygon_ID)
+    print(Name)
     
     # Save blue as COG Tiles
     for time in data.time.values:
         year = time.astype("datetime64[Y]")
         data_year = data.sel(time=year)
-        Graphics_Path1 = Spatial_Path + str(collection) + "_red_" + str(year) + "_PolygonID_" + Polygon_ID +".tif"
-        Graphics_Path2 = Spatial_Path + str(collection) + "_green_" + str(year) + "_PolygonID_" + Polygon_ID +".tif"
-        Graphics_Path3 = Spatial_Path + str(collection) + "_blue_" + str(year) + "_PolygonID_" + Polygon_ID +".tif"
+        Graphics_Path1 = Spatial_Path + "_red_"   + str(year) + Name + ".tif"
+        Graphics_Path2 = Spatial_Path + "_green_" + str(year) + Name + ".tif"
+        Graphics_Path3 = Spatial_Path + "_blue_"  + str(year) + Name + ".tif"
         print(Graphics_Path1)
         data_year.red.odc.write_cog(Graphics_Path1, overwrite = True)
         data_year.green.odc.write_cog(Graphics_Path2, overwrite = True)
