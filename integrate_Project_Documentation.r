@@ -61,7 +61,11 @@
 =======
       setwd("C:\\GIT_Projects\\Ocean_Accounts")
    source("Programmes/Organise_Input_Spatial_Data.r") # This calculates the ratio of land to EEZ internationally and makes a picture
+<<<<<<< HEAD
 >>>>>>> Version2MoreCountries
+=======
+>>>>>>> HeavyLifterVersion
+>>>>>>> 47417a3a0dc9c0b09654725f1264a995ca9909f7
       
       ##
       ##    This is the content that went to Palau back in November 2024 
@@ -79,7 +83,11 @@
           rmarkdown::render("Programmes/Pacific Regional Environmental Accounts_Version2.Rmd", output_file = "C:\\GIT_Projects\\Ocean_Accounts\\Product_Output\\Pacific Regional Environmental Accounts.docx")                
 
 
+<<<<<<< HEAD
 >>>>>>> Version2MoreCountries
+=======
+>>>>>>> HeavyLifterVersion
+>>>>>>> 47417a3a0dc9c0b09654725f1264a995ca9909f7
 
 
 ##

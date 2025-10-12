@@ -6,7 +6,11 @@
 ##
 =======
 ##                and countries data came from here: https://datacatalog.worldbank.org/search/dataset/0038272
+<<<<<<< HEAD
 >>>>>>> Version2MoreCountries
+=======
+>>>>>>> HeavyLifterVersion
+>>>>>>> 47417a3a0dc9c0b09654725f1264a995ca9909f7
 ##
 ##    Author:      James Hogan, FAME - The Pacific Community (SPC)
 ##
@@ -22,7 +26,11 @@
 <<<<<<< HEAD
 =======
       source("R/themes.r")
+<<<<<<< HEAD
 >>>>>>> Version2MoreCountries
+=======
+>>>>>>> HeavyLifterVersion
+>>>>>>> 47417a3a0dc9c0b09654725f1264a995ca9909f7
    ##
    ##    Read in the EEZs and ocean shapes
    ##
@@ -51,7 +59,11 @@
 =======
                                                 ifelse(str_detect(GEONAME,"Comores"), "Comoros", 
                                                 ifelse(str_detect(GEONAME,"Falkland / Malvinas Islands"), "Falkland Islands", 
+<<<<<<< HEAD
 >>>>>>> Version2MoreCountries
+=======
+>>>>>>> HeavyLifterVersion
+>>>>>>> 47417a3a0dc9c0b09654725f1264a995ca9909f7
                                                 ifelse(str_detect(GEONAME,"Northern Mariana Islands"), "Northern Mariana Islands", 
                                                 ifelse(str_detect(GEONAME,"French Exclusive Economic Zone (New Caledonia)"), "New Caledonia", 
                                                 ifelse(str_detect(GEONAME,"American Samoa"), "American Samoa", 
@@ -86,7 +98,11 @@
                                                 ifelse(str_detect(FORMAL_EN,"Federal Republic of Somalia"), "Somalia",                                                
                                                 ifelse(str_detect(FORMAL_EN,"Faroe Islands"), "Faeroe",
                                                 ifelse(str_detect(FORMAL_EN,"Sint Maarten"), "Sint-Maarten", NAME_EN))))))),
+<<<<<<< HEAD
 >>>>>>> Version2MoreCountries
+=======
+>>>>>>> HeavyLifterVersion
+>>>>>>> 47417a3a0dc9c0b09654725f1264a995ca9909f7
                                sum, 
                                na.rm = TRUE))        
 
@@ -248,4 +264,8 @@ Test$Tickles <- ifelse(str_detect(Test$FORMAL_EN,"Federated States of Micronesia
    ##
    ## And we're done
    ##
+<<<<<<< HEAD
 >>>>>>> Version2MoreCountries
+=======
+>>>>>>> HeavyLifterVersion
+>>>>>>> 47417a3a0dc9c0b09654725f1264a995ca9909f7
