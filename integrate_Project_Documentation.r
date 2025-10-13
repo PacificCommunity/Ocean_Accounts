@@ -54,8 +54,9 @@
    ##    Set working directory
    ##
       setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
-      setwd("C:\\GIT_Projects\\Ocean_Accounts")
-   source("Programmes/Organise_Input_Spatial_Data.r") # This calculates the ratio of land to EEZ internationally and makes a picture
+      setwd("C:\\From BigDisk\GIT\\Ocean_Accounts")
+      
+      #source("Programmes/Organise_Input_Spatial_Data.r") # This calculates the ratio of land to EEZ internationally and makes a picture
       
       ##
       ##    This is the content that went to Palau back in November 2024 
@@ -69,6 +70,12 @@
         # rmarkdown::render("Programmes/Day1_Thinking.rmd",                           output_file = "S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts\\Product_Output\\Day1_Thinking.docx")                
           rmarkdown::render("Programmes/Pacific Regional Environmental Accounts_Version2.Rmd", output_file = "C:\\GIT_Projects\\Ocean_Accounts\\Product_Output\\Pacific Regional Environmental Accounts.docx")                
 
+      ##
+      ##    Write some documentation for the first attempt using ESA Land Use metrics
+      ##
+         
+          rmarkdown::render("Programmes/Generating_EnvironAsset_Accounts - Documentation.Rmd", output_file = "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Product_Output\\Generating_EnvironAsset_Accounts - Documentation.docx")                
+      
 
 
 

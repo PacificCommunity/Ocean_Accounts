@@ -266,10 +266,4 @@
       source("Programmes/Create_a_TimeSeries.r")           # Apply the logistic regression models to timeseries of land to estimate area.
 
 
-      ##
-      ##    Write some documentation
-      ##
-         
-          rmarkdown::render("Programmes/Generating_EnvironAsset_Accounts - Documentation.Rmd", output_file = "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Product_Output\\Generating_EnvironAsset_Accounts - Documentation.docx")                
-      
       
