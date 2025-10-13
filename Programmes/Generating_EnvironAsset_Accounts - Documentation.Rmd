@@ -1,0 +1,160 @@
+---
+title: "Generating Environmental Assets Accounts"
+subtitle: "Proof of Concept Documentation"
+author: FAME Economics
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+   bookdown::word_document2:
+      reference_docx: "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
+      toc: false  
+      fig_caption: true
+      number_sections: true
+      global_numbering: true  
+---
+\newpage
+
+
+```{r setup, cache=FALSE, include=FALSE}
+
+##
+##    Core libraries
+##
+      library(ggplot2)
+      library(plyr)
+      library(stringr)
+      library(lubridate)
+      library(calibrate)
+      library(Hmisc)
+      library(RColorBrewer)
+      library(stringi)
+      library(sqldf)
+      library(scales)
+      library(RDCOMClient)
+      library(extrafont)
+      library(tictoc)
+      library(RODBC)
+      
+      library(sysfonts)
+      library(showtext)
+##
+##    Project-specific libraries
+##
+      library(knitr)
+      library(citr)
+      library(htmlTable)
+      library(bookdown)
+      library(kableExtra)
+      library(pander)
+      library(officer)
+
+
+      library(RefManageR)
+
+      BaseDir <- "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Graphical_Output\\"
+
+```
+
+   
+
+<!-- 
+##
+##       This bit below is the commentary written in R Markup
+-->
+
+
+# Executive Summary 
+
+
+
+\newpage
+
+
+# Background and context 
+
+
+
+
+\newpage
+
+# Results
+
+
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Experimental Land Use Metrics"}
+
+knitr::include_graphics(paste0(BaseDir, "Experimental_Land_Area.png"))
+
+```
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Estimated Land Use - Sentinel-2 Data"}
+
+knitr::include_graphics(paste0(BaseDir, "Estimated Land Use - Sentinel-2 Data - Version 2.png"))
+
+```
+
+
+
+
+
+
+\newpage
+
+# Methodology
+
+
+
+
+
+
+\newpage
+
+# Data Sources
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "ESA Land Use Extract for Test Area"}
+
+knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
+
+```
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Sentinel-2 Colour Band"}
+
+knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
+
+```
+
+
+
+
+\newpage
+
+# Issues
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu as Shapefile"}
+
+knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_as_Shapefile.png"))
+
+```
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu in Google Maps"}
+
+knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_in_Google_Maps.png"))
+
+```
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu Missing Spatial Complexity"}
+
+knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_Missing_Spatial_Complexity.png"))
+
+```
+
+
+
+
+
+
+
+
