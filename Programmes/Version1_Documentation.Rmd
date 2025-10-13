@@ -1,0 +1,306 @@
+---
+title: "Generating Environmental Assets Accounts"
+subtitle: "Proof of Concept Documentation - Land Use Metrics"
+author: FAME Economics
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+   bookdown::word_document2:
+      reference_docx: "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Product_Output\\SPC_R_Template.docx"
+      toc: false  
+      fig_caption: true
+      number_sections: true
+      global_numbering: true  
+---
+\newpage
+
+
+```{r setup, cache=FALSE, include=FALSE}
+
+##
+##    Core libraries
+##
+      library(ggplot2)
+      library(plyr)
+      library(stringr)
+      library(lubridate)
+      library(calibrate)
+      library(Hmisc)
+      library(RColorBrewer)
+      library(stringi)
+      library(sqldf)
+      library(scales)
+      library(RDCOMClient)
+      library(extrafont)
+      library(tictoc)
+      library(RODBC)
+      
+      library(sysfonts)
+      library(showtext)
+##
+##    Project-specific libraries
+##
+      library(knitr)
+      library(citr)
+      library(htmlTable)
+      library(bookdown)
+      library(kableExtra)
+      library(pander)
+      library(officer)
+
+
+      library(RefManageR)
+
+      BaseDir <- "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Graphical_Output\\"
+
+```
+
+   
+
+<!-- 
+##
+##       This bit below is the commentary written in R Markup
+-->
+
+
+# Executive Summary 
+
+
+
+\newpage
+
+
+# Background and context 
+The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Accounts using satelite-based remote sensing data. 
+
+Building off the the Digital Earth Pacific (DEP) platform's data foundation, the paper envisaged incorporating DEP analysis into a suite of Environmental Asset Accounts for Pacific Island Countries and Territories (PICTs). Unfortunately, DEP-based land cover metrics are not sufficiently developed for analytical purpose.
+
+Land use metrics were instead sourced from the European Space Agency (ESA) Climate Change Initiative (CCI) land use maps, sourced from here: https://www.esa-landcover-cci.org/. ESA publichses a land use dashboard[https://maps.elie.ucl.ac.be/CCI/viewer/] which has a data download functionality. The ESA data used in this analysis is "ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif", a 300 meter by 300 meter resolution land use mapping created for the entire world.
+
+The land use data is for the year ending 2015 - currently 10 years out of date. More up-to-date data is available, but not as readily accessible as the 2015 data set. As a proof-of-concept it would suffice.
+
+
+v2.0.7 - Global annual LC maps from 1992 to 2015 produced by the European Space Agency (ESA) Climate Change Initiative (CCI). These are the first years of the ESA CCI LC map series.
+
+Copernicus data is freely available with login, and its web browser is well worth a visit: https://browser.dataspace.copernicus.eu/
+
+
+
+
+
+\newpage
+
+# Results
+
+
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Experimental Land Use Metrics"}
+
+knitr::include_graphics(paste0(BaseDir, "Experimental_Land_Area.png"))
+
+```
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Estimated Land Use - Sentinel-2 Data"}
+
+knitr::include_graphics(paste0(BaseDir, "Estimated Land Use - Sentinel-2 Data - Version 2.png"))
+
+```
+
+
+
+
+
+
+\newpage
+
+# Methodology
+[^S2Bands]: Sentinel-2 collects four bands at 10 m, six bands at 20 m, and three bands at 60 m spatial resolution. https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2
+
+Estimating high resolution land use could happen through one or more possible measurement channels.
+
+1. Small scale ground surveying of land use activity 
+   The most intutitive approach to measuring land use is to directly measure land use activity in the location in question. For example, if the focus is an island, than coastline measures, and land activity could be estimated through direct measurement _in situ_. While simple, repeatable and accurate, the approach does not lend itself to scaling across geographical locations. The process involves collecting private data at substantial time and collection cost. As a repeatable process, it is not very repeatable. 
+
+
+2. Satelite-based machine learning algorithms
+   Satelite data is readily accessible in a variety of wavebands across the visible and non-visible spectrum. The (Sentinel-2 satelite constilation system)[https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2] collects 10 meter by 10 meter resolution images across four spectral bands every 5 days.[^S2Bands]
+   
+   
+
+   
+   
+   
+   Machine-learning algorithms have been used to 
+
+
+3. Statistical-based approaches
+
+
+
+
+
+## Modelling low resolution land use to high resolution Sentinel-2 data
+
+The 300 meter by 300 meter resolution ESA land use data, represented a consistently defined world measure, but was at a lower resolution than ideal. Specifically, Sentinel-2 data, which underpins DEP, operates at a 10 meter by 10 meter resolution across multple colour spectrums.
+A logistic regression approach was used to estimate the high resolution land use measures associated with the 10 meter by 10 meter pixels underneath the 300 meter by 300 meter ESA measiures
+
+, where the red / green / blue values from Sentinel-2 at the 10
+
+
+
+
+
+
+
+\newpage
+
+# Data Sources
+Level 2A data are high quality data where the effects of the atmosphere on the light being reflected off of the surface of the Earth and reaching the sensor are excluded. Data are available globally since March 2017.
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "ESA Land Use Extract for Test Area"}
+
+knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
+
+```
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Sentinel-2 Colour Band"}
+
+knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
+
+```
+
+
+## False color composite
+
+A false color composite uses at least one non-visible wavelength to image Earth. The false color composite using near infrared, red and green bands is very popular (a band is a region of the electromagnetic spectrum; a satellite sensor can image Earth in different bands). The false colour composite is most commonly used to assess plant density and health, since plants reflect near infrared and green light, while they absorb red. Cities and exposed ground are grey or tan, and water appears blue or black.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - False Colour for Edge Detection"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - False Colour for Edge Detection.png"))
+
+```
+
+
+## Normalized Difference Water Index (NDWI)
+The normalized difference water index is most appropriate for water body mapping. Values of water bodies are larger than 0.5. Vegetation has smaller values. Built-up features have positive values between zero and 0.2. 
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - ND SI Internal Water Detection"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - ND SI Internal Water Detection.png"))
+
+```
+
+
+## True color optimized
+
+This optimized True color script uses the visible light bands red, green and blue in the corresponding red, green and blue color channels, resulting in a product with natural colours that represents the Earth as humans would naturally see it. The visualisation uses highlight compression and improves the contrast and color vividness through minor contrast and saturation enhancement.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - True Colour"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - True Colour.png"))
+
+```
+
+
+## True color optimized
+
+This optimized True color script uses the visible light bands red, green and blue in the corresponding red, green and blue color channels, resulting in a product with natural colours that represents the Earth as humans would naturally see it. The visualisation uses highlight compression and improves the contrast and color vividness through minor contrast and saturation enhancement.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - True Colour"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - True Colour.png"))
+
+```
+
+
+
+## Soil Adjusted Vegetation Index (SAVI)
+
+The Soil Adjusted Vegetation Index is similar to Normalized Difference Vegetation Index (NDVI) but is used in areas where vegetative cover is low (< 40%). The index is a transformation technique that minimizes soil brightness influences from spectral vegetation indices involving red and near-infrared (NIR) wavelengths. The index is helpful when analysing young crops, arid regions with sparse vegetation and exposed soil surfaces.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Soil Adjusted Vegetation Index"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - Soil Adjusted Vegetation Index.png"))
+
+```
+
+## Barren Soil Visualization
+
+The Barren Soil Visualization can be useful for soil mapping, to investigate the location of landslides or the extent of erosion in non-vegetated areas. This visualization shows all vegetation in green and the barren ground in red. Water appears black.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Barren Soil"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - Barren Soil.png"))
+
+```
+
+
+## Agriculture composite
+
+This composite uses short-wave infrared, near-infrared and blue bands to monitor crop health (a band is a region of the electromagnetic spectrum; a satellite sensor can image Earth in different bands). Both short-wave and near infrared bands are particularly good at highlighting dense vegetation, which appears dark green in the composite. Crops appear in a vibrant green and bare earth appears magenta.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Agriculture"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - Agriculture.png"))
+
+```
+
+
+
+## Geology 8, 11, 12 composite
+This composite uses both short-wave infrared (SWIR) bands 11 and 12 to differentiate among different rock types (a band is a region of the electromagnetic spectrum; a satellite sensor can image Earth in different bands). Each rock and mineral type reflects shortwave infrared light differently, making it possible to map out geology by comparing reflected SWIR light. Near Infrared (NIR) band 8 highlights vegetation, contributing to differentiation of ground materials. Vegetation in the composite appears red. The composite is useful for differentiating vegetation, and land especially geologic features that can be useful for mining and mineral exploration.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Geology 8 11 12"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - Geology 8 11 12.png"))
+
+```
+
+
+
+## Urban Classified Script
+
+The Urban Classified script aims to detect built up areas by separating them from barren ground, vegetation and water. Areas with a high moisture content are returned in blue; areas indicating built up areas are returned in white; vegetated areas are returned in green; everything else indicates barren ground and is displayed in brown colors.
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Urban Classified"}
+
+knitr::include_graphics(paste0(BaseDir, "Copernicus - Urban Classified.png"))
+
+```
+
+
+
+
+
+\newpage
+
+# Issues
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu as Shapefile"}
+
+knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_as_Shapefile.png"))
+
+```
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu in Google Maps"}
+
+knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_in_Google_Maps.png"))
+
+```
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu Missing Spatial Complexity"}
+
+knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_Missing_Spatial_Complexity.png"))
+
+```
+
+
+
+
+
+
+
+

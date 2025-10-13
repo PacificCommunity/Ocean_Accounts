@@ -54,7 +54,7 @@
    ##    Set working directory
    ##
       setwd("S:\\FAME\\NC_NOU\\FAME COMMON\\FAME Economics\\Ocean_Accounts")
-      setwd("C:\\From BigDisk\GIT\\Ocean_Accounts")
+      setwd("C:\\From BigDisk\\GIT\\Ocean_Accounts")
       
       #source("Programmes/Organise_Input_Spatial_Data.r") # This calculates the ratio of land to EEZ internationally and makes a picture
       

@@ -4,3 +4,4 @@
 *.rda
 Obs_split_*.*
 ESACCI*.*
+*.gpkg

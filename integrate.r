@@ -149,6 +149,12 @@
 ##                Lets get into it....
 ##                
 ##                
+##                ON DIGITAL EARTH PACIFIC
+##                DEP data is building and developing, but still has aspects of under-developed documentation about it. For example, all of its datasources are here:
+##                https://data.digitalearthpacific.org/ but there is no documentation for what are each. 
+##
+##                The closest that comes to documentation is: https://digitalearthpacific.org/#/applications
+##                
 ##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 October 2025
 ##
