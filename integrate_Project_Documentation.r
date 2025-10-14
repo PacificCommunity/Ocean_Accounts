@@ -74,7 +74,7 @@
       ##    Write some documentation for the first attempt using ESA Land Use metrics
       ##
          
-          rmarkdown::render("Programmes/Generating_EnvironAsset_Accounts - Documentation.Rmd", output_file = "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Product_Output\\Generating_EnvironAsset_Accounts - Documentation.docx")                
+          rmarkdown::render("Programmes/Version1_Documentation.Rmd", output_file = "C:\\From BigDisk\\GIT\\Ocean_Accounts\\Product_Output\\Generating_EnvironAsset_Accounts - Documentation.docx")                
       
 
 

@@ -1,6 +1,6 @@
 ---
 title: "Generating Environmental Assets Accounts"
-subtitle: "Proof of Concept Documentation - Land Use Metrics"
+subtitle: "First Proof of Concept: ESA Land Use allocated Using Logistic Regression"
 author: FAME Economics
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
@@ -62,19 +62,122 @@ output:
 -->
 
 
-# Executive Summary 
+
+# Background and context
+The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Asset Accounts using satelite-based remote sensing data. Building off Digital Earth Pacific (DEP) platform's data foundation, August's paper envisaged using DEP and FAME data to estimate Environmental Asset Accounts: 
+
+```{r ClassificationofEnvironmentalAssets, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Classification of environmental assets in the SEEA Central Framework"}
+
+knitr::include_graphics(paste0(BaseDir, "ClassificationofEnvironmentalAssets.png"))
+
+```    
+
+DEP products and Ocean Accounts live separate lives and have been on separate development trajectories. Not all of the spatial information needed for Enviromental Assets Accounts have been developed by DEP. DEP's focus is on developing applications: https://digitalearthpacific.org/#/applications for integration into its website front end: https://maps.digitalearthpacific.org/. Missing data sources for land assets, soil assets, and timber environmental assets have not yet been built within DEP, creating a "data hole" needing to be developed within Regional Environmental Asset Accounts project.
+
+Analytical activity to date has focused on developing land use metrics from the European Space Agency (ESA) Climate Change Initiative (CCI) land use maps, sourced from here: https://www.esa-landcover-cci.org/, and tailored to pilot countries using Sentinel-2 data and statistical techniques. This approach has enabled ESA-derived land use measures to be grafted onto the prototype land areas, and land, timber and proxies for "soil" (agriculture and grassland) to be derived. 
+
+Building prototype systems is about moving up a learning curve, continuously improving and refining. This project has followed this well-trodden. With the benefit of hindsight, changes would include:
+
+_1. Moving away from PDH Pacific Coastline shape file, and adopting [DEP Coastlines](https://data.digitalearthpacific.org/#dep_ls_coastlines/) for defining the edges of countries_
+
+   To simplify the analysis, both the ESA and Sentinel-2 data used in the prototype was truncated to [PDH Pacific Coastline](https://geonode.pacificdata.org/catalogue/#/dataset/1712). The truncation meant that when sampling the spatial data to form both a regression and test data set, only land-based information was used in the analysis. Without truncation, Pacific Island Countries and Territories (PICTs), surrounded by ocean would have a random sample over-represented by sea-based observations. 
+   
+   The effect of truncation to the Coastline shape file has been to omit areas which are in that "in-between" places between sea and land. Figure \@ref(fig:NoMangrove) illustrates how mangrove areas have been truncated from the data.
+
+   ```{r echo=FALSE, fig.pos='h', out.width = '70%'}
+
+   knitr::include_graphics(paste0(BaseDir, "Coastline_Shape.png"))
+
+
+   ```
+
+   ```{r NoMangrove, echo=FALSE, fig.pos='h', out.width = '70%', fig.cap = "Pacific Coastlines truncates in-between Land and Water Areas"}
+
+   knitr::include_graphics(paste0(BaseDir, "Problem with Coastlines Shapefile.png"))
+
+   ```
+
+   [DEP Coastlines](https://data.digitalearthpacific.org/#dep_ls_coastlines/) (the yellow line) look better (Figure \@ref(fig:DEPCoast)).
+
+
+   ```{r DEPCoast, echo=FALSE, fig.pos='h', out.width = '70%', fig.cap = "DEP Coastlines"}
+
+   knitr::include_graphics(paste0(BaseDir, "DEP_Coastlines.png"))
+
+   ```
+
+
+_2. Adopting a more current ESA CCL data set._
+
+   The ESA The land use data used in this analysis is "ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif", a 300 meter by 300 meter resolution land use mapping created for the entire world, with data as at year end 2015 - currently 10 years out of date. More up-to-date data is available, but not as readily accessible as the 2015 data set. Version 2.1.1, is available on an annual basis from 2016 to 2020, and is definitionally consistent with version 2.0.7 used in this analysis and would be a better data source for future work.
+   
+
+_3. Adopt a stratified random sample for the regression and test data sets_
+
+   Both the regression dataset, and the test dataset were derived through extracting two mutually exclusive simple random samples from the Sentinel-2 data matched to the its associated ESA land use value for the target prototype area.
+   
+   Table \@ref(tab:IPCCCatgories), in the [Appendix 1], describes all of the land uses available within ESA CCL dataset. Not all land values were available within the target prototype land area - the following land cover values were in the data:
+      
+   |Land Cover Value|	Description|
+   |----------------|--------------|
+   |10|	Rainfed cropland|
+   |11|	Rainfed cropland|
+   |12|	Rainfed cropland|
+   |20|	Irrigated cropland|
+   |30|	Mosaic cropland (>50%) / natural vegetation (tree, shrub,herbaceouscover) (<50%)|
+   |40|	Mosaic natural vegetation (tree, shrub, herbaceous cover) (>50%) / cropland (< 50%)|
+   |50|	Tree cover, broadleaved, evergreen, closed to open (>15%)|
+   |80|	Tree cover, needleleaved, deciduous, closed to open (> 15%)|
+   |100|	Mosaic tree and shrub (>50%) / herbaceous cover (< 50%)|
+   |110|	Mosaic herbaceous cover (>50%) / tree and shrub (<50%)|
+   |120|	Shrubland|
+   |121|	Shrubland|
+   |130|	Grassland|
+   |150|	Sparse vegetation (tree, shrub, herbaceous cover)|
+   |160|	Tree cover, flooded, fresh or brakish water|
+   |170|	Tree cover, flooded, saline water|
+   |190|	Urban|
+   |210|	Water|
+
+
+   Rather than a simple random sample, future work will explore drawing a stratified random sample with strata defined at both the country and the land cover level. A stratified sample draws a random sample from a population segregated by the stratum dimensions. If the data in the population contains unequal number of observations within the strata groupings, stratified sample ensures each different strata grouping contributes proportionally to the final analsys, regardless of its stratum size. 
+   
+   In the current prototype work, a 20\% simple random sample produced a regression data set which was heavily influences by land cover 50 - "Tree cover, broadleaved, evergreen, closed to open (>15%)"
+   
+   |Land Cover Value|Number of Observations|Proportion of Total|
+   |:--------------:|:--------------------:|:-----------------:|   
+   |10|	166,837|	2\%|
+   |11|	141,786|	2\%|
+   |12|	856|	0\%|
+   |20|	5,261|	0\%|
+   |30|	346,049|	4\%|
+   |40|	675,169|	8\%|
+   |50|	5,155,023|	58\%|
+   |80|	332|	0\%|
+   |100|	20,610|	0\%|
+   |110|	29,109|	0\%|
+   |120|	1,341,964|	15\%|
+   |121|	497|	0\%|
+   |130|	572|	0\%|
+   |150|	383,695|	4\%|
+   |160|	115,939|	1\%|
+   |170|	237,013|	3\%|
+   |190|	108,570|	1\%|
+   |210|	188,308|	2\%|
+   |Sample Totals|8,917,590|	100\%|
+   
+   While the simple random sample is unbiased - the population probably did contain 58\% tree cover - extending the analysis across a number of countries might not generate the same efficient sample. 
+   
+   Multiple countries of different sizes and land uses, will bias a sample towards land measures from the largest country, and the land uses which are most frequent across the countries. Stratifying the regression sampling by country and land use will ensure different countries and different size land use remain proportionally represented in the logistic regression.
 
 
 
-\newpage
 
 
-# Background and context 
-The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Accounts using satelite-based remote sensing data. 
 
-Building off the the Digital Earth Pacific (DEP) platform's data foundation, the paper envisaged incorporating DEP analysis into a suite of Environmental Asset Accounts for Pacific Island Countries and Territories (PICTs). Unfortunately, DEP-based land cover metrics are not sufficiently developed for analytical purpose.
+incorporating DEP analysis into a suite of Environmental Asset Accounts for Pacific Island Countries and Territories (PICTs). Unfortunately, DEP-based land cover metrics are not sufficiently developed for analytical purpose.
 
-Land use metrics were instead sourced from the European Space Agency (ESA) Climate Change Initiative (CCI) land use maps, sourced from here: https://www.esa-landcover-cci.org/. ESA publichses a land use dashboard[https://maps.elie.ucl.ac.be/CCI/viewer/] which has a data download functionality. The ESA data used in this analysis is "ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif", a 300 meter by 300 meter resolution land use mapping created for the entire world.
+Land use metrics were instead sourced from  ESA publichses a land use dashboard[https://maps.elie.ucl.ac.be/CCI/viewer/] which has a data download functionality. 
 
 The land use data is for the year ending 2015 - currently 10 years out of date. More up-to-date data is available, but not as readily accessible as the 2015 data set. As a proof-of-concept it would suffice.
 
@@ -172,107 +275,6 @@ knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
 ```
 
 
-## False color composite
-
-A false color composite uses at least one non-visible wavelength to image Earth. The false color composite using near infrared, red and green bands is very popular (a band is a region of the electromagnetic spectrum; a satellite sensor can image Earth in different bands). The false colour composite is most commonly used to assess plant density and health, since plants reflect near infrared and green light, while they absorb red. Cities and exposed ground are grey or tan, and water appears blue or black.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - False Colour for Edge Detection"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - False Colour for Edge Detection.png"))
-
-```
-
-
-## Normalized Difference Water Index (NDWI)
-The normalized difference water index is most appropriate for water body mapping. Values of water bodies are larger than 0.5. Vegetation has smaller values. Built-up features have positive values between zero and 0.2. 
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - ND SI Internal Water Detection"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - ND SI Internal Water Detection.png"))
-
-```
-
-
-## True color optimized
-
-This optimized True color script uses the visible light bands red, green and blue in the corresponding red, green and blue color channels, resulting in a product with natural colours that represents the Earth as humans would naturally see it. The visualisation uses highlight compression and improves the contrast and color vividness through minor contrast and saturation enhancement.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - True Colour"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - True Colour.png"))
-
-```
-
-
-## True color optimized
-
-This optimized True color script uses the visible light bands red, green and blue in the corresponding red, green and blue color channels, resulting in a product with natural colours that represents the Earth as humans would naturally see it. The visualisation uses highlight compression and improves the contrast and color vividness through minor contrast and saturation enhancement.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - True Colour"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - True Colour.png"))
-
-```
-
-
-
-## Soil Adjusted Vegetation Index (SAVI)
-
-The Soil Adjusted Vegetation Index is similar to Normalized Difference Vegetation Index (NDVI) but is used in areas where vegetative cover is low (< 40%). The index is a transformation technique that minimizes soil brightness influences from spectral vegetation indices involving red and near-infrared (NIR) wavelengths. The index is helpful when analysing young crops, arid regions with sparse vegetation and exposed soil surfaces.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Soil Adjusted Vegetation Index"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - Soil Adjusted Vegetation Index.png"))
-
-```
-
-## Barren Soil Visualization
-
-The Barren Soil Visualization can be useful for soil mapping, to investigate the location of landslides or the extent of erosion in non-vegetated areas. This visualization shows all vegetation in green and the barren ground in red. Water appears black.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Barren Soil"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - Barren Soil.png"))
-
-```
-
-
-## Agriculture composite
-
-This composite uses short-wave infrared, near-infrared and blue bands to monitor crop health (a band is a region of the electromagnetic spectrum; a satellite sensor can image Earth in different bands). Both short-wave and near infrared bands are particularly good at highlighting dense vegetation, which appears dark green in the composite. Crops appear in a vibrant green and bare earth appears magenta.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Agriculture"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - Agriculture.png"))
-
-```
-
-
-
-## Geology 8, 11, 12 composite
-This composite uses both short-wave infrared (SWIR) bands 11 and 12 to differentiate among different rock types (a band is a region of the electromagnetic spectrum; a satellite sensor can image Earth in different bands). Each rock and mineral type reflects shortwave infrared light differently, making it possible to map out geology by comparing reflected SWIR light. Near Infrared (NIR) band 8 highlights vegetation, contributing to differentiation of ground materials. Vegetation in the composite appears red. The composite is useful for differentiating vegetation, and land especially geologic features that can be useful for mining and mineral exploration.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Geology 8 11 12"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - Geology 8 11 12.png"))
-
-```
-
-
-
-## Urban Classified Script
-
-The Urban Classified script aims to detect built up areas by separating them from barren ground, vegetation and water. Areas with a high moisture content are returned in blue; areas indicating built up areas are returned in white; vegetated areas are returned in green; everything else indicates barren ground and is displayed in brown colors.
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Copernicus - Urban Classified"}
-
-knitr::include_graphics(paste0(BaseDir, "Copernicus - Urban Classified.png"))
-
-```
-
-
-
-
 
 \newpage
 
@@ -298,6 +300,36 @@ knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_Missing_Spatial_Complexity.p
 ```
 
 
+# Appendix 1
+
+
+
+```{r RegressionSet, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Regression Dataset"}
+
+knitr::include_graphics(paste0(BaseDir, "Regression_Dataset.png"))
+
+```
+
+
+```{r TestSet, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Test Dataset"}
+
+knitr::include_graphics(paste0(BaseDir, "Test_Dataset.png"))
+
+```
+
+
+
+```{r IPCCCatgories, echo=FALSE, fig.pos='h'}
+
+source("C:\\From BigDisk\\GIT\\Ocean_Accounts\\R\\functions.r")
+
+names(IPCC_Land_Categories) <- str_replace_all(names(IPCC_Land_Categories), "_", " ")
+
+knitr::kable(IPCC_Land_Categories, 
+             booktabs = TRUE,
+             caption = "Land Use Categories")
+
+```
 
 
 
