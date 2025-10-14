@@ -63,8 +63,8 @@ output:
 
 
 
-# Background and context
-The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Asset Accounts using satelite-based remote sensing data. Building off Digital Earth Pacific (DEP) platform's data foundation, August's paper envisaged using DEP and FAME data to estimate Environmental Asset Accounts: 
+# Background and context {-}
+The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Asset Accounts using satelite-based remote sensing data. The plan was to build off Digital Earth Pacific (DEP) data foundation's, reusing its geospatial metrics for data analysis, and incorporate FAME's data sources to complete the following suite of accounts: 
 
 ```{r ClassificationofEnvironmentalAssets, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Classification of environmental assets in the SEEA Central Framework"}
 
@@ -72,9 +72,91 @@ knitr::include_graphics(paste0(BaseDir, "ClassificationofEnvironmentalAssets.png
 
 ```    
 
+This prototype work was undertaken to test _how_ -  on a very small scale - Pacific Regional Environmental Accounts might be developed within SPC. Using an extract from New Caledonia, the prototype work was intended to build a suite of Environmental Accounts, uncovering during the process issues and "fish hooks" which might impact on developing metrics at scale.
+
+## High Level Results {-}
+The focus of the prototype analysis become bogged down into estimating land use metrics, in the absense of existing metrics developed through the DEP programme. Ideally, land-use metrics would be developed from first principles using machine-learning techniques applied to satelite-based data. Simialar products developed internationally include New Zealand's (LUCAS Land Use Maps)[https://data.mfe.govt.nz/layer/117733-lucas-nz-land-use-map-2020-v005/], or Australia's (National Scale Land Use Data)[https://www.agriculture.gov.au/abares/aclump/land-use/data-download].
+
+
+
+
+
+
+## Land use measures incomplete {-}
+One of the mor
+
+
 DEP products and Ocean Accounts live separate lives and have been on separate development trajectories. Not all of the spatial information needed for Enviromental Assets Accounts have been developed by DEP. DEP's focus is on developing applications: https://digitalearthpacific.org/#/applications for integration into its website front end: https://maps.digitalearthpacific.org/. Missing data sources for land assets, soil assets, and timber environmental assets have not yet been built within DEP, creating a "data hole" needing to be developed within Regional Environmental Asset Accounts project.
 
 Analytical activity to date has focused on developing land use metrics from the European Space Agency (ESA) Climate Change Initiative (CCI) land use maps, sourced from here: https://www.esa-landcover-cci.org/, and tailored to pilot countries using Sentinel-2 data and statistical techniques. This approach has enabled ESA-derived land use measures to be grafted onto the prototype land areas, and land, timber and proxies for "soil" (agriculture and grassland) to be derived. 
+
+
+# Methodology {-}
+
+
+
+
+[^S2Bands]: Sentinel-2 collects four bands at 10 m, six bands at 20 m, and three bands at 60 m spatial resolution. https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2
+
+Estimating high resolution land use could happen through one or more possible measurement channels.
+
+1. Small scale ground surveying of land use activity 
+   The most intutitive approach to measuring land use is to directly measure land use activity in the location in question. For example, if the focus is an island, than coastline measures, and land activity could be estimated through direct measurement _in situ_. While simple, repeatable and accurate, the approach does not lend itself to scaling across geographical locations. The process involves collecting private data at substantial time and collection cost. As a repeatable process, it is not very repeatable. 
+
+
+2. Satelite-based machine learning algorithms
+   Satelite data is readily accessible in a variety of wavebands across the visible and non-visible spectrum. The (Sentinel-2 satelite constilation system)[https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2] collects 10 meter by 10 meter resolution images across four spectral bands every 5 days.[^S2Bands]
+   
+   
+
+   
+   
+   
+   Machine-learning algorithms have been used to 
+
+
+3. Statistical-based approaches
+
+
+
+
+
+## Modelling low resolution land use to high resolution Sentinel-2 data
+
+The 300 meter by 300 meter resolution ESA land use data, represented a consistently defined world measure, but was at a lower resolution than ideal. Specifically, Sentinel-2 data, which underpins DEP, operates at a 10 meter by 10 meter resolution across multple colour spectrums.
+A logistic regression approach was used to estimate the high resolution land use measures associated with the 10 meter by 10 meter pixels underneath the 300 meter by 300 meter ESA measiures
+
+, where the red / green / blue values from Sentinel-2 at the 10
+
+
+
+
+
+
+
+\newpage
+
+# Data Sources {-}
+Level 2A data are high quality data where the effects of the atmosphere on the light being reflected off of the surface of the Earth and reaching the sensor are excluded. Data are available globally since March 2017.
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "ESA Land Use Extract for Test Area"}
+
+knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
+
+```
+
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Sentinel-2 Colour Band"}
+
+knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
+
+```
+
+
+
+
+
+## Learnings from Prototype Work {-}
 
 Building prototype systems is about moving up a learning curve, continuously improving and refining. This project has followed this well-trodden. With the benefit of hindsight, changes would include:
 
@@ -166,25 +248,12 @@ _3. Adopt a stratified random sample for the regression and test data sets_
    |210|	188,308|	2\%|
    |Sample Totals|8,917,590|	100\%|
    
-   While the simple random sample is unbiased - the population probably did contain 58\% tree cover - extending the analysis across a number of countries might not generate the same efficient sample. 
+   While the simple random sample is unbiased - the population probably did contain 58\% tree cover and might not have been the best choosen prototype area - extending the analysis across a number of countries might not generate the same efficient sample. 
    
-   Multiple countries of different sizes and land uses, will bias a sample towards land measures from the largest country, and the land uses which are most frequent across the countries. Stratifying the regression sampling by country and land use will ensure different countries and different size land use remain proportionally represented in the logistic regression.
+   Multiple countries of different sizes and land uses, will bias a sample random sample towards land measures from the largest country, and the land uses which are most frequent across the countries. To compensate, a larger than normal sample is needed to ensure representation of smaller countries and areas. 
+   
+   Stratifying the regression sampling by both country and land use will ensure different countries and different size land use remain proportionally represented in the logistic regression. Done correctly the sample size can be reduced while at the same time the efficiency of the regression will be improved.
 
-
-
-
-
-
-incorporating DEP analysis into a suite of Environmental Asset Accounts for Pacific Island Countries and Territories (PICTs). Unfortunately, DEP-based land cover metrics are not sufficiently developed for analytical purpose.
-
-Land use metrics were instead sourced from  ESA publichses a land use dashboard[https://maps.elie.ucl.ac.be/CCI/viewer/] which has a data download functionality. 
-
-The land use data is for the year ending 2015 - currently 10 years out of date. More up-to-date data is available, but not as readily accessible as the 2015 data set. As a proof-of-concept it would suffice.
-
-
-v2.0.7 - Global annual LC maps from 1992 to 2015 produced by the European Space Agency (ESA) Climate Change Initiative (CCI). These are the first years of the ESA CCI LC map series.
-
-Copernicus data is freely available with login, and its web browser is well worth a visit: https://browser.dataspace.copernicus.eu/
 
 
 
@@ -192,7 +261,7 @@ Copernicus data is freely available with login, and its web browser is well wort
 
 \newpage
 
-# Results
+# Results {-}
 
 
 
@@ -217,68 +286,10 @@ knitr::include_graphics(paste0(BaseDir, "Estimated Land Use - Sentinel-2 Data - 
 
 \newpage
 
-# Methodology
-[^S2Bands]: Sentinel-2 collects four bands at 10 m, six bands at 20 m, and three bands at 60 m spatial resolution. https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2
-
-Estimating high resolution land use could happen through one or more possible measurement channels.
-
-1. Small scale ground surveying of land use activity 
-   The most intutitive approach to measuring land use is to directly measure land use activity in the location in question. For example, if the focus is an island, than coastline measures, and land activity could be estimated through direct measurement _in situ_. While simple, repeatable and accurate, the approach does not lend itself to scaling across geographical locations. The process involves collecting private data at substantial time and collection cost. As a repeatable process, it is not very repeatable. 
-
-
-2. Satelite-based machine learning algorithms
-   Satelite data is readily accessible in a variety of wavebands across the visible and non-visible spectrum. The (Sentinel-2 satelite constilation system)[https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2] collects 10 meter by 10 meter resolution images across four spectral bands every 5 days.[^S2Bands]
-   
-   
-
-   
-   
-   
-   Machine-learning algorithms have been used to 
-
-
-3. Statistical-based approaches
-
-
-
-
-
-## Modelling low resolution land use to high resolution Sentinel-2 data
-
-The 300 meter by 300 meter resolution ESA land use data, represented a consistently defined world measure, but was at a lower resolution than ideal. Specifically, Sentinel-2 data, which underpins DEP, operates at a 10 meter by 10 meter resolution across multple colour spectrums.
-A logistic regression approach was used to estimate the high resolution land use measures associated with the 10 meter by 10 meter pixels underneath the 300 meter by 300 meter ESA measiures
-
-, where the red / green / blue values from Sentinel-2 at the 10
-
-
-
-
-
-
 
 \newpage
 
-# Data Sources
-Level 2A data are high quality data where the effects of the atmosphere on the light being reflected off of the surface of the Earth and reaching the sensor are excluded. Data are available globally since March 2017.
-
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "ESA Land Use Extract for Test Area"}
-
-knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
-
-```
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Sentinel-2 Colour Band"}
-
-knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
-
-```
-
-
-
-\newpage
-
-# Issues
+# Issues {-}
 
 
 ```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu as Shapefile"}
@@ -300,7 +311,7 @@ knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_Missing_Spatial_Complexity.p
 ```
 
 
-# Appendix 1
+# Appendix 1 {-}
 
 
 
