@@ -154,6 +154,11 @@
 ##                https://data.digitalearthpacific.org/ but there is no documentation for what are each. 
 ##
 ##                The closest that comes to documentation is: https://digitalearthpacific.org/#/applications
+##
+##
+##                ON THE DIFFERENCE BETWEEN MATRICIES AND RASTERS
+##                https://geobgu.xyz/r/matrices-and-rasters.html#rasters
+##
 ##                
 ##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 October 2025

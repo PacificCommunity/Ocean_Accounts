@@ -64,7 +64,9 @@ output:
 
 
 # Background and context {-}
-The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Asset Accounts using satelite-based remote sensing data. The plan was to build off Digital Earth Pacific (DEP) data foundation's, reusing its geospatial metrics for data analysis, and incorporate FAME's data sources to complete the following suite of accounts: 
+The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Asset Accounts using satelite-based remote sensing data. 
+
+The plan was to build off Digital Earth Pacific (DEP) data foundation's, reusing its geospatial metrics for data analysis, and incorporate FAME's data sources to complete the following suite of accounts: 
 
 ```{r ClassificationofEnvironmentalAssets, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Classification of environmental assets in the SEEA Central Framework"}
 
@@ -74,79 +76,92 @@ knitr::include_graphics(paste0(BaseDir, "ClassificationofEnvironmentalAssets.png
 
 This prototype work was undertaken to test _how_ -  on a very small scale - Pacific Regional Environmental Accounts might be developed within SPC. Using an extract from New Caledonia, the prototype work was intended to build a suite of Environmental Accounts, uncovering during the process issues and "fish hooks" which might impact on developing metrics at scale.
 
+The R statistical language was used for the geospatial, logistical regression analysis, and the land cover prediction estimates.
+
 ## High Level Results {-}
-The focus of the prototype analysis become bogged down into estimating land use metrics, in the absense of existing metrics developed through the DEP programme. Ideally, land-use metrics would be developed from first principles using machine-learning techniques applied to satelite-based data. Simialar products developed internationally include New Zealand's (LUCAS Land Use Maps)[https://data.mfe.govt.nz/layer/117733-lucas-nz-land-use-map-2020-v005/], or Australia's (National Scale Land Use Data)[https://www.agriculture.gov.au/abares/aclump/land-use/data-download].
+
+The focus of the prototype analysis become bogged down into estimating land-use metrics, in the absense of existing metrics developed through the DEP programme, and most of the effort associated with developing Environmental Asset Accounts related to measuring the land component, rather than the ocean component.
+
+Ideally, land-use metrics would be developed from first principles using machine-learning techniques applied to satelite-based data. Simialar products developed internationally include New Zealand's [LUCAS Land Use Maps](https://data.mfe.govt.nz/layer/117733-lucas-nz-land-use-map-2020-v005/), or Australia's [National Scale Land Use Data](https://www.agriculture.gov.au/abares/aclump/land-use/data-download).
+
+The prototype work was able to measure land cover area, and solve complicated methodological issues which hamper developing Environmental Asset Accounts at scale.
+
+Figure \@ref(fig:LandCover) presents the predicted land cover values for Noumea, a subset of the prototype land area choosen for this analysis. The land cover values were derived from ESA CCI data measured at the 300 meter x 300 meter low resolution level, and grafted onto high resolution Sentinel-2 high measured at the 10 meter x 10 meter level. 
+
+A logistic regression for each land cover value was estimated using the Green / Blue / Red values from Sentinel-2's ["Geometric Median and Median Absolute Deviations"](https://digitalearthpacific.org/#/applications) (GeoMAD) metrics supplied by DEP, matched to the ESA CCI land cover data associated with the specific Sentinel-2 area. The regression was only estimated for the 2017 year.
+
+
+```{r LandCover, echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Estimated Land Use - Sentinel-2 Data"}
+
+knitr::include_graphics(paste0(BaseDir, "Estimated Land Use - Sentinel-2 Data - Version 2.png"))
+
+```
+
+The GeoMAD data source included a timeseries of spatial data from 2017 to 2024. The logistic regression from 2017 was applied to the out of sample years to estimate change Figure \@ref(fig:LandCover))
+
+
+```{r MetricsOverTime, echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Experimental Land Use Metrics"}
+
+knitr::include_graphics(paste0(BaseDir, "Experimental_Land_Area.png"))
+
+```
+
+One of the suggestions in the [Learnings from Prototype Work] section is to estimate each year independently to create the timeseries. The downside to this direction is the storage requirements associated with the duplication.
 
 
 
+### Land cover is not land use {-}
+In the absense of home-grown land-use metrics, the European Space Agency's (ESA) Climate Change Initiative (CCI) land use data was used to identify land use within the prototype area. ESA's data measures land use according to the United Nations (UN) Land Cover Classification System (LCCS), described in [Appendix 1] to this paper. The UN-LCCS defines LC classes using a set of classifiers. The system was designed as a hierarchical classification, which allows adjusting the thematic detail of the legend to the amount of information available to describe each LC class, whilst following a standardized classification approach.
 
+There are two primary aspects of land for environmental accounting purposes: land use and land cover. 
 
+Physical land accounts focus on forest and other wooded land. Land use consists of seven main categories: agriculture, forestry, land used for aquaculture, use of built-up and related areas, land used for maintenance and restoration of environmental functions, other uses of land n.e.c. (not elsewhere classified), and land not in use. For inland waters, there are four main categories: inland waters used for aquaculture or holding facilities; inland waters used for maintenance and restoration of environmental functions; other uses of inland waters n.e.c.; and inland waters not in use.
 
-## Land use measures incomplete {-}
-One of the mor
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Land use classification"}
 
+knitr::include_graphics(paste0(BaseDir, "LandUse.png"))
 
-DEP products and Ocean Accounts live separate lives and have been on separate development trajectories. Not all of the spatial information needed for Enviromental Assets Accounts have been developed by DEP. DEP's focus is on developing applications: https://digitalearthpacific.org/#/applications for integration into its website front end: https://maps.digitalearthpacific.org/. Missing data sources for land assets, soil assets, and timber environmental assets have not yet been built within DEP, creating a "data hole" needing to be developed within Regional Environmental Asset Accounts project.
+```     
 
-Analytical activity to date has focused on developing land use metrics from the European Space Agency (ESA) Climate Change Initiative (CCI) land use maps, sourced from here: https://www.esa-landcover-cci.org/, and tailored to pilot countries using Sentinel-2 data and statistical techniques. This approach has enabled ESA-derived land use measures to be grafted onto the prototype land areas, and land, timber and proxies for "soil" (agriculture and grassland) to be derived. 
+Using the ESA's CCI's data is compliant with the Land Cover Classification System version 3 recommended in SEEA-CF (see below).
 
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Land cover classification"}
 
-# Methodology {-}
+knitr::include_graphics(paste0(BaseDir, "LandcoverClassification.png"))
 
+```     
 
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Physical account for land cover (hectares)"}
 
+knitr::include_graphics(paste0(BaseDir, "Physical_Account_for_Land.png"))
 
-[^S2Bands]: Sentinel-2 collects four bands at 10 m, six bands at 20 m, and three bands at 60 m spatial resolution. https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2
-
-Estimating high resolution land use could happen through one or more possible measurement channels.
-
-1. Small scale ground surveying of land use activity 
-   The most intutitive approach to measuring land use is to directly measure land use activity in the location in question. For example, if the focus is an island, than coastline measures, and land activity could be estimated through direct measurement _in situ_. While simple, repeatable and accurate, the approach does not lend itself to scaling across geographical locations. The process involves collecting private data at substantial time and collection cost. As a repeatable process, it is not very repeatable. 
-
-
-2. Satelite-based machine learning algorithms
-   Satelite data is readily accessible in a variety of wavebands across the visible and non-visible spectrum. The (Sentinel-2 satelite constilation system)[https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2] collects 10 meter by 10 meter resolution images across four spectral bands every 5 days.[^S2Bands]
-   
-   
-
-   
-   
-   
-   Machine-learning algorithms have been used to 
-
-
-3. Statistical-based approaches
-
-
-
-
-
-## Modelling low resolution land use to high resolution Sentinel-2 data
-
-The 300 meter by 300 meter resolution ESA land use data, represented a consistently defined world measure, but was at a lower resolution than ideal. Specifically, Sentinel-2 data, which underpins DEP, operates at a 10 meter by 10 meter resolution across multple colour spectrums.
-A logistic regression approach was used to estimate the high resolution land use measures associated with the 10 meter by 10 meter pixels underneath the 300 meter by 300 meter ESA measiures
-
-, where the red / green / blue values from Sentinel-2 at the 10
-
-
-
-
+```     
 
 
 
 \newpage
 
-# Data Sources {-}
-Level 2A data are high quality data where the effects of the atmosphere on the light being reflected off of the surface of the Earth and reaching the sensor are excluded. Data are available globally since March 2017.
+# Methodology {-}
+[^S2Bands]: Sentinel-2 collects four bands at 10 m, six bands at 20 m, and three bands at 60 m spatial resolution. https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2
+
+The prototype process involved extracting a portion of New Caledonia geography from two data sources:
+
+1. European Space Agency's (ESA) Climate Change Initiative (CCI) land cover data (https://maps.elie.ucl.ac.be/CCI/viewer/download.php)
+   
 
 
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "ESA Land Use Extract for Test Area"}
+```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "ESA Land Use Extract for Test Area"}
 
 knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
 
 ```
+   
 
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Sentinel-2 Colour Band"}
+2. Sentinel-2's ["Geometric Median and Median Absolute Deviations"](https://digitalearthpacific.org/#/applications) (GeoMAD) metrics supplied by DEP
+   Satelite data is readily accessible in a variety of wavebands across the visible and non-visible spectrum. The [Sentinel-2 satelite constilation system](https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2) collects 10 meter by 10 meter resolution images across four spectral bands every 5 days.[^S2Bands]
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Sentinel-2 Red Colour Band"}
 
 knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
 
@@ -155,8 +170,33 @@ knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
 
 
 
+## Modelling low resolution land use to high resolution Sentinel-2 data {-}
 
-## Learnings from Prototype Work {-}
+The 300 meter by 300 meter resolution ESA land use data, represented a consistently defined world measure, but was at a lower resolution than ideal. Specifically, Sentinel-2 data, which underpins DEP, operates at a 10 meter by 10 meter resolution across multple colour spectrums.
+A logistic regression approach was used to estimate the high resolution land use measures associated with the 10 meter by 10 meter pixels underneath the 300 meter by 300 meter ESA measiures
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Regression Set Up"}
+
+knitr::include_graphics(paste0(BaseDir, "Regression_Example.png"))
+
+```
+
+
+
+
+```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Test Set"}
+
+knitr::include_graphics(paste0(BaseDir, "Test_Dataset.png"))
+
+```
+
+
+
+
+\newpage
+
+# Learnings from Prototype Work {-}
 
 Building prototype systems is about moving up a learning curve, continuously improving and refining. This project has followed this well-trodden. With the benefit of hindsight, changes would include:
 
@@ -255,80 +295,30 @@ _3. Adopt a stratified random sample for the regression and test data sets_
    Stratifying the regression sampling by both country and land use will ensure different countries and different size land use remain proportionally represented in the logistic regression. Done correctly the sample size can be reduced while at the same time the efficiency of the regression will be improved.
 
 
+_4. Estimate land use regressions for each separate GeoMAD year_
+   The prototype system estimated a logistic regression for each land use value for the 2017 and applied those metrics to 2017 - 2024. 
+   
+   The output of the regression modellings was a logistic regression object slightly larger than 1 gigabyte in size. Consequentially, estimating 18 separate land cover values for one year resulted in 18 separate one gigabyte regression model objects.
+   
+   Extending the analysis to estimate regression objects for the years 2017 - 2024 would result in seven separate years of 18 separate one gigabyte regression model objects, consuming 126 gigabytes of disk space.
+   
+   **Is there a better way to estimate a logistic regression object without including what is probably the underlying regression data?**
 
 
 
+_5. Concord the spatial data back to a spatial grid system_
+   The prototype system, developed in the R langauge, used the libraries raster, terra and sf for its geospatial analysis. Undoubtably, maintaining the geometries through the data added to the file size of the data objects. 
+   
+   A better approach would be to have treated the geospatial data as referencing consistently defined geospatially-specific grid measure which could be translated back into geospatial latitude and longitudinal dimensions, while at the same time enabling data to be more efficiently handled as data tensors, processed through matrices methods.
+   
+   A variety of ["Geospatial grid management"](https://www.sciencedirect.com/science/article/pii/S1569843225005072) do exist.
 
-\newpage
-
-# Results {-}
-
-
-
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Experimental Land Use Metrics"}
-
-knitr::include_graphics(paste0(BaseDir, "Experimental_Land_Area.png"))
-
-```
-
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Estimated Land Use - Sentinel-2 Data"}
-
-knitr::include_graphics(paste0(BaseDir, "Estimated Land Use - Sentinel-2 Data - Version 2.png"))
-
-```
-
-
-
-
-
+   I just need to get [cleverer](https://geobgu.xyz/r/matrices-and-rasters.html#rasters)...
 
 \newpage
-
-
-\newpage
-
-# Issues {-}
-
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu as Shapefile"}
-
-knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_as_Shapefile.png"))
-
-```
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu in Google Maps"}
-
-knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_in_Google_Maps.png"))
-
-```
-
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Vanua Levu Missing Spatial Complexity"}
-
-knitr::include_graphics(paste0(BaseDir, "Vanua_Levu_Missing_Spatial_Complexity.png"))
-
-```
 
 
 # Appendix 1 {-}
-
-
-
-```{r RegressionSet, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Regression Dataset"}
-
-knitr::include_graphics(paste0(BaseDir, "Regression_Dataset.png"))
-
-```
-
-
-```{r TestSet, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Test Dataset"}
-
-knitr::include_graphics(paste0(BaseDir, "Test_Dataset.png"))
-
-```
-
-
 
 ```{r IPCCCatgories, echo=FALSE, fig.pos='h'}
 
