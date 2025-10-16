@@ -1,6 +1,6 @@
 ---
 title: "Generating Environmental Assets Accounts"
-subtitle: "First Proof of Concept: ESA Land Use allocated Using Logistic Regression"
+subtitle: "Proof of Concept Initial Findings"
 author: FAME Economics
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
@@ -64,7 +64,13 @@ output:
 
 
 # Background and context {-}
-The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Asset Accounts using satelite-based remote sensing data. 
+The paper _Pacific Regional Environmental Accounts Incorporating Ocean Accounts_ (1 August 2025) outlined a strategy for developing Regional Environmental Asset Accounts using satellite-based remote sensing data. 
+
+This prototype work was undertaken to test _how_ -  on a very small scale - Pacific Regional Environmental Accounts might be developed within SPC. Using an extract from New Caledonia, the prototype work was intended to build a suite of Environmental Accounts, uncovering during the process issues and "fish-hooks" which might impact on developing metrics at scale.
+
+The R statistical language was used for the geospatial, logistical regression analysis, and the land cover prediction estimates.
+
+### The Plan - Build off DEP {-}
 
 The plan was to build off Digital Earth Pacific (DEP) data foundation's, reusing its geospatial metrics for data analysis, and incorporate FAME's data sources to complete the following suite of accounts: 
 
@@ -74,24 +80,35 @@ knitr::include_graphics(paste0(BaseDir, "ClassificationofEnvironmentalAssets.png
 
 ```    
 
-This prototype work was undertaken to test _how_ -  on a very small scale - Pacific Regional Environmental Accounts might be developed within SPC. Using an extract from New Caledonia, the prototype work was intended to build a suite of Environmental Accounts, uncovering during the process issues and "fish hooks" which might impact on developing metrics at scale.
 
-The R statistical language was used for the geospatial, logistical regression analysis, and the land cover prediction estimates.
+
 
 ## High Level Results {-}
 
-The focus of the prototype analysis become bogged down into estimating land-use metrics, in the absense of existing metrics developed through the DEP programme, and most of the effort associated with developing Environmental Asset Accounts related to measuring the land component, rather than the ocean component.
+The prototype has been a partial success. As expected, it has uncovered [Learnings from Prototype Work] which, unless addressed will hamper developing Environmental Asset Accounts at a pacific regional scale. 
 
-Ideally, land-use metrics would be developed from first principles using machine-learning techniques applied to satelite-based data. Simialar products developed internationally include New Zealand's [LUCAS Land Use Maps](https://data.mfe.govt.nz/layer/117733-lucas-nz-land-use-map-2020-v005/), or Australia's [National Scale Land Use Data](https://www.agriculture.gov.au/abares/aclump/land-use/data-download).
+The prototype was successful in estimating land cover for the target area. While not part of the "plan", estimating the land cover component became necessary and consumed the bulk of the work's focus, due to the absence of existing metrics developed through the DEP programme.
 
-The prototype work was able to measure land cover area, and solve complicated methodological issues which hamper developing Environmental Asset Accounts at scale.
 
-Figure \@ref(fig:LandCover) presents the predicted land cover values for Noumea, a subset of the prototype land area choosen for this analysis. The land cover values were derived from ESA CCI data measured at the 300 meter x 300 meter low resolution level, and grafted onto high resolution Sentinel-2 high measured at the 10 meter x 10 meter level. 
+### On Land Use Metrics {-}
+
+Ideally, land-use metrics would be developed from first principles using machine-learning techniques applied to satellite-based data. 
+
+Similar products have been developed internationally include New Zealand's [LUCAS Land Use Maps](https://data.mfe.govt.nz/layer/117733-lucas-nz-land-use-map-2020-v005/), or Australia's [National Scale Land Use Data](https://www.agriculture.gov.au/abares/aclump/land-use/data-download).
+
+While Land Use metrics are in the DEP work programme, they have not yet been developed, and remain an uncompleted component. In the absence of land use, Environmental Asset Accounts would be restricted to the Marine and the Mineral Components only. Failing to capture the land component would leave the marine and the mineral components providing only marginal analytical utility.
+
+
+### Measuring Land Cover {-}
+
+The prototype work was able to measure land cover, in the process solving some complicated methodological issues which will hamper developing Environmental Asset Accounts at scale.
+
+Figure \@ref(fig:LandCover) presents the predicted land cover values for Noumea, a subset of the prototype land area chosen for this analysis. The land cover values were derived from ESA CCI data measured at the 300-meter x 300-meter low resolution level, and grafted onto high resolution Sentinel-2 high measured at the 10-meter x 10-meter level. 
 
 A logistic regression for each land cover value was estimated using the Green / Blue / Red values from Sentinel-2's ["Geometric Median and Median Absolute Deviations"](https://digitalearthpacific.org/#/applications) (GeoMAD) metrics supplied by DEP, matched to the ESA CCI land cover data associated with the specific Sentinel-2 area. The regression was only estimated for the 2017 year.
 
 
-```{r LandCover, echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Estimated Land Use - Sentinel-2 Data"}
+```{r LandCover, echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Estimated Land cover - Sentinel-2 Data"}
 
 knitr::include_graphics(paste0(BaseDir, "Estimated Land Use - Sentinel-2 Data - Version 2.png"))
 
@@ -100,7 +117,7 @@ knitr::include_graphics(paste0(BaseDir, "Estimated Land Use - Sentinel-2 Data - 
 The GeoMAD data source included a timeseries of spatial data from 2017 to 2024. The logistic regression from 2017 was applied to the out of sample years to estimate change Figure \@ref(fig:LandCover))
 
 
-```{r MetricsOverTime, echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Experimental Land Use Metrics"}
+```{r MetricsOverTime, echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Experimental Land cover Metrics"}
 
 knitr::include_graphics(paste0(BaseDir, "Experimental_Land_Area.png"))
 
@@ -111,13 +128,13 @@ One of the suggestions in the [Learnings from Prototype Work] section is to esti
 
 
 ### Land cover is not land use {-}
-In the absense of home-grown land-use metrics, the European Space Agency's (ESA) Climate Change Initiative (CCI) land use data was used to identify land use within the prototype area. ESA's data measures land use according to the United Nations (UN) Land Cover Classification System (LCCS), described in [Appendix 1] to this paper. The UN-LCCS defines LC classes using a set of classifiers. The system was designed as a hierarchical classification, which allows adjusting the thematic detail of the legend to the amount of information available to describe each LC class, whilst following a standardized classification approach.
+In the absence of home-grown land-cover metrics, the European Space Agency's (ESA) Climate Change Initiative (CCI) land cover data was used to identify land cover within the prototype area. ESA's data measures land cover according to the United Nations (UN) Land Cover Classification System (LCCS), described in [Appendix 1] to this paper. The UN-LCCS defines LC classes using a set of classifiers. The system was designed as a hierarchical classification, which allows adjusting the thematic detail of the legend to the amount of information available to describe each LC class, whilst following a standardized classification approach.
 
 There are two primary aspects of land for environmental accounting purposes: land use and land cover. 
 
 Physical land accounts focus on forest and other wooded land. Land use consists of seven main categories: agriculture, forestry, land used for aquaculture, use of built-up and related areas, land used for maintenance and restoration of environmental functions, other uses of land n.e.c. (not elsewhere classified), and land not in use. For inland waters, there are four main categories: inland waters used for aquaculture or holding facilities; inland waters used for maintenance and restoration of environmental functions; other uses of inland waters n.e.c.; and inland waters not in use.
 
-```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Land use classification"}
+```{r echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Land cover classification"}
 
 knitr::include_graphics(paste0(BaseDir, "LandUse.png"))
 
@@ -142,26 +159,29 @@ knitr::include_graphics(paste0(BaseDir, "Physical_Account_for_Land.png"))
 \newpage
 
 # Methodology {-}
+
 [^S2Bands]: Sentinel-2 collects four bands at 10 m, six bands at 20 m, and three bands at 60 m spatial resolution. https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-data/sentinel-2
+[^Institions]: European Space Agency; Universite catholiqu de Louvain; Brockmann Consult GmbH; Wageningen University; Max-Planck-Institut fur Meteorologie; LSCE; Gamma Remote Sensing; Luxemborg Institute of Science and Technology; European Commission.
 
 The prototype process involved extracting a portion of New Caledonia geography from two data sources:
 
 1. European Space Agency's (ESA) Climate Change Initiative (CCI) land cover data (https://maps.elie.ucl.ac.be/CCI/viewer/download.php)
    
+   The CCI data is a world-wide metric land cover metric, developed by eleven European institutions[^Institions]
 
 
-```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "ESA Land Use Extract for Test Area"}
+```{r echo=FALSE, fig.pos='h', out.width = '115%', fig.cap = "ESA Land Cover Dashboard for New Caledonia"}
 
-knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
+knitr::include_graphics(paste0(BaseDir, "ESA_Dashboard.png"))
 
 ```
    
 
 2. Sentinel-2's ["Geometric Median and Median Absolute Deviations"](https://digitalearthpacific.org/#/applications) (GeoMAD) metrics supplied by DEP
-   Satelite data is readily accessible in a variety of wavebands across the visible and non-visible spectrum. The [Sentinel-2 satelite constilation system](https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2) collects 10 meter by 10 meter resolution images across four spectral bands every 5 days.[^S2Bands]
+   satellite data is readily accessible in a variety of wavebands across the visible and non-visible spectrum. The [Sentinel-2 satellite constellation system](https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2) collects 10-meter by 10-meter resolution images across four spectral bands every 5 days.[^S2Bands]
 
 
-```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Sentinel-2 Red Colour Band"}
+```{r echo=FALSE, fig.pos='h', out.width = '115%', fig.cap = "Sentinel-2 Red Colour Band"}
 
 knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
 
@@ -170,13 +190,13 @@ knitr::include_graphics(paste0(BaseDir, "Sentinel-2_Example.png"))
 
 
 
-## Modelling low resolution land use to high resolution Sentinel-2 data {-}
+## Modelling low resolution land cover to high resolution Sentinel-2 data {-}
 
-The 300 meter by 300 meter resolution ESA land use data, represented a consistently defined world measure, but was at a lower resolution than ideal. Specifically, Sentinel-2 data, which underpins DEP, operates at a 10 meter by 10 meter resolution across multple colour spectrums.
-A logistic regression approach was used to estimate the high resolution land use measures associated with the 10 meter by 10 meter pixels underneath the 300 meter by 300 meter ESA measiures
+The 300-meter by 300-meter resolution ESA land cover data, represented a consistently defined world measure, but was at a lower resolution than ideal. Specifically, Sentinel-2 data, which underpins DEP, operates at a 10-meter by 10-meter resolution across multiple colour spectrums.
+A logistic regression approach was used to estimate the high resolution land cover measures associated with the 10-meter by 10-meter pixels underneath the 300-meter by 300-meter ESA measures
 
 
-```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Regression Set Up"}
+```{r echo=FALSE, fig.pos='h', out.width = '115%', fig.cap = "Regression Set Up"}
 
 knitr::include_graphics(paste0(BaseDir, "Regression_Example.png"))
 
@@ -185,7 +205,7 @@ knitr::include_graphics(paste0(BaseDir, "Regression_Example.png"))
 
 
 
-```{r echo=FALSE, fig.pos='h', out.width = '125%', fig.cap = "Test Set"}
+```{r echo=FALSE, fig.pos='h', out.width = '115%', fig.cap = "Test Set"}
 
 knitr::include_graphics(paste0(BaseDir, "Test_Dataset.png"))
 
@@ -193,6 +213,13 @@ knitr::include_graphics(paste0(BaseDir, "Test_Dataset.png"))
 
 
 
+
+```{r echo=FALSE, fig.pos='h', out.width = '115%', fig.cap = "ESA Land cover Extract for Test Area"}
+
+knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
+
+```
+   
 
 \newpage
 
@@ -231,14 +258,14 @@ _1. Moving away from PDH Pacific Coastline shape file, and adopting [DEP Coastli
 
 _2. Adopting a more current ESA CCL data set._
 
-   The ESA The land use data used in this analysis is "ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif", a 300 meter by 300 meter resolution land use mapping created for the entire world, with data as at year end 2015 - currently 10 years out of date. More up-to-date data is available, but not as readily accessible as the 2015 data set. Version 2.1.1, is available on an annual basis from 2016 to 2020, and is definitionally consistent with version 2.0.7 used in this analysis and would be a better data source for future work.
+   The ESA The land cover data used in this analysis is "ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif", a 300-meter by 300-meter resolution land cover mapping created for the entire world, with data as at year end 2015 - currently 10 years out of date. More up-to-date data is available, but not as readily accessible as the 2015 data set. Version 2.1.1, is available on an annual basis from 2016 to 2020, and is definitionally consistent with version 2.0.7 used in this analysis and would be a better data source for future work.
    
 
 _3. Adopt a stratified random sample for the regression and test data sets_
 
-   Both the regression dataset, and the test dataset were derived through extracting two mutually exclusive simple random samples from the Sentinel-2 data matched to the its associated ESA land use value for the target prototype area.
+   Both the regression dataset, and the test dataset were derived through extracting two mutually exclusive simple random samples from the Sentinel-2 data matched to the associated ESA land cover value for the target prototype area.
    
-   Table \@ref(tab:IPCCCatgories), in the [Appendix 1], describes all of the land uses available within ESA CCL dataset. Not all land values were available within the target prototype land area - the following land cover values were in the data:
+   Table \@ref(tab:IPCCCatgories), in the [Appendix 1], describes all of the land covers available within ESA CCL dataset. Not all land values were available within the target prototype land area - the following land cover values were in the data:
       
    |Land Cover Value|	Description|
    |----------------|--------------|
@@ -246,10 +273,10 @@ _3. Adopt a stratified random sample for the regression and test data sets_
    |11|	Rainfed cropland|
    |12|	Rainfed cropland|
    |20|	Irrigated cropland|
-   |30|	Mosaic cropland (>50%) / natural vegetation (tree, shrub,herbaceouscover) (<50%)|
+   |30|	Mosaic cropland (>50%) / natural vegetation (tree, shrub,herbaceous cover) (<50%)|
    |40|	Mosaic natural vegetation (tree, shrub, herbaceous cover) (>50%) / cropland (< 50%)|
-   |50|	Tree cover, broadleaved, evergreen, closed to open (>15%)|
-   |80|	Tree cover, needleleaved, deciduous, closed to open (> 15%)|
+   |50|	Tree cover, broad leaved, evergreen, closed to open (>15%)|
+   |80|	Tree cover, needle leaved, deciduous, closed to open (> 15%)|
    |100|	Mosaic tree and shrub (>50%) / herbaceous cover (< 50%)|
    |110|	Mosaic herbaceous cover (>50%) / tree and shrub (<50%)|
    |120|	Shrubland|
@@ -262,7 +289,7 @@ _3. Adopt a stratified random sample for the regression and test data sets_
    |210|	Water|
 
 
-   Rather than a simple random sample, future work will explore drawing a stratified random sample with strata defined at both the country and the land cover level. A stratified sample draws a random sample from a population segregated by the stratum dimensions. If the data in the population contains unequal number of observations within the strata groupings, stratified sample ensures each different strata grouping contributes proportionally to the final analsys, regardless of its stratum size. 
+   Rather than a simple random sample, future work will explore drawing a stratified random sample with strata defined at both the country and the land cover level. A stratified sample draws a random sample from a population segregated by the stratum dimensions. If the data in the population contains unequal number of observations within the strata groupings, stratified sample ensures each different strata grouping contributes proportionally to the final analysis, regardless of its stratum size. 
    
    In the current prototype work, a 20\% simple random sample produced a regression data set which was heavily influences by land cover 50 - "Tree cover, broadleaved, evergreen, closed to open (>15%)"
    
@@ -288,17 +315,18 @@ _3. Adopt a stratified random sample for the regression and test data sets_
    |210|	188,308|	2\%|
    |Sample Totals|8,917,590|	100\%|
    
-   While the simple random sample is unbiased - the population probably did contain 58\% tree cover and might not have been the best choosen prototype area - extending the analysis across a number of countries might not generate the same efficient sample. 
+   While the simple random sample is unbiased - the population probably did contain 58\% tree cover and might not have been the best chosen prototype area - extending the analysis across a number of countries might not generate the same efficient sample. 
    
-   Multiple countries of different sizes and land uses, will bias a sample random sample towards land measures from the largest country, and the land uses which are most frequent across the countries. To compensate, a larger than normal sample is needed to ensure representation of smaller countries and areas. 
+   Multiple countries of different sizes and land covers will bias a sample random sample towards land measures from the largest country, and the land covers which are most frequent across the countries. To compensate, a larger than normal sample is needed to ensure sufficient epresentation of the smaller countries and areas are captured in the regression data. 
    
-   Stratifying the regression sampling by both country and land use will ensure different countries and different size land use remain proportionally represented in the logistic regression. Done correctly the sample size can be reduced while at the same time the efficiency of the regression will be improved.
+   Stratifying the regression sampling by both country and land cover will ensure different countries and different size land cover remain proportionally represented in the logistic regression. Done correctly the sample size can be reduced while at the same time the efficiency of the regression will be improved.
 
 
-_4. Estimate land use regressions for each separate GeoMAD year_
-   The prototype system estimated a logistic regression for each land use value for the 2017 and applied those metrics to 2017 - 2024. 
+_4. Estimate land cover regressions for each separate GeoMAD year_
+
+   The prototype system estimated a logistic regression for each land cover value for the 2017 and applied those metrics to 2017 - 2024. 
    
-   The output of the regression modellings was a logistic regression object slightly larger than 1 gigabyte in size. Consequentially, estimating 18 separate land cover values for one year resulted in 18 separate one gigabyte regression model objects.
+   The output of the regression modeling was a logistic regression object slightly larger than 1 gigabyte in size. Consequentially, estimating 18 separate land cover values for one year resulted in 18 separate one gigabyte regression model objects.
    
    Extending the analysis to estimate regression objects for the years 2017 - 2024 would result in seven separate years of 18 separate one gigabyte regression model objects, consuming 126 gigabytes of disk space.
    
@@ -307,13 +335,20 @@ _4. Estimate land use regressions for each separate GeoMAD year_
 
 
 _5. Concord the spatial data back to a spatial grid system_
-   The prototype system, developed in the R langauge, used the libraries raster, terra and sf for its geospatial analysis. Undoubtably, maintaining the geometries through the data added to the file size of the data objects. 
+
+   The prototype system, developed in the R language, used the libraries raster, terra and sf for its geospatial analysis. Undoubtably, maintaining the geometries through the data added to the file size of the data objects. 
    
    A better approach would be to have treated the geospatial data as referencing consistently defined geospatially-specific grid measure which could be translated back into geospatial latitude and longitudinal dimensions, while at the same time enabling data to be more efficiently handled as data tensors, processed through matrices methods.
    
    A variety of ["Geospatial grid management"](https://www.sciencedirect.com/science/article/pii/S1569843225005072) do exist.
 
    I just need to get [cleverer](https://geobgu.xyz/r/matrices-and-rasters.html#rasters)...
+
+
+_5. Is 10-meters by 10-meters the "right" spatial resolution?_
+
+   Working at a very low resolution level has created its own data processing issues. Obviously, low resolution has been computationally expensive, but the trade off is more accurate assessments of land cover area. 
+
 
 \newpage
 
@@ -328,7 +363,7 @@ names(IPCC_Land_Categories) <- str_replace_all(names(IPCC_Land_Categories), "_",
 
 knitr::kable(IPCC_Land_Categories, 
              booktabs = TRUE,
-             caption = "Land Use Categories")
+             caption = "Land cover Categories")
 
 ```
 
