@@ -149,6 +149,17 @@
 ##                Lets get into it....
 ##                
 ##                
+##                ON DIGITAL EARTH PACIFIC
+##                DEP data is building and developing, but still has aspects of under-developed documentation about it. For example, all of its datasources are here:
+##                https://data.digitalearthpacific.org/ but there is no documentation for what are each. 
+##
+##                The closest that comes to documentation is: https://digitalearthpacific.org/#/applications
+##
+##
+##                ON THE DIFFERENCE BETWEEN MATRICIES AND RASTERS
+##                https://geobgu.xyz/r/matrices-and-rasters.html#rasters
+##
+##                
 ##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 October 2025
 ##
@@ -196,6 +207,8 @@
       library(stats)   
       library(MASS)
       library(bigmemory)
+      library(dym)         # This library is derived from here: https://osf.io/hgfjq/files/5kqyf
+      
    ##
    ##    Set working directory
    ##
@@ -266,3 +279,4 @@
       source("Programmes/Create_a_TimeSeries.r")           # Apply the logistic regression models to timeseries of land to estimate area.
 
 
+      
