@@ -166,6 +166,8 @@ knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
    Figure \@ref(fig:LandCover) presents the predicted land cover values for Noumea, a subset of the prototype land area chosen for this analysis. The land cover values were derived from ESA CCI data measured at the 300-meter x 300-meter low resolution level, and grafted onto high resolution Sentinel-2 high measured at the 10-meter x 10-meter level using a logistic regression to identify the most probable land cover associated with high resolution Sentinel-2 data.
 
    A logistic regression for each land cover value was estimated using the Green / Blue / Red values from Sentinel-2's ["Geometric Median and Median Absolute Deviations"](https://digitalearthpacific.org/#/applications) (GeoMAD) metrics supplied by DEP, matched to the ESA CCI land cover data associated with the specific Sentinel-2 area. 
+   
+   Figure \@ref(fig:LandCover) is the final 10-meter by 10-meter Sentinel-2 data estimating land cover based on ESA CCI data.
 
 
    ```{r LandCover, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Estimated Land cover - Sentinel-2 Data"}
@@ -174,7 +176,7 @@ knitr::include_graphics(paste0(BaseDir, "ESA_Land_Use_Example.png"))
 
    ```
 
-   The GeoMAD data source included a timeseries of spatial data from 2017 to 2024. The logistic regression was only estimated for the 2017 year but applied to the out of sample years to estimate change (Figure \@ref(fig:LandCover))
+   The GeoMAD data source included a timeseries of spatial data from 2017 to 2024. The logistic regression was only estimated for the 2017 year but applied to the out of sample years to estimate change (Figure \@ref(fig:MetricsOverTime))
 
 
    ```{r MetricsOverTime, echo=FALSE, fig.pos='h', out.width = '100%', fig.cap = "Experimental Land cover Metrics"}
