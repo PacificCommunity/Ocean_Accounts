@@ -207,6 +207,7 @@
       library(stats)   
       library(MASS)
       library(bigmemory)
+      library(rstac)       # This library is derived from here: https://github.com/brazil-data-cube/rstac
       library(dym)         # This library is derived from here: https://osf.io/hgfjq/files/5kqyf
       
    ##
@@ -278,5 +279,9 @@
 
       source("Programmes/Create_a_TimeSeries.r")           # Apply the logistic regression models to timeseries of land to estimate area.
 
+      ##
+      ##    Lets have a look at the SEAPODYM data - Skipjack Tuna is in
+      ##
+      source("Programmes/Play_with_SEAPODYM.r") 
 
       
