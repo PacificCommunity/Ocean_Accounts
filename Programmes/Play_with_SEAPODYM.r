@@ -6,6 +6,11 @@
 ##
 ##                SEAPODYM's documentation is here: Ocean_Accounts/Documentation/Seapodym_user_manual.pdf
 ##
+##                Skipjack data is here: https://osf.io/hgfjq/files/mnpxe
+##                Bigeye data is here:   https://osf.io/qa8w4/files/cbgn6
+##                Yellowfin data is here:https://osf.io/qa8w4/files/27vsx
+##                Albacore data is here: https://spccloud-my.sharepoint.com/personal/innas_spc_int/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Finnas%5Fspc%5Fint%2FDocuments%2FSEAPODYM%2Frun%2FALB&ga=1&LOF=1
+##
 ##                Also, in order to read the files, you need to download and install the library(dym) from here: https://osf.io/hgfjq/files/5kqyf
 ##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 17 October 2025

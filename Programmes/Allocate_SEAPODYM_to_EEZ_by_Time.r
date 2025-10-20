@@ -119,7 +119,6 @@ x$Weighted_Fish <- x$`X1960.01.15` * x$Area
 
 
 plot(x[,1])
-plot(EEZ[4,2], add=TRUE, alpha = 0.3)
 sum(st_area(x))
 sum(st_area(st_make_valid(EEZ[4,])))
 
