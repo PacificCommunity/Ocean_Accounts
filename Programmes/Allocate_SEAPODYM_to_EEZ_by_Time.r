@@ -54,23 +54,58 @@
 
 
 
-      Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
+Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
 
-      plot(Fiji, "1989-07-15", xlim=c(150, 200), ylim=c(-30, -8))
-      plot(EEZ[4,2], add=TRUE, alpha = 0.3)
+Names <- unique(names(SEAPODYM_Skipjack_Adults))
+
+Test_Fiji <- lapply(Names, function(x){
+                    print(x)
+                    Number_of_Fish <- as.numeric(as.data.frame(as.polygons(subset(Fiji, x), round=FALSE))[,1])
+                    
+                    Fiji_Poly <- as.polygons(Fiji, round=FALSE)
+
+                    Fiji_sf <- st_as_sf(as.polygons(Fiji_Poly))
+
+                    X <- st_rotate(st_intersection(Fiji_sf, st_make_valid(EEZ[4,])))
+                    X$Area <- st_area(X)/1000000
+                    X$Number_of_Fish <- Number_of_Fish
+                    X$Weighted_Fish <- X$Number_of_Fish * X$Area
+
+                    return(data.frame(Date = x,
+                                      Weighted_Fish = as.numeric(sum(X$Weighted_Fish))))
+              })
+Test_Fiji <- do.call(rbind, Test_Fiji)
 
 
 
-      Fiji <- crop(SEAPODYM_Skipjack_Adults, EEZ[4,])
 
-      plot(Fiji, "1989-07-15", xlim=c(150, 200), ylim=c(-30, -8))
-      plot(EEZ[4,2], add=TRUE, alpha = 0.3)
 
+
+Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
+Fiji_Poly <- as.polygons(Fiji, round=FALSE)
+
+Fiji_sf <- st_as_sf(as.polygons(Fiji_Poly))
+
+x <- st_rotate(st_intersection(Fiji_sf, st_make_valid(EEZ[4,])))
+x$Area <- st_area(x)/1000000
+x$Weighted_Fish <- x$`X1960.01.15` * x$Area
+
+
+plot(x[,1])
+plot(EEZ[4,2], add=TRUE, alpha = 0.3)
+sum(st_area(x))
+sum(st_area(st_make_valid(EEZ[4,])))
+
+sum(x$Weighted_Fish)
 
 
 
 
  
+Fiji_Poly <- as.numeric(as.data.frame(as.polygons(subset(Fiji, "2001-10-15"), round=FALSE))[,1])
+
+
+
 
 
 Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
