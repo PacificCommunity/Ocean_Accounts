@@ -60,9 +60,11 @@ Names <- unique(names(SEAPODYM_Skipjack_Adults))
 
 Test_Fiji <- lapply(Names, function(x){
                     print(x)
-                    Number_of_Fish <- as.numeric(as.data.frame(as.polygons(subset(Fiji, x), round=FALSE))[,1])
+
+                    Number_of_Fish <- as.numeric(as.data.frame(as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE))[,1])
+                    Number_of_Fish[is.nan(Number_of_Fish)] <- 0
                     
-                    Fiji_Poly <- as.polygons(Fiji, round=FALSE)
+                    Fiji_Poly <- as.polygons(Fiji, round=FALSE, na.all = TRUE, na.rm=FALSE)
 
                     Fiji_sf <- st_as_sf(as.polygons(Fiji_Poly))
 
@@ -100,10 +102,15 @@ sum(x$Weighted_Fish)
 
 
 
+x = "1960-01-15"
+as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE)
 
- 
-Fiji_Poly <- as.numeric(as.data.frame(as.polygons(subset(Fiji, "2001-10-15"), round=FALSE))[,1])
+x = "1962-02-15"
+as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE)
 
+
+
+plot( as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE), xlim=c(170, 187), ylim=c(-30,-8) )
 
 
 
