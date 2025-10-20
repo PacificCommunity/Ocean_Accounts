@@ -15,7 +15,7 @@
    ##    Clear the memory
    ##
       rm(list=ls(all=TRUE))
-
+      source("R/functions.r")
    ##
    ##    Lets have a look at one of SEAPODYM's files
    ##
