@@ -80,4 +80,19 @@ Land_Cover = c(10,11,12,20,30,40,50,60,61,62,70,71,72,80,81,82,90,100,160,170,11
 Description = c("Rainfed cropland","Rainfed cropland","Rainfed cropland","Irrigated cropland","Mosaic cropland (>50%) / natural vegetation (tree, shrub,herbaceous cover) (<50%)","Mosaic natural vegetation (tree, shrub, herbaceous cover) (>50%) / cropland (< 50%)","Tree cover, broad leaved, evergreen, closed to open (>15%)","Tree cover, broad leaved, deciduous, closed to open (> 15%)","Tree cover, broad leaved, deciduous, closed to open (> 15%)","Tree cover,broad leaved, deciduous, closed to open (> 15%)","Tree cover, needle leaved, evergreen, closed to open (> 15%)","Tree cover, needle leaved, evergreen, closed to open (> 15%)","Tree cover, needle leaved, evergreen, closed to open (> 15%)","Tree cover, needle leaved, deciduous, closed to open (> 15%)","Tree cover,needle leaved, deciduous, closed to open (> 15%)","Tree cover, needle leaved, deciduous, closed to open (> 15%)","Tree cover, mixed leaf type (broad leaved andneedle leaved)","Mosaic tree and shrub (>50%) / herbaceous cover (< 50%)","Tree cover, flooded, fresh or brakish water","Tree cover, flooded, saline water","Mosaic herbaceous cover (>50%) / tree and shrub (<50%)","Grassland","Shrub or herbaceous cover, flooded, fresh-saline or brakish water","Urban","Shrubland","Shrubland","Shrubland","Lichens and mosses","Sparse vegetation (tree, shrub, herbaceous cover)","Sparse vegetation (tree, shrub, herbaceous cover)","Sparse vegetation (tree, shrub, herbaceous cover)","Sparse vegetation (tree, shrub, herbaceous cover)","Bare areas","Bare areas","Bare areas","Water"))
 
 
+##
+##    The following function is used in "Allocate_SEAPODYM_to_EEZ_by_Time.r"
+##
+ EEZ_Fish_Stocks <- function(x, Country, EEZ)
+   {
+        #print(x)
+        Country_Poly <- as.polygons(subset(Country, x), round=FALSE, na.all = TRUE, na.rm=FALSE)
+        Country_sf <- st_as_sf(as.polygons(Country_Poly))
 
+        X <- st_rotate(st_intersection(Country_sf, st_make_valid(EEZ)))
+        X$Area <- st_area(X)/1000000
+        X$Weighted_Fish <- st_drop_geometry(X)[,1] * as.numeric(X$Area)
+
+        return(data.frame(Date = as.Date(x, "%Y-%m-%d"),
+                          Weighted_Fish = as.numeric(sum(X$Weighted_Fish, na.rm = TRUE))))
+  }

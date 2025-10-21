@@ -24,55 +24,179 @@
    ##
    ##    Lets have a look at one of SEAPODYM's files
    ##
-      
-      Lookie <- read.var.dym("Data_Raw/skipjack_jra55np_1x30d_ref_F0/output_F0/skj_adult.dym")
-      str(Lookie)
-      summary(Lookie[["x"]])
-      summary(Lookie[["y"]])
-      summary(Lookie[["t"]])
+      ##
+      ## Skipjack
+      ##      
+            Skipjack <- read.var.dym("Data_Raw/Skipjack_SEAPODYM/output_F0/skj_adult.dym")
+            summary(Skipjack[["x"]])
+            summary(Skipjack[["y"]])
+            summary(Skipjack[["t"]])
 
-   ##
-   ##    Item var looks like the ticket. I suspect this is tonnes of fish by time, lat and long... 
-   ##
-   ##       Also, its upside down :) terra has a function called flip, which is the ticket
-   ##
-      Spin_Me <- as.array(Lookie[["var"]])
-      
-      Spun    <- array(data = NA, 
-                        dim = c(120,260, 756))
+         ##
+         ##    Item var looks like the ticket. I suspect this is tonnes of fish by time, lat and long... 
+         ##
+         ##       Also, its upside down :) terra has a function called flip, which is the ticket
+         ##
+            Spin_Me <- as.array(Skipjack[["var"]])
+            
+            Spun    <- array(data = NA, 
+                              dim = c(120,260, 756))
 
-      for(x in 1:120)
-      {
-         for(y in 1:260)
-         {
-            for(z in 1:756)
+            for(x in 1:120)
             {
-               Spun[x,y,z] <- Spin_Me[z,y,x]
+               for(y in 1:260)
+               {
+                  for(z in 1:756)
+                  {
+                     Spun[x,y,z] <- Spin_Me[z,y,x]
+                  }
+               }
+            }  
+            
+            SEAPODYM_Skipjack_Adults <- flip(rast(Spun))
+            SEAPODYM_Skipjack_Adults[SEAPODYM_Skipjack_Adults == 0] <- NA
+            names(SEAPODYM_Skipjack_Adults) <-Skipjack[["t"]]
+            
+            SEAPODYM_Land <- rast(Skipjack[["landmask"]])
+            
+            ext(SEAPODYM_Skipjack_Adults)<- c(30.5, 289.5, -58.5, 60.5)
+            ext(SEAPODYM_Land)           <- c(30.5, 289.5, -58.5, 60.5)
+            
+            SEAPODYM_Skipjack_Adults[SEAPODYM_Skipjack_Adults == 0] <- NA
+            SEAPODYM_Land[SEAPODYM_Land != 0] <- NA
+            
+            plot(SEAPODYM_Skipjack_Adults, 10)
+            plot(SEAPODYM_Land, add=TRUE)
+
+   ##
+   ## Bigeye
+   ##
+      Bigeye   <- read.var.dym("Data_Raw/Bigeye_SEAPODYM/output/output_F0/bet_adult.dym")
+      str(Bigeye)
+      summary(Bigeye[["x"]])
+      summary(Bigeye[["y"]])
+      summary(Bigeye[["t"]])
+
+      ##
+      ##    Item var looks like the ticket. I suspect this is tonnes of fish by time, lat and long... 
+      ##
+      ##       Also, its upside down :) terra has a function called flip, which is the ticket
+      ##
+         Spin_Me <- as.array(Bigeye[["var"]])
+         
+         Spun    <- array(data = NA, 
+                           dim = c(60,101, 372))
+
+         for(x in 1:60)
+         {
+            for(y in 1:101)
+            {
+               for(z in 1:372)
+               {
+                  Spun[x,y,z] <- Spin_Me[z,y,x]
+               }
             }
-         }
-      }  
-      
-      SEAPODYM_Skipjack_Adults <- flip(rast(Spun))
-      SEAPODYM_Skipjack_Adults[SEAPODYM_Skipjack_Adults == 0] <- NA
-      names(SEAPODYM_Skipjack_Adults) <-Lookie[["t"]]
-      
-      SEAPODYM_Land <- rast(Lookie[["landmask"]])
-      
-      ext(SEAPODYM_Skipjack_Adults)<- c(30.5, 289.5, -58.5, 60.5)
-      ext(SEAPODYM_Land)           <- c(30.5, 289.5, -58.5, 60.5)
-      
-      SEAPODYM_Skipjack_Adults[SEAPODYM_Skipjack_Adults == 0] <- NA
-      SEAPODYM_Land[SEAPODYM_Land != 0] <- NA
-      
-      plot(SEAPODYM_Skipjack_Adults, 10)
-      plot(SEAPODYM_Land, add=TRUE)
-      
+         }  
+         
+         SEAPODYM_Bigeye_Adults <- flip(rast(Spun))
+         SEAPODYM_Bigeye_Adults[SEAPODYM_Bigeye_Adults == 0] <- NA
+         names(SEAPODYM_Bigeye_Adults) <-Bigeye[["t"]]
+         
+         ext(SEAPODYM_Bigeye_Adults)<- c(89.5, 289.5, -53.5, 64.5)
+         
+         SEAPODYM_Bigeye_Adults[SEAPODYM_Bigeye_Adults == 0] <- NA
+         
+         plot(SEAPODYM_Bigeye_Adults, 10)
+
+   ##
+   ## Yellowfin
+   ##
+      Yellowfin   <- read.var.dym("Data_Raw/Yellowfin_SEAPODYM/output/output_F0/yft_adult.dym")
+      str(Yellowfin)
+      summary(Yellowfin[["x"]])
+      summary(Yellowfin[["y"]])
+      summary(Yellowfin[["t"]])
+
+      ##
+      ##    Item var looks like the ticket. I suspect this is tonnes of fish by time, lat and long... 
+      ##
+      ##       Also, its upside down :) terra has a function called flip, which is the ticket
+      ##
+         Spin_Me <- as.array(Yellowfin[["var"]])
+         
+         Spun    <- array(data = NA, 
+                           dim = c(60,101, 372))
+
+         for(x in 1:60)
+         {
+            for(y in 1:101)
+            {
+               for(z in 1:372)
+               {
+                  Spun[x,y,z] <- Spin_Me[z,y,x]
+               }
+            }
+         }  
+         
+         SEAPODYM_Yellowfin_Adults <- flip(rast(Spun))
+         SEAPODYM_Yellowfin_Adults[SEAPODYM_Yellowfin_Adults == 0] <- NA
+         names(SEAPODYM_Yellowfin_Adults) <-Yellowfin[["t"]]
+         
+         ext(SEAPODYM_Yellowfin_Adults)<- c(89.5, 289.5, -53.5, 64.5)
+         
+         SEAPODYM_Yellowfin_Adults[SEAPODYM_Yellowfin_Adults == 0] <- NA
+         
+         plot(SEAPODYM_Yellowfin_Adults, 10)
+         
+
+   ##
+   ## Albacore
+   ##
+      Albacore   <- read.var.dym("Data_Raw/Albacore_SEAPODYM/output/F0/output/alb_adult.dym")
+      str(Albacore)
+      summary(Albacore[["x"]])
+      summary(Albacore[["y"]])
+      summary(Albacore[["t"]])
+
+      ##
+      ##    Item var looks like the ticket. I suspect this is tonnes of fish by time, lat and long... 
+      ##
+      ##       Also, its upside down :) terra has a function called flip, which is the ticket
+      ##
+         Spin_Me <- as.array(Albacore[["var"]])
+         
+         Spun    <- array(data = NA, 
+                           dim = c(32,80, 108))
+
+         for(x in 1:32)
+         {
+            for(y in 1:80)
+            {
+               for(z in 1:108)
+               {
+                  Spun[x,y,z] <- Spin_Me[z,y,x]
+               }
+            }
+         }  
+         
+         SEAPODYM_Albacore_Adults <- flip(rast(Spun))
+         SEAPODYM_Albacore_Adults[SEAPODYM_Albacore_Adults == 0] <- NA
+         names(SEAPODYM_Albacore_Adults) <-Albacore[["t"]]
+         
+         ext(SEAPODYM_Albacore_Adults)<- c(131.5, 289.5, -58.5, 3.5)
+         
+         SEAPODYM_Albacore_Adults[SEAPODYM_Albacore_Adults == 0] <- NA
+         
+         plot(SEAPODYM_Albacore_Adults, 10)
 
    ##
    ## Save files our produce some final output of something
    ##
-      writeRaster(SEAPODYM_Skipjack_Adults, file = 'Data_Spatial/SEAPODYM_Skipjack_Adults.tif',gdal=c("COMPRESS=DEFLATE"),overwrite = TRUE)
-      writeRaster(SEAPODYM_Land,            file = 'Data_Spatial/SEAPODYM_Land.tif',           gdal=c("COMPRESS=DEFLATE"),overwrite = TRUE)
+      writeRaster(SEAPODYM_Skipjack_Adults,  file = 'Data_Spatial/SEAPODYM_Skipjack_Adults.tif',  gdal=c("COMPRESS=DEFLATE"),overwrite = TRUE)
+      writeRaster(SEAPODYM_Bigeye_Adults,    file = 'Data_Spatial/SEAPODYM_Bigeye_Adults.tif',    gdal=c("COMPRESS=DEFLATE"),overwrite = TRUE)
+      writeRaster(SEAPODYM_Yellowfin_Adults, file = 'Data_Spatial/SEAPODYM_Yellowfin_Adults.tif', gdal=c("COMPRESS=DEFLATE"),overwrite = TRUE)
+      writeRaster(SEAPODYM_Albacore_Adults,  file = 'Data_Spatial/SEAPODYM_Albacore_Adults.tif',  gdal=c("COMPRESS=DEFLATE"),overwrite = TRUE)
+      writeRaster(SEAPODYM_Land,             file = 'Data_Spatial/SEAPODYM_Land.tif',             gdal=c("COMPRESS=DEFLATE"),overwrite = TRUE)
 ##
 ##    And we're done
 ##

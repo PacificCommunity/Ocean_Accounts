@@ -3,6 +3,9 @@
 ##
 ##    Objective:  We've got SEAPODYM in as raster files. Now allocate the biomass to the EEZs over time.
 ##
+##                The complication with this is that the SEAPODYM is on different timescales and extent definitions.
+##
+##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 20 October 2025
 ##
 ##
@@ -10,124 +13,269 @@
    ##    Clear the memory
    ##
       rm(list=ls(all=TRUE))
+   ##
+   ##    Load some generic functions or colour palattes, depending on what you're doing.
+   ##
       source("R/functions.r")
+      source("R/themes.r")
       
    ##
    ##    Load data from somewhere
    ##
       load("Data_Spatial/EEZ.rda")
-      SEAPODYM_Skipjack_Adults <- rast('Data_Spatial/SEAPODYM_Skipjack_Adults.tif')
-
-
-      plot(EEZ[,2])
-
-      Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
-
-      plot(Fiji, "1989-07-15" )
-      plot(EEZ[4,2], add=TRUE)
-
-                     
-   ##
-   ## Step 1: xxxxxxxxxxx
-   ##
-
+      SEAPODYM_Skipjack_Adults  <- rast('Data_Spatial/SEAPODYM_Skipjack_Adults.tif')
+      SEAPODYM_Bigeye_Adults    <- rast('Data_Spatial/SEAPODYM_Bigeye_Adults.tif')
+      SEAPODYM_Yellowfin_Adults <- rast('Data_Spatial/SEAPODYM_Yellowfin_Adults.tif')
+      SEAPODYM_Albacore_Adults  <- rast('Data_Spatial/SEAPODYM_Albacore_Adults.tif')
 
    ##
-   ## Step 2: xxxxxxxxxxx
+   ##    Generate the country cuts - function EEZ_Fish_Stocks stored in R/functions.r
    ##
-   
-   
-   ##
-   ## Step 3: xxxxxxxxxxx
-   ##
+      ##
+      ##    Cook Islands
+      ##
+         ##
+         ##    Skipjack
+         ##
+            Select_EEZ <- EEZ[1,]# EEZ[1,] is Cook Islands
+            
+            Country   <- mask(SEAPODYM_Skipjack_Adults, Select_EEZ)  
+            Skipjack <- do.call(rbind, 
+                                     lapply(unique(names(SEAPODYM_Skipjack_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Bigeye
+         ##
+            Country   <- mask(SEAPODYM_Bigeye_Adults, Select_EEZ)
+            Bigeye <-  do.call(rbind, 
+                                    lapply(unique(names(SEAPODYM_Bigeye_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Yellowfin
+         ##
+            Country   <- mask(SEAPODYM_Yellowfin_Adults, Select_EEZ) 
+            Yellowfin <-  do.call(rbind, 
+                                       lapply(unique(names(SEAPODYM_Yellowfin_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Albacore
+         ##
+            Country   <- mask(SEAPODYM_Albacore_Adults, Select_EEZ)
+            Albacore <-  do.call(rbind, 
+                                      lapply(unique(names(SEAPODYM_Albacore_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
 
+         ##
+         ##    Stick them all together
+         ##
+            CookIslands_Tuna_Stocks <- merge(Skipjack,
+                                             Bigeye,
+                                             by = "Date",
+                                             all = TRUE)
+                                      
+            CookIslands_Tuna_Stocks <- merge(CookIslands_Tuna_Stocks,
+                                             Yellowfin,
+                                             by = "Date",
+                                             all = TRUE)
+                                      
+            CookIslands_Tuna_Stocks <- merge(CookIslands_Tuna_Stocks,
+                                             Albacore,
+                                             by = "Date",
+                                             all = TRUE)
+                                      
+            names(CookIslands_Tuna_Stocks) <- c("Date", "Skipjack", "Bigeye", "Yellowfin", "Albacore")
+      ##
+      ##    New Caledonia
+      ##
+         ##
+         ##    Skipjack
+         ##
+            Select_EEZ <- EEZ[2,]# EEZ[2,] is New Caledonia
+            
+            Country   <- mask(SEAPODYM_Skipjack_Adults, Select_EEZ)  
+            Skipjack <- do.call(rbind, 
+                                     lapply(unique(names(SEAPODYM_Skipjack_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Bigeye
+         ##
+            Country   <- mask(SEAPODYM_Bigeye_Adults, Select_EEZ)  
+            Bigeye <-  do.call(rbind, 
+                                    lapply(unique(names(SEAPODYM_Bigeye_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Yellowfin
+         ##
+            Country   <- mask(SEAPODYM_Yellowfin_Adults, Select_EEZ)  
+            Yellowfin <-  do.call(rbind, 
+                                       lapply(unique(names(SEAPODYM_Yellowfin_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Albacore
+         ##
+            Country   <- mask(SEAPODYM_Albacore_Adults, Select_EEZ) 
+            Albacore <-  do.call(rbind, 
+                                      lapply(unique(names(SEAPODYM_Albacore_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
 
+         ##
+         ##    Stick them all together
+         ##
+            NewCal_Tuna_Stocks <- merge(Skipjack,
+                                        Bigeye,
+                                        by = "Date",
+                                        all = TRUE)
+                                      
+            NewCal_Tuna_Stocks <- merge(NewCal_Tuna_Stocks,
+                                        Yellowfin,
+                                        by = "Date",
+                                        all = TRUE)
+                                      
+            NewCal_Tuna_Stocks <- merge(NewCal_Tuna_Stocks,
+                                        Albacore,
+                                        by = "Date",
+                                        all = TRUE)
+                                      
+            names(NewCal_Tuna_Stocks) <- c("Date", "Skipjack", "Bigeye", "Yellowfin", "Albacore")
+      ##
+      ##    Palau
+      ##
+         ##
+         ##    Skipjack
+         ##
+            Select_EEZ <- EEZ[3,]# EEZ[3,] is Palau
+            
+            Country   <- mask(SEAPODYM_Skipjack_Adults, Select_EEZ)  
+            Skipjack <- do.call(rbind, 
+                                     lapply(unique(names(SEAPODYM_Skipjack_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Bigeye
+         ##
+            Country   <- mask(SEAPODYM_Bigeye_Adults, Select_EEZ)  
+            Bigeye <-  do.call(rbind, 
+                                    lapply(unique(names(SEAPODYM_Bigeye_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Yellowfin
+         ##
+            Country   <- mask(SEAPODYM_Yellowfin_Adults, Select_EEZ)  
+            Yellowfin <-  do.call(rbind, 
+                                       lapply(unique(names(SEAPODYM_Yellowfin_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Albacore
+         ##
+            Country   <- mask(SEAPODYM_Albacore_Adults, Select_EEZ) 
+            Albacore <-  do.call(rbind, 
+                                      lapply(unique(names(SEAPODYM_Albacore_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+
+         ##
+         ##    Stick them all together
+         ##
+            Palau_Tuna_Stocks <- merge(Skipjack,
+                                        Bigeye,
+                                        by = "Date",
+                                        all = TRUE)
+                                      
+            Palau_Tuna_Stocks <- merge(Palau_Tuna_Stocks,
+                                        Yellowfin,
+                                        by = "Date",
+                                        all = TRUE)
+                                      
+            Palau_Tuna_Stocks <- merge(Palau_Tuna_Stocks,
+                                        Albacore,
+                                        by = "Date",
+                                        all = TRUE)
+                                      
+            names(Palau_Tuna_Stocks) <- c("Date", "Skipjack", "Bigeye", "Yellowfin", "Albacore")
+            
+      ##
+      ##    Fiji
+      ##
+         ##
+         ##    Skipjack
+         ##
+            Select_EEZ <- EEZ[4,]# EEZ[4,] is Fiji
+            
+            Country   <- mask(SEAPODYM_Skipjack_Adults, Select_EEZ)  
+            Skipjack <- do.call(rbind, 
+                                     lapply(unique(names(SEAPODYM_Skipjack_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Bigeye
+         ##
+            Country   <- mask(SEAPODYM_Bigeye_Adults, Select_EEZ)  
+            Bigeye <-  do.call(rbind, 
+                                    lapply(unique(names(SEAPODYM_Bigeye_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Yellowfin
+         ##
+            Country   <- mask(SEAPODYM_Yellowfin_Adults, Select_EEZ) 
+            Yellowfin <-  do.call(rbind, 
+                                       lapply(unique(names(SEAPODYM_Yellowfin_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+         ##
+         ##    Albacore
+         ##
+            Country   <- mask(SEAPODYM_Albacore_Adults, Select_EEZ)  
+            Albacore <-  do.call(rbind, 
+                                      lapply(unique(names(SEAPODYM_Albacore_Adults)), EEZ_Fish_Stocks, Country = Country, EEZ = Select_EEZ))
+
+         ##
+         ##    Stick them all together
+         ##
+            Fiji_Tuna_Stocks <- merge(Skipjack,
+                                      Bigeye,
+                                      by = "Date",
+                                      all = TRUE)
+                                      
+            Fiji_Tuna_Stocks <- merge(Fiji_Tuna_Stocks,
+                                      Yellowfin,
+                                      by = "Date",
+                                      all = TRUE)
+                                      
+            Fiji_Tuna_Stocks <- merge(Fiji_Tuna_Stocks,
+                                      Albacore,
+                                      by = "Date",
+                                      all = TRUE)
+                                      
+            names(Fiji_Tuna_Stocks) <- c("Date", "Skipjack", "Bigeye", "Yellowfin", "Albacore")
 
    ##
    ## Save files our produce some final output of something
    ##
-      save(xxxx, file = 'Data_Intermediate/xxxxxxxxxxxxx.rda')
-      save(xxxx, file = 'Data_Output/xxxxxxxxxxxxx.rda')
-##
-##    And we're done
-##
-
-
-
-Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
-
-Names <- unique(names(SEAPODYM_Skipjack_Adults))
-
-Test_Fiji <- lapply(Names, function(x){
-                    print(x)
-
-                    Number_of_Fish <- as.numeric(as.data.frame(as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE))[,1])
-                    Number_of_Fish[is.nan(Number_of_Fish)] <- 0
-                    
-                    Fiji_Poly <- as.polygons(Fiji, round=FALSE, na.all = TRUE, na.rm=FALSE)
-
-                    Fiji_sf <- st_as_sf(as.polygons(Fiji_Poly))
-
-                    X <- st_rotate(st_intersection(Fiji_sf, st_make_valid(EEZ[4,])))
-                    X$Area <- st_area(X)/1000000
-                    X$Number_of_Fish <- Number_of_Fish
-                    X$Weighted_Fish <- X$Number_of_Fish * X$Area
-
-                    return(data.frame(Date = x,
-                                      Weighted_Fish = as.numeric(sum(X$Weighted_Fish))))
-              })
-Test_Fiji <- do.call(rbind, Test_Fiji)
+      save(CookIslands_Tuna_Stocks, file = 'Data_Intermediate/CookIslands_Tuna_Stocks.rda')
+      save(NewCal_Tuna_Stocks,      file = 'Data_Intermediate/NewCal_Tuna_Stocks.rda')
+      save(Palau_Tuna_Stocks,       file = 'Data_Intermediate/Palau_Tuna_Stocks.rda')
+      save(Fiji_Tuna_Stocks,        file = 'Data_Intermediate/Fiji_Tuna_Stocks.rda')
 
 
 
 
 
 
-Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
-Fiji_Poly <- as.polygons(Fiji, round=FALSE)
-
-Fiji_sf <- st_as_sf(as.polygons(Fiji_Poly))
-
-x <- st_rotate(st_intersection(Fiji_sf, st_make_valid(EEZ[4,])))
-x$Area <- st_area(x)/1000000
-x$Weighted_Fish <- x$`X1960.01.15` * x$Area
-
-
-plot(x[,1])
-plot(EEZ[4,2], add=TRUE, alpha = 0.3)
-sum(st_area(x))
-sum(st_area(st_make_valid(EEZ[4,])))
-
-sum(x$Weighted_Fish)
-
-
-
-x = "1960-01-15"
-as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE)
-
-x = "1962-02-15"
-as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE)
-
-
-
-plot( as.polygons(subset(Fiji, x), round=FALSE, na.all = TRUE, na.rm=FALSE), xlim=c(170, 187), ylim=c(-30,-8) )
 
 
 
 
-Fiji <- mask(SEAPODYM_Skipjack_Adults, EEZ[4,])
-Fiji_Poly <- as.polygons(Fiji, round=FALSE)
 
-Fiji_sf <- st_as_sf(as.polygons(Fiji_Poly))
-
-x <- st_rotate(st_intersection(Fiji_sf, st_make_valid(EEZ[4,])))
-x$Area <- st_area(x)/1000000
-x$Weighted_Fish <- x$`X1960.01.15` * x$Area
-
-
-plot(x[,1])
-sum(st_area(x))
-sum(st_area(st_make_valid(EEZ[4,])))
-
-sum(x$Weighted_Fish)
-
+      ggplot(Test_Fiji, aes(x=Date, y=Weighted_Fish))     +
+             geom_smooth(size =1) +
+             geom_point(size =2, alpha = 0.3) +
+             scale_y_continuous(labels = comma) +
+             scale_x_date(date_breaks = "5 years") +
+             labs(title="SEAPODYM - Fiji Adult Skipjack Biomass\n") +
+             scale_colour_manual(values = SPCColours()) +
+             xlab("Time Period\n") +
+             theme_bw(base_size=12, base_family =  "Calibri") %+replace%
+             theme(legend.title.align=0.5,
+                   plot.margin = unit(c(1,3,1,1),"mm"),
+                   panel.border = element_blank(),
+                   strip.background =  element_rect(fill   = SPCColours("Light_Blue")),
+                   strip.text = element_text(colour = "white", 
+                                             size   = 12,
+                                             family = "MyriadPro-Bold",
+                                             margin = margin(1.0,1.0,1.0,1.0, unit = "mm")),
+                   panel.spacing = unit(1, "lines"),                                              
+                   legend.text   = element_text(size = 14, family = "MyriadPro-Regular"),
+                   plot.title    = element_text(size = 20, colour = SPCColours("Dark_Blue"),  family = "MyriadPro-Bold"),
+                   plot.subtitle = element_text(size = 14, colour = SPCColours("Light_Blue"), family = "MyriadPro-Light"),
+                   plot.caption  = element_text(size = 10,  colour = SPCColours("Dark_Blue"), family = "MyriadPro-Light", hjust = 1.0),
+                   plot.tag      = element_text(size =  9, colour = SPCColours("Red")),
+                   axis.title    = element_text(size = 16, colour = SPCColours("Dark_Blue")),
+                   axis.text.x   = element_text(size = 12, colour = SPCColours("Dark_Blue"), angle = 90, margin = margin(t = 10, r = 0,  b = 0, l = 0, unit = "pt"),hjust = 0.5),
+                   axis.text.y   = element_text(size = 12, colour = SPCColours("Dark_Blue"), angle = 00, margin = margin(t = 0,  r = 10, b = 0, l = 0, unit = "pt"),hjust = 1.0),
+                   legend.key.width = unit(1, "cm"),
+                   legend.spacing.y = unit(1, "cm"),
+                   legend.margin = margin(10, 10, 10, 10),
+                   legend.position  = "bottom")          
+                   
+                   

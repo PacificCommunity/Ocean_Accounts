@@ -179,17 +179,5 @@ ggplot(Predicted, aes(x=as.numeric(as.character(Year)), y=value, colour=IPCC_Cla
 
 
 ##
-##
-##      
-      
-      
-      
-
-   ##
-   ## Save files our produce some final output of something
-   ##
-      save(xxxx, file = 'Data_Intermediate/xxxxxxxxxxxxx.rda')
-      save(xxxx, file = 'Data_Output/xxxxxxxxxxxxx.rda')
-##
 ##    And we're done
 ##
