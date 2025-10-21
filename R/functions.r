@@ -85,7 +85,7 @@ Description = c("Rainfed cropland","Rainfed cropland","Rainfed cropland","Irriga
 ##
  EEZ_Fish_Stocks <- function(x, Country, EEZ)
    {
-        #print(x)
+        print(x)
         Country_Poly <- as.polygons(subset(Country, x), round=FALSE, na.all = TRUE, na.rm=FALSE)
         Country_sf <- st_as_sf(as.polygons(Country_Poly))
 
