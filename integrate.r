@@ -283,6 +283,7 @@
       ##    Lets have a look at the SEAPODYM data - Skipjack Tuna is in
       ##
       source("Programmes/Play_with_SEAPODYM.r") # This programme reads in SEAPODYM from its data files, and stores it as R raster objects. Currently only Skipjack in - I need Inna to point out the other species files
-      source("Programmes/Allocate_SEAPODYM_to_EEZ_by_Time.r") # This programme reads in SEAPODYM from its data files, and stores it as R raster objects. Currently only Skipjack in - I need Inna to point out the other species files
+      source("Programmes/Allocate_SEAPODYM_to_EEZ_by_Time.r") # This programme reads in SEAPODYM from its data files, and 
+                                                              # converts it to quantities of adult fish biomass in country EEZs. The data isn't timely, so I'll been to advance it to current but some indicator metrics.
       
      
