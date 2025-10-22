@@ -267,7 +267,14 @@
 
 #      source("Programmes/Draw_Samples.r")         # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing
       source("Programmes/Draw_Samples_Version2.r") # This draws two mutually exclusive random samples of the Sentinel-2 data for regression and testing, but now uses the Pacific Coastline data to exclude the sea
+     
+      ##
+      ##    Try impliementing the recommendations on sample design
+      ##
+         source("Programmes/Stratified_Sampling.r") # Post prototype review
       
+
+     
       source("Programmes/Create_Test_Set.r")       # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for testing the model.
       source("Programmes/Create_Regression_Set.r") # This parallel processes a sample of sentinel-2 data against the ESA data to identify potential ESA land use for regression.
    
@@ -285,5 +292,7 @@
       source("Programmes/Play_with_SEAPODYM.r") # This programme reads in SEAPODYM from its data files, and stores it as R raster objects. Currently only Skipjack in - I need Inna to point out the other species files
       source("Programmes/Allocate_SEAPODYM_to_EEZ_by_Time.r") # This programme reads in SEAPODYM from its data files, and 
                                                               # converts it to quantities of adult fish biomass in country EEZs. The data isn't timely, so I'll been to advance it to current but some indicator metrics.
+      source("Programmes/Experimental_Aquatic_Resource_Asset_Accounts.r") # This programme reads in SEAPODYM data, and reaches over into the COMTRADE project to pull through the FFA tuna catch data, and makes some 
+                                                                          # experimental Tuna Accounts.
       
      
