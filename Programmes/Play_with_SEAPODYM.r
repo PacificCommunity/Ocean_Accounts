@@ -152,7 +152,7 @@
    ##
    ## Albacore
    ##
-      Albacore   <- read.var.dym("Data_Raw/Albacore_SEAPODYM/output/F0/output/alb_adult.dym")
+      Albacore   <- read.var.dym("Data_Raw/Albacore_SEAPODYM/output/alb_adult.dym")
       str(Albacore)
       summary(Albacore[["x"]])
       summary(Albacore[["y"]])
@@ -166,13 +166,13 @@
          Spin_Me <- as.array(Albacore[["var"]])
          
          Spun    <- array(data = NA, 
-                           dim = c(32,80, 108))
+                           dim = c(32,80, 384))
 
          for(x in 1:32)
          {
             for(y in 1:80)
             {
-               for(z in 1:108)
+               for(z in 1:384)
                {
                   Spun[x,y,z] <- Spin_Me[z,y,x]
                }
