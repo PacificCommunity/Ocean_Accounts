@@ -155,6 +155,13 @@
 ##
 ##                The closest that comes to documentation is: https://digitalearthpacific.org/#/applications
 ##
+##                TRICKS WITH DIGITAL EARTH PACIFIC
+##                (1) Each GeoMAD layer has shades of red/green/blue that can take over 7000 different values... TOO MANY. The data needs to be scaled back to 0-255 range
+##                    rather than a 0 - 7000 range. I'm testing this out in the "Match_ESA_to_Sentinel_At_Scale.r" programme.
+##
+##
+##
+##
 ##
 ##                ON THE DIFFERENCE BETWEEN MATRICIES AND RASTERS
 ##                https://geobgu.xyz/r/matrices-and-rasters.html#rasters
@@ -271,6 +278,9 @@
       ##
       ##    Try impliementing the recommendations on sample design
       ##
+         source("Programmes/Scale_Colours_to_Common_255.r") # It turns out that the red / green / blue can have over 9000 different shades. This programme scales all the different shades 
+                                                            # back to a common 0 - 255 range which is calibrated to each red / green / blue colour
+                                                            
          source("Programmes/Stratified_Sampling.r") # Post prototype review
       
 

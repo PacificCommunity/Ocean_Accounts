@@ -1,27 +1,8 @@
 ##
-##    Programme:  Match_ESA_to_Sentinel_At_Scale.r
+##    Programme:  Scale_Colours_to_Common_255.r
 ##
-##    Objective:  I've downloaded all of the Sentinel-2 spatial data, now I need to 
-##                match that to the overarching ESA data, at scale for all the countries.
-##
-##                Ok... how to..?
-##
-##                Options: 
-##                   (1) Take all of the ESA data, and express the pacific as a series of extents
-##                       with x-min, x-max, y-min, y-max values. Each extent inherits the Land Cover value.
-##                       REFINEMENT: this could just be the x-min and y-min values since the x-max and y-max 
-##                       values are just the next set of x-min and y-min values up. That creates a three dimensional array
-##                       of x-min, y-min, land cover value.
-##
-##                       Take the Sentinel-2 data and do the same exercise. This will create a six dimensional array which
-##                       will be data intensive... I can reduce the RGB back to a single (16581375 x 3) matrix as a master
-##                       look-up table. Then, all of the Sentinel-2 data can be stored in another three dimensional array 
-##                       of x-min, y-min, lookup index.
-##
-##                       Complications - I think I need to express the 300m x 300m and the 10m x 10m as lat/longs to make 
-##                       the location spatially compatible.
-##
-##                       I feel there's a trick with SQL which can help here (because its set-based langauge)... 
+##    Objective:  It turns out that the red / green / blue can have over 9000 different shades. 
+##                This programme scales all the different shades back to a common 0 - 255 range which is calibrated to each red / green / blue colour.
 ##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 22 October 2025
 ##
@@ -72,8 +53,7 @@
       Contents <- Contents[order(Contents$Country,Contents$Year),]
       rownames(Contents) <- NULL
 
-#      All_Data <- lapply(1:nrow(Contents), function(File){
-      All_Data <- lapply(1:200, function(File){
+      All_Data <- lapply(1:nrow(Contents), function(File){
                            tryCatch({#print(Contents$DataFrames[File])
                                        X <- raster(paste0("Data_Spatial/", Contents$DataFrames[File]))
                                        Z <- data.frame(freq(X))
@@ -87,13 +67,11 @@
                                 error   = function(e) {NULL}, 
                                 finally = {})})
       Colour_Breadth <- do.call(rbind, All_Data)
-      Colour_Breadth
-      
       
       Colour_Frequency <- with(Colour_Breadth,
                              aggregate(list(count = count),
                                        list(value = value,
-                                            Colour  = Colour),
+                                            Colour  = Colour),    # I've made a deliberate choice to drop the country measure so the colour scales are country invariant
                                        sum,
                                        na.rm = TRUE))
 
@@ -124,6 +102,7 @@
             {
                Frequency_Data$Decile[i] <- Deciles$DGroup[((Frequency_Data$Proportion[i] >= Deciles$Value.x ) &
                                                            (Frequency_Data$Proportion[i] <= Deciles$Value.y ))]
+                                                           
                Frequency_Data$DecileGroup[i] <- Deciles$ID[((Frequency_Data$Proportion[i] >= Deciles$Value.x ) &
                                                             (Frequency_Data$Proportion[i] <= Deciles$Value.y ))]
             }  
@@ -157,45 +136,17 @@
 
       }
 
-save(Range_Red, file = 'Data_Intermediate/Range_Red.rda')
-save(Range_Green, file = 'Data_Intermediate/Range_Green.rda')
-save(Range_Blue, file = 'Data_Intermediate/Range_Blue.rda')
+   save(Range_Red,   file = 'Data_Intermediate/Range_Red.rda')
+   save(Range_Green, file = 'Data_Intermediate/Range_Green.rda')
+   save(Range_Blue,  file = 'Data_Intermediate/Range_Blue.rda')
 
-save(DecileStats_Red, file = 'Data_Intermediate/DecileStats_Red.rda')
-save(DecileStats_Green, file = 'Data_Intermediate/DecileStats_Green.rda')
-save(DecileStats_Blue, file = 'Data_Intermediate/DecileStats_Blue.rda')
-
-
+   save(DecileStats_Red,   file = 'Data_Intermediate/DecileStats_Red.rda')
+   save(DecileStats_Green, file = 'Data_Intermediate/DecileStats_Green.rda')
+   save(DecileStats_Blue,  file = 'Data_Intermediate/DecileStats_Blue.rda')
 
 
 
-
-   ##
-   ##    Put them on the same CRS
-   ##
-      crs(Sentinel_blue) <- crs(ESA)
-
-
-
-
-   ##
-   ## Save files our produce some final output of something
-   ##
-      save(xxxx, file = 'Data_Intermediate/xxxxxxxxxxxxx.rda')
-      save(xxxx, file = 'Data_Output/xxxxxxxxxxxxx.rda')
 ##
 ##    And we're done
 ##
-
-
-
-matrix(data = values(r), nrow = 18, ncol = 36, byrow = TRUE)
-
-
-
-r <- raster(ncols=36, nrows=18)
-values(r) <- rnorm(ncell(r)) *3
-breaks <- -2:2 * 3
-rc <- cut(r, breaks=breaks)
-
 

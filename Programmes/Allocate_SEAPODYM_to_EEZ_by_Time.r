@@ -260,7 +260,7 @@
                  colour = Country))     +
              geom_smooth(size =2, se = FALSE) +
              geom_point(size =1, alpha = 0.1) +
-             facet_wrap(~variable, scales="free") +
+             facet_wrap(~variable, scales="free_y") +
              scale_y_continuous(labels = comma, breaks = seq(from = 0, to = 300000, by =10000)) +
              scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
              labs(title="Adult Tuna Biomass\n",
@@ -308,4 +308,12 @@
 ## And we're done
 ##
                    
-                   
+# load('Data_Intermediate/Fiji_Tuna_Stocks.rda')                   
+# Fiji_Tuna_Stocks <- Fiji_Tuna_Stocks[Fiji_Tuna_Stocks$variable != "Albacore",]
+# names(Albacore) <- c("Date", "value")
+# Albacore$Country <- "Fiji"                   
+# Albacore$variable <- "Albacore"                   
+# Fiji_Tuna_Stocks <- rbind(Fiji_Tuna_Stocks, Albacore)
+# save(Fiji_Tuna_Stocks, file = 'Data_Intermediate/Fiji_Tuna_Stocks.rda')
+                           
+                 
