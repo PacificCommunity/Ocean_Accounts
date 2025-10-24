@@ -31,26 +31,41 @@
    ##
       rm(list=ls(all=TRUE))
    ##
-   ##    Read in the ESA data
+   ##    Read in the spatial data
    ##
+      load("Data_Spatial/EEZ_All.rda")
+      load("Data_Spatial/BBX.rda")
+      load("Data_Spatial/Countries.rda")
+      
       ESA       <- raster("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
       getValues(ESA, row=10)[1:10]
                      
    ##
    ##    Nice... the individual layers can range in colour from 1 - over 7000... :-(  This needs scaled back. grrr
    ##
-   
-      # Sentinel_blue  <- raster("Data_Spatial/_blue_20177.tif")
-      # Sentinel_green <- raster("Data_Spatial/_green_20177.tif")
-      # Sentinel_red   <- raster("Data_Spatial/_red_20177.tif")
-      
-      # X <- data.frame(freq(Sentinel_blue))
-      # Z <- getValues(Sentinel_blue)
-      
-      # summary(getValues(Sentinel_blue))
-      # summary(getValues(Sentinel_green))
-      # summary(getValues(Sentinel_red))
-
+      ##
+      ##    Steal data from the shorelines project
+      ##
+         g <- geopackage("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg")
+         Shorelines <- gpkg_table(g, "shorelines_annual")
+         Country_Codes = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select distinct eez_territory
+                                                                                        from shorelines_annual")
+         ##
+         ##    eez_territory turns out to be an ISO code
+         ##
+         
+         Country_Codes <-  merge(Country_Codes,
+                                 unique(st_drop_geometry(EEZ_All[,c("TERRITORY1", "ISO_TER1")])),
+                                 by.x = "eez_territory",
+                                 by.y = "ISO_TER1",
+                                 all.x = TRUE)  
+         Country_Codes <- Country_Codes[!is.na(Country_Codes$eez_territory),]
+         Country_Codes <- Country_Codes[Country_Codes$eez_territory != "KIR",]
+         Country_Codes <- rbind(Country_Codes,
+                                data.frame(eez_territory = "KIR",
+                                           TERRITORY1 = "Kiribati"))
+         
+         Country_Mapping <- unique(st_drop_geometry(Countries[,c("NAME_EN", "ISO_A3", "Polygon_ID")]))
 
 ##
 ##    Read in all of the tiffs so I can pull out all of their colour values.
@@ -69,17 +84,92 @@
       Contents$Country <- as.numeric(Contents$Country)
       Contents$Year    <- as.numeric(Contents$Year)
       
+      Contents <- merge(Contents,
+                        Country_Mapping,
+                        by.x = "Country",
+                        by.y = "Polygon_ID")
+      
       Contents <- Contents[order(Contents$Country,Contents$Year),]
       rownames(Contents) <- NULL
 
+
+
+
+
+
+
 #      All_Data <- lapply(1:nrow(Contents), function(File){
       All_Data <- lapply(1:200, function(File){
-                           tryCatch({#print(Contents$DataFrames[File])
-                                       X <- raster(paste0("Data_Spatial/", Contents$DataFrames[File]))
-                                       Z <- data.frame(freq(X))
-                                       Z$Country <- Contents$Country[File]
-                                       Z$Year    <- Contents$Year[File]
-                                       Z$Colour  <- Contents$Colour[File]
+      
+      
+                           tryCatch({
+                           
+File <- 337                           
+print(Contents$DataFrames[File])
+X <- rast(paste0("Data_Spatial/", Contents$DataFrames[File]))
+
+##
+##    What can we do about the shorelines?
+##
+   g <- geopackage("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg")
+   Shorelines <- gpkg_table(g, "shorelines_annual")
+   Country_Codes = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select distinct eez_territory
+                                                                                  from shorelines_annual")
+                                                                                  
+   Country_Codes <-  merge(Country_Codes,
+                           unique(EEZ_All[,c("TERRITORY1", "ISO_TER1")]),
+                           by.x = "eez_territory",
+                           by.y = "ISO_TER1",
+                           all.x = TRUE)
+   Country_Mapping <- unique(st_drop_geometry(Countries[,c("NAME_EN", "Polygon_ID")]))
+
+
+      
+
+   Fiji = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
+                                                                         from shorelines_annual
+                                                                         where eez_territory = 'FJI'")
+
+plot(Fiji[Fiji$certainty == 'good',2])
+plot(Fiji[(Fiji$certainty == 'good') & (Fiji$year == 2023),2])
+plot(Fiji[(Fiji$year == 2023),2])
+
+Fiji <- st_transform(Fiji, st_crs(EEZ_All))
+
+Closest_Addresses <- st_intersection(Fiji, st_make_valid(EEZ_All))
+
+
+
+French_Polynesia_Maybe = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
+                                                                                        from shorelines_annual
+                                                                                        where eez_territory = 'PYF'")
+
+French_Polynesia_Maybe <- st_transform(French_Polynesia_Maybe, st_crs(EEZ_All))
+
+Closest_Addresses <- st_intersection(st_bbox(French_Polynesia_Maybe), st_make_valid(EEZ_All))
+
+
+
+
+
+
+
+plot(Closest_Addresses[Closest_Addresses$certainty == 'good',2])
+
+test <- st_make_valid(EEZ)
+
+
+
+Country_Poly <- as.polygons(X, round=FALSE, na.all = TRUE, na.rm=FALSE)
+Country_sf <- st_as_sf(as.polygons(Country_Poly))
+
+X <- st_rotate(st_intersection(Country_sf, st_make_valid(EEZ)))
+                                    
+
+                                    
+                                       
+                                       
+                                       
                                        rm(list=c("X"))
                                        return(Z[!is.na(Z$value),])
                                     },

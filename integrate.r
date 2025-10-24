@@ -216,7 +216,7 @@
       library(bigmemory)
       library(rstac)       # This library is derived from here: https://github.com/brazil-data-cube/rstac
       library(dym)         # This library is derived from here: https://osf.io/hgfjq/files/5kqyf
-      
+      library(gpkg)
    ##
    ##    Set working directory
    ##
@@ -235,12 +235,14 @@
       ##    Estimate the bounded boxes for Fiji, Palau, Cook Islands and New Caledonia EEZ so these can be passed to "Programmes/DEP_Play_Code_Version3.py" for data extraction
       ##       Dropping Fiji for the moment
       ##
-         source("Programmes/Estimate_bounded_boxes_Version4.r") # I moved onto V2 for issues associated with splitting countries into islands. Read programme notes.
+         source("Programmes/Estimate_bounded_boxes_Version5.r") # I moved onto V2 for issues associated with splitting countries into islands. Read programme notes.
                                                                 # So... Version 2 chopped the countries into islands and brought each down individually. That worked, in the sense that data was 
                                                                 # able to be downloaded, but it failed because it didn't get the full complexity of the islands in the likes of Fiji.
                                                                 # Version 3 kept the countries, but wasn't able to download data from New Caledonia becuase it was too big.
-                                                                # Vertion 4 will revert back to Version2, and break the countries up into islands, and scope 10km around each to get the complexity
+                                                                # Version 4 will revert back to Version2, and break the countries up into islands, and scope 10km around each to get the complexity
                                                                 #    hopefully coming through the ESA land use measures
+                                                                # Version 5 ditched the concept of using the World Bank countries data, and has moved to the DEP Coastlines project data.
+                                                                #    Also, version 5 is not using a convex hull to define the boundaries of the countries for chopping out DEP GeoMAD data.
          
       ##
       ##    Thats all the data pulled down. Now I've got to make an index which relates the 10x10 spatial location with the 300x300 land use classification for each of the islands of the 

@@ -43,6 +43,7 @@
    ##
    ##    Subset the EEZs for the countries we care about 
    ##
+      EEZ_All   <- EEZ
       EEZ       <- EEZ[EEZ$TERRITORY1 %in% c("Fiji", "Palau", "Cook Islands", "New Caledonia"),]
       Countries <- Countries[Countries$NAME_EN %in% c("Fiji", "Palau", "Cook Islands", "New Caledonia"),]
 
@@ -50,6 +51,7 @@
    ##   Move to common CRS
    ##
       st_crs(EEZ) <- st_crs(Countries)              
+      st_crs(EEZ_All) <- st_crs(Countries)              
 
    ##
    ##    Lets try breaking Fiji apart... ok that worked
@@ -87,6 +89,7 @@
    ## Save files our produce some final output of something
    ##
       save(EEZ,       file = 'Data_Spatial/EEZ.rda')
+      save(EEZ_All,   file = 'Data_Spatial/EEZ_All.rda')
       save(Countries, file = 'Data_Spatial/Countries.rda')
       save(BBX,       file = 'Data_Spatial/BBX.rda')
       write.table(BBX,file = 'Data_Spatial/BBX.csv', row.names=FALSE, sep =",")
