@@ -99,14 +99,27 @@
       ##
       ##    These are the chunks of DEP GeoMAD we want to cut out
       ##
-         plot(Countries[,1])
-      
+         plot(st_geometry(Countries[,1]))
+
+   ##
+   ##   Estimate the bounded boxes for each landmass - add a 10 km buffer around each
+   ##
+      BBX <- lapply(unique(Countries$Polygon_ID), function(X){
+                    return(data.frame(xmin = st_bbox(Countries[Countries$Polygon_ID == X,])[1],
+                                      ymin = st_bbox(Countries[Countries$Polygon_ID == X,])[2],
+                                      xmax = st_bbox(Countries[Countries$Polygon_ID == X,])[3],
+                                      ymax = st_bbox(Countries[Countries$Polygon_ID == X,])[4],
+                                      Polygon_ID = X))
+                     })
+      BBX <- do.call(rbind, BBX)
+      rownames(BBX) = NULL      
    ##
    ## Save files our produce some final output of something
    ##
       save(EEZ,              file = 'Data_Spatial/EEZ.rda')
       save(Target_Countries, file = 'Data_Spatial/Target_Countries.rda')
       save(Countries,        file = 'Data_Spatial/Countries.rda')
+      save(BBX,              file = 'Data_Spatial/BBX.rda')
 ##
 ##    And we're done
 ##
