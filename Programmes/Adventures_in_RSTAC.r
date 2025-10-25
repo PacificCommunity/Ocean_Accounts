@@ -19,45 +19,128 @@
    ##    Open a link to the catalog and collection 
    ##
 
+      New_Caledonia <- st_as_sf(Countries[3,])
+      plot(st_geometry(New_Caledonia))
+      New_Caledonia_BBox <- st_bbox(New_Caledonia)
+      
+      
       s_obj <- stac("https://stac.digitalearthpacific.org")
 
       
       Search <- stac_search(q = s_obj,
                             collections= "dep_s2_geomad",
-                            limit = 999)
-      Search    
+                            bbox = New_Caledonia_BBox,
+                            limit = 5)
+      Results <- get_request(Search)
       
-      Cook_Islands <- st_as_sf(Countries[4,])
-      plot(st_geometry(Cook_Islands))
-      Cook_Islands_BBox <- st_bbox(Cook_Islands)
      
       stac_query <- stac_search(q = s_obj,
                                 collections= "dep_s2_geomad",
                                 bbox = Cook_Islands_BBox)      
       stac_query
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+      ##
+      ##    Lets just 
+      ##
 
 
-      Search <- stac_search(s_obj,
-                            collections= "dep_s2_geomad", 
-                            bbox= c(131.1202,2.999413,134.7139,8.064127),
-                            limit = 100)
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      
+      Search <- stac_search(q = s_obj,
+                            collections= "dep_s2_geomad")
+      
+      Filter <- ext_filter(q = Search,
+                           s_intersects(geometry, {{New_Caledonia}}))
+                                                   
+      Results <- get_request(Filter)
+      Items <- assets_select(Results,
+                             asset_names = c("blue", "red", "green"))  
+                             
+      Wonder <- items_as_sfc(assets_download(Items,  
+                            output_dir = "Data_Spatial/New_Caledonia",
+                            overwrite  = TRUE))
 
-      it_obj <- get_request(Search)
-      items_matched(it_obj)
+sf <- items_as_sf(stac_items)
 
-      collections_query <- collections(s_obj)
-      available_collections <- get_request(collections_query)
+# create a function to plot a map
+plot_map <- function(x) {
+  library(tmap)
+  library(leaflet)
+  current.mode <- tmap_mode("view")
+  tm_basemap(providers[["Stamen.Watercolor"]]) +
+    tm_shape(x) + 
+    tm_borders()
+}
+
+plot_map(sf)      
+      
+      
+      ##
+      ##    Lets just 
+      ##
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      
+      Search <- stac_search(q = s_obj,
+                            collections= "dep_s2_geomad")
+      
+      Filter <- ext_filter(q = Search,
+                           s_intersects(geometry, {{New_Caledonia}}))
+      Items <- assets_select(Filter,
+                             asset_names = c("blue", "red", "green"))  
+                                                   
+      Results <- get_request(Items)
+      Geospatial <- items_as_sf(Results)      
+      
+      
+      WhatsThis <- st_as_sf(Geospatial[1,])
+      
+      Y <- st_as_sf(data.frame(st_drop_geometry(WhatsThis)), geometry = WhatsThis$geometry)
+      
+      
+##
+##    This is starting to work!!!
+##
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      Search <- stac_search(q = s_obj,
+                            collections= "dep_s2_geomad")
+      Filter <- ext_filter(q = Search,
+                           s_intersects(geometry, {{New_Caledonia}}))
+      Request <- post_request(Filter)
+      items_assets(Request)
+      
+      selected_item <- Request$features[[1]]
+      ToDownload <- assets_url(selected_item, asset_names = c("blue", "green", "red"), append_gdalvsi = TRUE)
+      
+      Wonder <- read_stars(ToDownload)
+      Wonder
+      plot(Wonder, axes = TRUE)
+
+
+##
+##    Lets try reading all of New Caledonia in
+##
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      Search <- stac_search(q = s_obj,
+                            collections= "dep_s2_geomad")
+      Filter <- ext_filter(q = Search,
+                           s_intersects(geometry, {{New_Caledonia}}))
+      Request <- post_request(Filter)
+      Items <- assets_select(Request,
+#                             asset_names = c("blue", "green", "red"))
+                             asset_names = c("blue"))
+      ToDownload <- assets_url(Items, append_gdalvsi = TRUE)
+      ToDownload
+      ##
+      ##    Didn't work - stars wants to merge them
+      ##
+      Wonder <- read_stars(ToDownload, along = "new_dimensions")
+      Wonder
+      plot(Wonder, axes = TRUE)
+      ##
+      ##    Try terra
+      ##
+      Wonder <- sprc(lapply(ToDownload, rast))
+      r <- mosaic(Wonder)
 
 
    ##

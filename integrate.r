@@ -217,6 +217,8 @@
       library(rstac)       # This library is derived from here: https://github.com/brazil-data-cube/rstac
       library(dym)         # This library is derived from here: https://osf.io/hgfjq/files/5kqyf
       library(gpkg)
+      library(stars)
+      
    ##
    ##    Set working directory
    ##
