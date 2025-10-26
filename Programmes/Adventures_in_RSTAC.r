@@ -141,7 +141,13 @@ plot_map(sf)
       ##
       Wonder <- sprc(lapply(ToDownload, rast))
       r <- mosaic(Wonder)
-
+      crs(r) <- crs(New_Caledonia)
+      s <- mask(r, New_Caledonia)
+      plot(s)
+      
+      
+      plot(r)
+      plot(st_geometry(New_Caledonia), add = TRUE)
 
    ##
    ## Save files our produce some final output of something

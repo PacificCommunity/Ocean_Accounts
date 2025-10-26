@@ -70,6 +70,66 @@
                                                  (Target_Countries$certainty == "good"),],
                                 Country_Codes,
                                 by = "eez_territory")
+                                
+   ##
+   ##    I want to merge all of these Coastlines together - coastlines dont close - add a 1 meter buffer
+   ##
+      New_Caledonia <- Target_Countries[(Target_Countries$TERRITORY1 == "New Caledonia"),]
+      New_Caledonia <- st_as_sf(st_union(New_Caledonia))
+      New_Caledonia$Country <- "New Caledonia" 
+      New_Caledonia <- st_make_valid(st_buffer(New_Caledonia, 1))
+      New_Caledonia <- st_cast(New_Caledonia, "MULTIPOLYGON")                          
+      New_Caledonia_Hull <- st_as_sf(st_convex_hull(st_union(New_Caledonia)))
+      New_Caledonia_BBox <- st_bbox(New_Caledonia)
+      
+      New_Caledonia      <- st_transform(New_Caledonia,      st_crs(4326))
+      New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
+      New_Caledonia_BBox <- st_transform(New_Caledonia_BBox, st_crs(4326))
+
+
+##
+##    Lets try reading all of New Caledonia in
+##
+
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      
+      Search <- stac_search(q = s_obj,
+                            collections= "dep_s2_geomad",
+                            bbox = New_Caledonia_BBox)                                                   
+      Results <- get_request(Search)
+      Items <- assets_select(Request,
+                             asset_names = c("blue"))
+      ToDownload <- assets_url(Items, append_gdalvsi = TRUE)
+      ToDownload
+      
+      ##
+      ##    Try terra - YUP!!!
+      ##
+      Wonder <- sprc(lapply(ToDownload, rast))
+      r <- mosaic(Wonder)
+      crs(r) <- crs(New_Caledonia)
+      s <- mask(r, New_Caledonia)
+      plot(s)
+      
+      
+      plot(st_geometry(New_Caledonia))
+      plot(r, add = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                
+                                
 
    ##
    ##   Move to common CRS and 
