@@ -97,7 +97,7 @@
                             collections= "dep_s2_geomad",
                             bbox = New_Caledonia_BBox)                                                   
       Results <- get_request(Search)
-      Items <- assets_select(Request,
+      Items <- assets_select(Results,
                              asset_names = c("blue"))
       ToDownload <- assets_url(Items, append_gdalvsi = TRUE)
       ToDownload
@@ -107,6 +107,8 @@
       ##
       Wonder <- sprc(lapply(ToDownload, rast))
       r <- mosaic(Wonder)
+      
+      
       crs(r) <- crs(New_Caledonia)
       s <- mask(r, New_Caledonia)
       plot(s)
