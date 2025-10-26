@@ -98,57 +98,8 @@
 
 
 ##
-##    Lets try reading all of New Caledonia in
-##
-      lower_left  = c(-22.84775,  163.5)
-      upper_right = c(-19.45, 168.4)
-
-      bbox = c(lower_left[2], lower_left[1], upper_right[2], upper_right[1])
-         
-      s_obj <- stac("https://stac.digitalearthpacific.org")
-      
-      Search <- stac_search(q = s_obj,
-                            collections= "dep_s2_geomad",
-#                            bbox = New_Caledonia_BBox)                                                   
-                            bbox = bbox,
-                            limit = 999)                                                   
-      Results <- get_request(Search)
-      Items <- assets_select(Results,
-                             asset_names = c("blue"))
-      ToDownload <- assets_url(Items, append_gdalvsi = TRUE)
-      ToDownload <- ToDownload[str_detect(ToDownload, "_2024")]
-      
-      ##
-      ##    Try terra - YUP!!!
-      ##
-      Wonder <- lapply(ToDownload, function(x){
-                        Y = rast(x)
-                        Y = project(Y, crs(New_Caledonia))
-                        return(Y)
-                        })
-      
-      
-      Wonder <- sprc(lapply(ToDownload, rast))
-      Wonder <- project(Wonder, crs(New_Caledonia))
-      
-      
-      r <- mosaic(Wonder)
-      writeRaster(r, filename ="Data_Spatial/New_Caledonia_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-   
-   
-      Stars_NC <- read_stars("Data_Spatial/New_Caledonia_Rast.tif")
-
-x = c(orig = Stars_NC, 
-      flip_x = st_flip(Stars_NC, "x"), 
-      flip_y = st_flip(Stars_NC, "y"), 
-      along = 3)
-plot(x)
-
-
-##
 ##    Try the intersect again
 ##
-
 
       s_obj <- stac("https://stac.digitalearthpacific.org")
       
@@ -161,7 +112,7 @@ plot(x)
                                                    
       Results <- get_request(Filter)
       Items <- assets_select(Results,
-                             asset_names = c("blue"))  
+                             asset_names = c("red", "green", "blue"))  
                              
       ToDownload <- assets_url(Items, append_gdalvsi = TRUE)
       ToDownload <- ToDownload[str_detect(ToDownload, "_2024")]
@@ -169,20 +120,21 @@ plot(x)
       ##
       ##    Try terra - YUP!!!
       ##
-      Wonder <- lapply(ToDownload, function(x){
-                        Y = rast(x)
-                        Y = project(Y, crs(New_Caledonia))
-                        return(Y)
-                        })
-      
-      
-      Wonder <- sprc(lapply(ToDownload, rast))
-      Wonder <- project(Wonder, crs(New_Caledonia))
-      
-      
-      r <- mosaic(Wonder)
-      writeRaster(r, filename ="Data_Spatial/New_Caledonia_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-
+      for(i in c("red", "green", "blue"))
+      {
+         Wonder <- lapply(ToDownload[str_detect(ToDownload, i)], function(x){
+                           Y = rast(x)
+                           Y = project(Y, crs(New_Caledonia))
+                           return(Y)
+                           })
+         
+         
+         Wonder <- sprc(lapply(ToDownload, rast))
+         Wonder <- project(Wonder, crs(New_Caledonia))
+         
+         r <- mosaic(Wonder)
+         writeRaster(r, filename = paste0("Data_Spatial/New_Caledonia_", i, "_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+      }
 
 
 
