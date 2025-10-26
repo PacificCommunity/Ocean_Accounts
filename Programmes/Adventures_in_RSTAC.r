@@ -1,7 +1,7 @@
 ##
 ##    Programme:  Adventures_in_RSTAC.r
 ##
-##    Objective:  What is this programme designed to do?
+##    Objective:  https://stacspec.org/en/tutorials/1-download-data-using-r/
 ##
 ##    Author:     <PROGRAMMER>, <TEAM>, <DATE STARTED>
 ##

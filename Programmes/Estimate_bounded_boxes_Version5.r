@@ -17,6 +17,8 @@
 ##
 ##                This version is a major departure because I'm going to use the DEP coastline data to define "land"
 ##
+##                https://stacspec.org/en/tutorials/1-download-data-using-r/
+##
 ##    Author:     James Hogan, Senior Marine Resource Economist, 8 October 2025
 ##
 ##
@@ -90,48 +92,60 @@
 ##
 ##    Lets try reading all of New Caledonia in
 ##
+      lower_left  = c(-22.84775,  163.5)
+      upper_right = c(-19.45, 168.4)
 
+      bbox = c(lower_left[2], lower_left[1], upper_right[2], upper_right[1])
+         
       s_obj <- stac("https://stac.digitalearthpacific.org")
       
       Search <- stac_search(q = s_obj,
                             collections= "dep_s2_geomad",
-                            bbox = New_Caledonia_BBox)                                                   
+#                            bbox = New_Caledonia_BBox)                                                   
+                            bbox = bbox,
+                            limit = 999)                                                   
       Results <- get_request(Search)
       Items <- assets_select(Results,
                              asset_names = c("blue"))
       ToDownload <- assets_url(Items, append_gdalvsi = TRUE)
-      ToDownload
+      ToDownload <- ToDownload[str_detect(ToDownload, "_2024")]
       
       ##
       ##    Try terra - YUP!!!
       ##
+      Wonder <- lapply(ToDownload, function(x){
+                        Y = rast(x)
+                        Y = project(Y, crs(New_Caledonia))
+                        return(Y)
+                        })
+      
+      
       Wonder <- sprc(lapply(ToDownload, rast))
+      Wonder <- project(Wonder, crs(New_Caledonia))
+      
+      
       r <- mosaic(Wonder)
+      writeRaster(r, filename ="Data_Spatial/New_Caledonia_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+   
+   
+      Stars_NC <- read_stars("Data_Spatial/New_Caledonia_Rast.tif")
+
+x = c(orig = Stars_NC, 
+      flip_x = st_flip(Stars_NC, "x"), 
+      flip_y = st_flip(Stars_NC, "y"), 
+      along = 3)
+plot(x)
+
+
+
+      rast_NC <- rast("Data_Spatial/New_Caledonia_Rast.tif")
+
+
+
+
+      Noumea <- st_union(st_crop(New_Caledonia, c(ymin = -23, xmin = 163.5, ymax = -19.45, xmax = 168.4)))
       
-      
-      crs(r) <- crs(New_Caledonia)
-      s <- mask(r, New_Caledonia)
-      plot(s)
-      
-      
-      plot(st_geometry(New_Caledonia))
-      plot(r, add = TRUE)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                
-                                
+                             
 
    ##
    ##   Move to common CRS and 
@@ -185,3 +199,16 @@
 ##
 ##    And we're done
 ##
+
+
+
+
+
+
+
+
+
+
+
+
+
