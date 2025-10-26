@@ -81,12 +81,20 @@
       New_Caledonia$Country <- "New Caledonia" 
       New_Caledonia <- st_make_valid(st_buffer(New_Caledonia, 1))
       New_Caledonia <- st_cast(New_Caledonia, "MULTIPOLYGON")                          
-      New_Caledonia_Hull <- st_as_sf(st_convex_hull(st_union(New_Caledonia)))
-      New_Caledonia_BBox <- st_bbox(New_Caledonia)
       
       New_Caledonia      <- st_transform(New_Caledonia,      st_crs(4326))
+      Noumea <- st_union(st_crop(New_Caledonia, c(ymin = -23, xmin = 163.5, ymax = -19.45, xmax = 168.4)))
+      New_Caledonia_Hull <- st_as_sf(st_convex_hull(st_union(Noumea)))
+      New_Caledonia_BBox <- st_bbox(Noumea)
       New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
       New_Caledonia_BBox <- st_transform(New_Caledonia_BBox, st_crs(4326))
+
+
+      
+
+
+   rm(g)
+   rm(Shorelines)
 
 
 ##
@@ -135,6 +143,46 @@ x = c(orig = Stars_NC,
       flip_y = st_flip(Stars_NC, "y"), 
       along = 3)
 plot(x)
+
+
+##
+##    Try the intersect again
+##
+
+
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      
+      Search <- stac_search(q = s_obj,
+                           limit = 999,
+                            collections= "dep_s2_geomad")
+      
+      Filter <- ext_filter(q = Search,
+                           s_intersects(geometry, {{New_Caledonia_Hull}}))
+                                                   
+      Results <- get_request(Filter)
+      Items <- assets_select(Results,
+                             asset_names = c("blue"))  
+                             
+      ToDownload <- assets_url(Items, append_gdalvsi = TRUE)
+      ToDownload <- ToDownload[str_detect(ToDownload, "_2024")]
+      
+      ##
+      ##    Try terra - YUP!!!
+      ##
+      Wonder <- lapply(ToDownload, function(x){
+                        Y = rast(x)
+                        Y = project(Y, crs(New_Caledonia))
+                        return(Y)
+                        })
+      
+      
+      Wonder <- sprc(lapply(ToDownload, rast))
+      Wonder <- project(Wonder, crs(New_Caledonia))
+      
+      
+      r <- mosaic(Wonder)
+      writeRaster(r, filename ="Data_Spatial/New_Caledonia_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+
 
 
 
