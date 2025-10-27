@@ -131,16 +131,12 @@
             Wonder <- lapply(BringDown, function(x){
                               print(paste0("Bringing down ", count, " of ", length(BringDown)))
                               count <<- count + 1
-                              Y = rast(x)
+                              Y <- rast(x)
                               Y <- aggregate(Y,fact=5, cores = 10)
-                              Y = project(Y, "epsg:4326")
+                              Y <- project(Y, "epsg:4326")
                               return(Y)
                               })
-            
-            Wonder <- sprc(lapply(ToDownload, rast))
-            
             r <- mosaic(Wonder)
-            
             rp = project(r,"epsg:4326")
             writeRaster(rp, filename =paste0("Data_Spatial/New_Caledonia_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
         }
