@@ -124,22 +124,25 @@
       {
          for(year in c("_2022","_2023","_2024"))
          {
-            print(paste0("Colour is: ", colour, " Year is: ", year))
-            BringDown <- ToDownload[str_detect(ToDownload, year)]
-            BringDown <- BringDown[str_detect(BringDown, colour)]
-            count = 1
-            Wonder <- lapply(BringDown, function(x){
-                              print(paste0("Bringing down ", count, " of ", length(BringDown)))
-                              count <<- count + 1
-                              Y <- rast(x)
-                              Y <- aggregate(Y,fact=5, cores = 10)
-                              Y <- project(Y, "epsg:4326")
-                              return(Y)
-                              })
-            r <- mosaic(Wonder)
-            rp = project(r,"epsg:4326")
-            writeRaster(rp, filename =paste0("Data_Spatial/New_Caledonia_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-        }
+            if(!((colour == "_red") & (year == "_2022")))
+            {
+               print(paste0("Colour is: ", colour, " Year is: ", year))
+               BringDown <- ToDownload[str_detect(ToDownload, year)]
+               BringDown <- BringDown[str_detect(BringDown, colour)]
+               count = 1
+               Wonder <- lapply(BringDown, function(x){
+                                 print(paste0("Bringing down ", count, " of ", length(BringDown)))
+                                 count <<- count + 1
+                                 Y <- rast(x)
+                                 Y <- aggregate(Y,fact=5, cores = 10)
+                                 return(Y)
+                                 })
+               Wonder <- sprc(Wonder)
+               r <- mosaic(Wonder)
+               rp = project(r,"epsg:4326")
+               writeRaster(rp, filename =paste0("Data_Spatial/New_Caledonia_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            }
+         }
       }
 
 
