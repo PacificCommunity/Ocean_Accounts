@@ -122,7 +122,12 @@
       ##
       for(i in c("red", "green", "blue"))
       {
-         Wonder <- lapply(ToDownload[str_detect(ToDownload, i)], function(x){
+         print(i)
+         Pull_Me_Down <- ToDownload[str_detect(ToDownload, i)]
+         count = 0
+         Wonder <- lapply(Pull_Me_Down, function(x){
+                           count <<- count + 1
+                           print(paste("reading file", count, "of", length(Pull_Me_Down)))
                            Y = rast(x)
                            Y = project(Y, crs(New_Caledonia))
                            return(Y)
@@ -133,82 +138,21 @@
          Wonder <- project(Wonder, crs(New_Caledonia))
          
          r <- mosaic(Wonder)
-         writeRaster(r, filename = paste0("Data_Spatial/New_Caledonia_", i, "_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+         writeRaster(r, filename = paste0("Data_Spatial/New_Caledonia_", i, "_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE))
       }
 
 
-
+   ##
+   ##    Load up one
+   ##
       rast_NC <- rast("Data_Spatial/New_Caledonia_Rast.tif")
-
-
-
-
-      Noumea <- st_union(st_crop(New_Caledonia, c(ymin = -23, xmin = 163.5, ymax = -19.45, xmax = 168.4)))
-      
-                             
-
    ##
-   ##   Move to common CRS and 
+   ##    cut it to the coastline
    ##
-      Target_Countries      <- st_transform(Target_Countries, st_crs(EEZ))
-      Target_Countries      <- st_shift_longitude(st_polygonize(Target_Countries))
-      Target_Countries$Area <- st_area(Target_Countries)/1000000
-      Target_Countries      <- Target_Countries[as.numeric(Target_Countries$Area) > 0,]
-      
-      Target_Countries$Polygon_ID <- 1:nrow(Target_Countries)     
-            
-   ##
-   ##       Scale it up for all landmasses of all countries
-   ## 
-      Countries <- lapply(unique(Target_Countries$TERRITORY1), function(X){
-                           x <- Target_Countries[(Target_Countries$TERRITORY1 == X),]
-                           x <- st_as_sf(st_convex_hull(st_union(x)))
-                           x$Country <- X
-                           return(x)
-                     })
-      Countries <- st_shift_longitude(do.call(rbind, Countries))
-      Countries <- st_sf(st_cast(Countries, "POLYGON"))
-      
-      Countries$Area <- st_area(Countries)/1000000
-      Countries$Polygon_ID <- 1:nrow(Countries)     
-      
-      ##
-      ##    These are the chunks of DEP GeoMAD we want to cut out
-      ##
-         plot(st_geometry(Countries[,1]))
-
-   ##
-   ##   Estimate the bounded boxes for each landmass - add a 10 km buffer around each
-   ##
-      BBX <- lapply(unique(Countries$Polygon_ID), function(X){
-                    return(data.frame(xmin = st_bbox(Countries[Countries$Polygon_ID == X,])[1],
-                                      ymin = st_bbox(Countries[Countries$Polygon_ID == X,])[2],
-                                      xmax = st_bbox(Countries[Countries$Polygon_ID == X,])[3],
-                                      ymax = st_bbox(Countries[Countries$Polygon_ID == X,])[4],
-                                      Polygon_ID = X))
-                     })
-      BBX <- do.call(rbind, BBX)
-      rownames(BBX) = NULL      
-   ##
-   ## Save files our produce some final output of something
-   ##
-      save(EEZ,              file = 'Data_Spatial/EEZ.rda')
-      save(Target_Countries, file = 'Data_Spatial/Target_Countries.rda')
-      save(Countries,        file = 'Data_Spatial/Countries.rda')
-      save(BBX,              file = 'Data_Spatial/BBX.rda')
-##
-##    And we're done
-##
-
-
-
-
-
-
-
-
-
-
+      crs(rast_NC) <- crs(New_Caledonia)
+      As_Vect   <- vect(New_Caledonia)
+      Only_Land <- intersect(rast_NC, As_Vect)
+      plot(Only_Land)
 
 
 
