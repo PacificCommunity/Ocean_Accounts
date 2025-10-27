@@ -172,8 +172,26 @@
       plot(Test_Set)
       
 ##
-##    Aggregate up to 100m x 100m
+##    Aggregate up to 1000m x 1000m just for processing
 ##      
-      Lower_Resolution <- aggregate(rast_NC, fact=10)
-      Subset2 <- crop(Lower_Resolution,Subset1)
-      plot(Subset2)
+      Lower_Resolution <- aggregate(rast_NC, fact=100, cores = 10)
+      writeRaster(Lower_Resolution, filename ="Data_Spatial/New_Caledonia_Rast_Lower_Resolution.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+
+      tif=read_stars("Data_Spatial/New_Caledonia_Rast_Lower_Resolution.tif")
+      sf=st_as_sf(tif)
+      sf
+
+      New_Caledonia <- Target_Countries[(Target_Countries$TERRITORY1 == "New Caledonia"),]
+      New_Caledonia <- st_as_sf(st_union(New_Caledonia))
+      New_Caledonia$Country <- "New Caledonia" 
+      New_Caledonia = st_transform(New_Caledonia, st_crs(4326))
+ 
+      Coastlines <- st_union(st_line_merge(New_Caledonia))
+      Coastlines <- st_cast(st_make_valid(Coastlines), "MULTIPOLYGON")                          
+      
+      Subset2 <- st_contains(sf,Coastlines)
+
+
+      plot(Coastlines)
+
+
