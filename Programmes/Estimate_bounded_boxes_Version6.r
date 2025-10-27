@@ -113,29 +113,38 @@
                                                    
       Results <- get_request(Filter)
       Items <- assets_select(Results,
-                             asset_names = c("blue"))  
+                             asset_names = c("blue", "red", "green"))  
                              
       ToDownload <- assets_url(Items)
-      ToDownload <- ToDownload[str_detect(ToDownload, "_2024")]
       
       ##
       ##    Try terra - YUP!!!
       ##
-      Wonder <- lapply(ToDownload, function(x){
-                        Y = rast(x)
-                        Y = project(Y, crs(New_Caledonia))
-                        return(Y)
-                        })
-      
-      
-      Wonder <- sprc(lapply(ToDownload, rast))
-      Wonder <- project(Wonder, crs(New_Caledonia))
-      
-      
-      r <- mosaic(Wonder)
-      rp = project(r,"epsg:4326")
-      writeRaster(rp, filename ="Data_Spatial/New_Caledonia_Rast.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-
+      for(colour in c("_red","_green","_blue"))
+      {
+         for(year in c("_2022","_2023","_2024"))
+         {
+            print(paste0("Colour is: ", colour, " Year is: ", year))
+            BringDown <- ToDownload[str_detect(ToDownload, year)]
+            BringDown <- BringDown[str_detect(BringDown, colour)]
+            count = 1
+            Wonder <- lapply(BringDown, function(x){
+                              print(paste0("Bringing down ", count, " of ", length(BringDown)))
+                              count <<- count + 1
+                              Y = rast(x)
+                              Y <- aggregate(Y,fact=5, cores = 10)
+                              Y = project(Y, "epsg:4326")
+                              return(Y)
+                              })
+            
+            Wonder <- sprc(lapply(ToDownload, rast))
+            
+            r <- mosaic(Wonder)
+            
+            rp = project(r,"epsg:4326")
+            writeRaster(rp, filename =paste0("Data_Spatial/New_Caledonia_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+        }
+      }
 
 
 
