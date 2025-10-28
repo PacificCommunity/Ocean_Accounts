@@ -110,7 +110,8 @@
 ##
 ##    Try the intersect again
 ##
-   for(Country in c("Cook Islands", "Fiji", "Palau", "New Caledonia"))
+#   for(Country in c("Cook Islands", "Fiji", "Palau", "New Caledonia"))
+   for(Country in c("Fiji", "Palau", "New Caledonia"))
    {
       New_Caledonia_Hull <- st_as_sf(st_convex_hull(All_Countries[All_Countries$Country == Country,]))
       New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
@@ -118,7 +119,7 @@
       s_obj <- stac("https://stac.digitalearthpacific.org")
       
       Search <- stac_search(q = s_obj,
-                           limit = 999,
+                           limit = 9999,
                             collections= "dep_s2_geomad")
       
       Filter <- ext_filter(q = Search,
