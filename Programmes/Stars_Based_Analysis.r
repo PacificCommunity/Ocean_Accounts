@@ -48,14 +48,14 @@
       New_Caledonia$Is_190 <- 0
       New_Caledonia$Is_210 <- 0
 
-      values(New_Caledonia$"Is_10")[which(values(New_Caledonia$"ESA") == 10)]   <- 1
-      values(New_Caledonia$"Is_11")[which(values(New_Caledonia$"ESA") == 11)]   <- 1
-      values(New_Caledonia$"Is_12")[which(values(New_Caledonia$"ESA") == 12)]   <- 1
-      values(New_Caledonia$"Is_20")[which(values(New_Caledonia$"ESA") == 20)]   <- 1
-      values(New_Caledonia$"Is_30")[which(values(New_Caledonia$"ESA") == 30)]   <- 1
-      values(New_Caledonia$"Is_40")[which(values(New_Caledonia$"ESA") == 40)]   <- 1
-      values(New_Caledonia$"Is_50")[which(values(New_Caledonia$"ESA") == 50)]   <- 1
-      values(New_Caledonia$"Is_80")[which(values(New_Caledonia$"ESA") == 80)]   <- 1
+      values(New_Caledonia$"Is_10")[which(values(New_Caledonia$"ESA")  == 10)]  <- 1
+      values(New_Caledonia$"Is_11")[which(values(New_Caledonia$"ESA")  == 11)]  <- 1
+      values(New_Caledonia$"Is_12")[which(values(New_Caledonia$"ESA")  == 12)]  <- 1
+      values(New_Caledonia$"Is_20")[which(values(New_Caledonia$"ESA")  == 20)]  <- 1
+      values(New_Caledonia$"Is_30")[which(values(New_Caledonia$"ESA")  == 30)]  <- 1
+      values(New_Caledonia$"Is_40")[which(values(New_Caledonia$"ESA")  == 40)]  <- 1
+      values(New_Caledonia$"Is_50")[which(values(New_Caledonia$"ESA")  == 50)]  <- 1
+      values(New_Caledonia$"Is_80")[which(values(New_Caledonia$"ESA")  == 80)]  <- 1
       values(New_Caledonia$"Is_100")[which(values(New_Caledonia$"ESA") == 100)] <- 1
       values(New_Caledonia$"Is_110")[which(values(New_Caledonia$"ESA") == 110)] <- 1
       values(New_Caledonia$"Is_120")[which(values(New_Caledonia$"ESA") == 120)] <- 1
