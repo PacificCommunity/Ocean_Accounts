@@ -247,7 +247,7 @@
                                                                 #    Also, version 5 is not using a convex hull to define the boundaries of the countries for chopping out DEP GeoMAD data.
                                                                 # Version 6 is significantly different - it uses RSTAC and Terra/Stars. Much more developed
 
-         source("Programmes/Stars_Based_Analysis.r")  # There's two MAJOR libraries for this work - Terra and Stars. Very powerful. Stars can load multiple layers. LEts give it a go.
+         source("Programmes/Stratified_Sample_Design.r")  # Build a stratified sample
 
          
       ##
