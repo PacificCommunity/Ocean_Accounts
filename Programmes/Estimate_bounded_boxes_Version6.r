@@ -76,23 +76,33 @@
    ##
    ##    I want to merge all of these Coastlines together - coastlines dont close - add a 1 meter buffer
    ##
-      New_Caledonia <- Target_Countries[(Target_Countries$TERRITORY1 == "New Caledonia"),]
-      New_Caledonia <- st_as_sf(st_union(New_Caledonia))
-      New_Caledonia$Country <- "New Caledonia" 
-      New_Caledonia <- st_make_valid(st_buffer(New_Caledonia, 1))
-      New_Caledonia <- st_cast(New_Caledonia, "MULTIPOLYGON")                          
+      # New_Caledonia <- Target_Countries[(Target_Countries$TERRITORY1 == "New Caledonia"),]
+      # New_Caledonia <- st_as_sf(st_union(New_Caledonia))
+      # New_Caledonia$Country <- "New Caledonia" 
+      # New_Caledonia <- st_make_valid(st_buffer(New_Caledonia, 1))
+      # New_Caledonia <- st_cast(New_Caledonia, "MULTIPOLYGON")                          
       
-      New_Caledonia      <- st_transform(New_Caledonia,      st_crs(4326))
-      Noumea <- st_union(st_crop(New_Caledonia, c(ymin = -23, xmin = 163.5, ymax = -19.45, xmax = 168.4)))
-      New_Caledonia_Hull <- st_as_sf(st_convex_hull(st_union(Noumea)))
-      New_Caledonia_BBox <- st_bbox(Noumea)
-      New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
-      New_Caledonia_BBox <- st_transform(New_Caledonia_BBox, st_crs(4326))
+      # New_Caledonia      <- st_transform(New_Caledonia,      st_crs(4326))
+      # Noumea <- st_union(st_crop(New_Caledonia, c(ymin = -23, xmin = 163.5, ymax = -19.45, xmax = 168.4)))
+      # New_Caledonia_Hull <- st_as_sf(st_convex_hull(st_union(Noumea)))
+      # New_Caledonia_BBox <- st_bbox(Noumea)
+      # New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
+      # New_Caledonia_BBox <- st_transform(New_Caledonia_BBox, st_crs(4326))
 
-
+   ##
+   ##    I want to merge all of these Coastlines together - coastlines dont close - add a 1 meter buffer
+   ##
+      All_Countries <- lapply(unique(Target_Countries$TERRITORY1), function(x){
+                                    X <- st_as_sf(st_union(Target_Countries[(Target_Countries$TERRITORY1 == x),]))
+                                    X$Country <- x
+                                    X <- st_make_valid(st_buffer(X, 1))
+                                    X <- st_transform(X, st_crs(4326))
+                                    
+                             return(X)
+                     })
+      All_Countries <- st_shift_longitude(do.call(rbind, All_Countries))
+      plot(All_Countries[,1])
       
-
-
    rm(g)
    rm(Shorelines)
 
@@ -100,12 +110,16 @@
 ##
 ##    Try the intersect again
 ##
-
+#   for(Country in c("Cook Islands", "Fiji", "Palau", "New Caledonia"))
+   for(Country in c("Fiji", "Palau", "New Caledonia"))
+   {
+      New_Caledonia_Hull <- st_as_sf(st_convex_hull(All_Countries[All_Countries$Country == Country,]))
+      New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
 
       s_obj <- stac("https://stac.digitalearthpacific.org")
       
       Search <- stac_search(q = s_obj,
-                           limit = 999,
+                           limit = 9999,
                             collections= "dep_s2_geomad")
       
       Filter <- ext_filter(q = Search,
@@ -120,31 +134,29 @@
       ##
       ##    Try terra - YUP!!!
       ##
+      
       for(colour in c("_red","_green","_blue"))
       {
          for(year in c("_2022","_2023","_2024"))
          {
-            if(!((colour == "_red") & (year == "_2022")))
-            {
-               print(paste0("Colour is: ", colour, " Year is: ", year))
-               BringDown <- ToDownload[str_detect(ToDownload, year)]
-               BringDown <- BringDown[str_detect(BringDown, colour)]
-               count = 1
-               Wonder <- lapply(BringDown, function(x){
-                                 print(paste0("Bringing down ", count, " of ", length(BringDown)))
-                                 count <<- count + 1
-                                 Y <- rast(x)
-                                 Y <- aggregate(Y,fact=5, cores = 10)
-                                 return(Y)
-                                 })
-               Wonder <- sprc(Wonder)
-               r <- mosaic(Wonder)
-               rp = project(r,"epsg:4326")
-               writeRaster(rp, filename =paste0("Data_Spatial/New_Caledonia_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-            }
+            print(paste0("Country is: ", Country, " Colour is: ", colour, " Year is: ", year))
+            BringDown <- ToDownload[str_detect(ToDownload, year)]
+            BringDown <- BringDown[str_detect(BringDown, colour)]
+            count = 1
+            Wonder <- lapply(BringDown, function(x){
+                              print(paste0("Bringing down ", count, " of ", length(BringDown)))
+                              count <<- count + 1
+                              Y <- rast(x)
+                              Y <- aggregate(Y,fact=5, cores = 10)
+                              return(Y)
+                              })
+            Wonder <- sprc(Wonder)
+            r <- mosaic(Wonder)
+            rp = project(r,"epsg:4326")
+            writeRaster(rp, filename =paste0("Data_Spatial/", Country,"_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
          }
       }
-
+   }
 
 
       rast_NC <- rast("Data_Spatial/New_Caledonia_Rast.tif")
