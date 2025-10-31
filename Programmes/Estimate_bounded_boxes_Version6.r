@@ -107,11 +107,82 @@
    rm(Shorelines)
 
 
+   for(Country in c("Fiji"))
+   {
+      New_Caledonia_Hull <- st_as_sf(st_convex_hull(All_Countries[All_Countries$Country == Country,]))
+      New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
+
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      
+      Search <- stac_search(q = s_obj,
+                           limit = 9999,
+                            collections= "dep_s2_geomad")
+      
+      Filter <- ext_filter(q = Search,
+                           s_intersects(geometry, {{New_Caledonia_Hull}}))
+                                                   
+      Results <- get_request(Filter)
+      Items <- assets_select(Results,
+                             asset_names = c("blue", "red", "green"))  
+                             
+      ToDownload <- assets_url(Items)
+      
+      ##
+      ##    Try terra - YUP!!!
+      ##
+      for(colour in c("_green"))
+      {
+         for(year in c("_2023","_2024"))
+         {
+            print(paste0("Country is: ", Country, " Colour is: ", colour, " Year is: ", year))
+            BringDown <- ToDownload[str_detect(ToDownload, year)]
+            BringDown <- BringDown[str_detect(BringDown, colour)]
+            count = 1
+            Wonder <- lapply(BringDown, function(x){
+                              print(paste0("Bringing down ", count, " of ", length(BringDown)))
+                              count <<- count + 1
+                              Y <- rast(x)
+                              Y <- aggregate(Y,fact=5, cores = 10)
+                              return(Y)
+                              })
+            Wonder <- sprc(Wonder)
+            r <- mosaic(Wonder)
+            rp = project(r,"epsg:4326")
+            writeRaster(rp, filename =paste0("Data_Spatial/", Country,"_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+         }
+      }
+      
+      for(colour in c("_blue"))
+      {
+         for(year in c("_2022","_2023","_2024"))
+         {
+            print(paste0("Country is: ", Country, " Colour is: ", colour, " Year is: ", year))
+            BringDown <- ToDownload[str_detect(ToDownload, year)]
+            BringDown <- BringDown[str_detect(BringDown, colour)]
+            count = 1
+            Wonder <- lapply(BringDown, function(x){
+                              print(paste0("Bringing down ", count, " of ", length(BringDown)))
+                              count <<- count + 1
+                              Y <- rast(x)
+                              Y <- aggregate(Y,fact=5, cores = 10)
+                              return(Y)
+                              })
+            Wonder <- sprc(Wonder)
+            r <- mosaic(Wonder)
+            rp = project(r,"epsg:4326")
+            writeRaster(rp, filename =paste0("Data_Spatial/", Country,"_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+         }
+      }
+   }
+
+
+
+
 ##
 ##    Try the intersect again
 ##
 #   for(Country in c("Cook Islands", "Fiji", "Palau", "New Caledonia"))
-   for(Country in c("Fiji", "Palau", "New Caledonia"))
+   for(Country in c("Palau", "New Caledonia"))
    {
       New_Caledonia_Hull <- st_as_sf(st_convex_hull(All_Countries[All_Countries$Country == Country,]))
       New_Caledonia_Hull <- st_transform(New_Caledonia_Hull, st_crs(4326))
