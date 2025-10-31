@@ -108,7 +108,39 @@
       model_210se  <- predict(New_Caledonia, model_210, type="response", se.fit=TRUE, cores = 1)
 
 
+##
+##    Ok, that worked good. Can we stratify the sampling process?
+##
+   Frequency <- freq(New_Caledonia,digits=2, bylayer = TRUE)
+   Land_Cover <- Frequency[Frequency$layer == 1,]
+   Land_Cover$Population_Total <- sum(Land_Cover$count)
+   Land_Cover$Proportion <- Land_Cover$count / Land_Cover$Population_Total
 
+   ##
+   ##    If the things that vary by Land_Cover are the red/blue/green colours, then estimate how these vary by Land_Cover
+   ##
+   Land_Cover_Data_NC <- data.frame(New_Caledonia)
+   
+   
+   
+   Variance_Colours <- with(Land_Cover_Data_NC,
+                    aggregate(list(Variance_Red   = Red,
+                                   Variance_Green = Green,
+                                   Variance_Blue  = Blue),
+                            list(ESA = ESA),
+                            var, 
+                            na.rm = TRUE))   
+   Variance_Colours
+
+
+   StdDev_Colours <- with(Land_Cover_Data_NC,
+                       aggregate(list(Variance_Red   = Red,
+                                      Variance_Green = Green,
+                                      Variance_Blue  = Blue),
+                               list(ESA = ESA),
+                               sd, 
+                               na.rm = TRUE))   
+   StdDev_Colours
 
 
 
