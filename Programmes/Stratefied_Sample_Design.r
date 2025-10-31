@@ -1,5 +1,5 @@
 ##
-##    Programme:  Stars_Based_Analysis.r
+##    Programme:  Stratefied_Sample_Design.r
 ##
 ##    Objective:  Stars is an R library designed for working with satelite data. Lets see what it can do
 ##
@@ -13,18 +13,21 @@
    ##
    ##    Load data from somewhere
    ##
-      Red   <- rast("Data_Spatial/New_Caledonia_Rast_red_2022.tif")
-      Green <- rast("Data_Spatial/New_Caledonia_Rast_green_2022.tif")
-      Blue  <- rast("Data_Spatial/New_Caledonia_Rast_blue_2022.tif")
+      Country = "Cook Islands"
+      
+      Red   <- rast(paste0("Data_Spatial/", Country,"_Rast_red_2022.tif"))
+      Green <- rast(paste0("Data_Spatial/", Country,"_Rast_green_2022.tif"))
+      Blue  <- rast(paste0("Data_Spatial/", Country,"_Rast_blue_2022.tif"))
       
       ESA <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
       NC_ESA <- crop(ESA,Red)
    
-      NC_ESA_Redim <- resample(ESA, Red, method = "mode")
+      NC_ESA_Redim <- resample(NC_ESA, Red, method = "mode")
       
       New_Caledonia <- c(NC_ESA_Redim, Red, Green, Blue)
       names(New_Caledonia) <- c("ESA", "Red", "Green", "Blue")
-      
+
+
 
 
 ##
@@ -83,45 +86,21 @@
       list=ls(all=TRUE)
       rm(list= list[!(list %in% c("list", "New_Caledonia","Survey_Design"))])
 
+      New_Caledonia$Is_Agriculture <- 0
+      New_Caledonia$Is_Forest      <- 0
+      New_Caledonia$Is_Grassland   <- 0
+      New_Caledonia$Is_Wetland     <- 0
+      New_Caledonia$Is_Settlement  <- 0
+      New_Caledonia$Is_Water       <- 0
+      New_Caledonia$Is_Other       <- 0
 
-      
-      New_Caledonia$Is_10  <- 0
-      New_Caledonia$Is_11  <- 0
-      New_Caledonia$Is_12  <- 0
-      New_Caledonia$Is_20  <- 0
-      New_Caledonia$Is_30  <- 0
-      New_Caledonia$Is_40  <- 0
-      New_Caledonia$Is_50  <- 0
-      New_Caledonia$Is_80  <- 0
-      New_Caledonia$Is_100 <- 0
-      New_Caledonia$Is_110 <- 0
-      New_Caledonia$Is_120 <- 0
-      New_Caledonia$Is_121 <- 0
-      New_Caledonia$Is_130 <- 0
-      New_Caledonia$Is_150 <- 0
-      New_Caledonia$Is_160 <- 0
-      New_Caledonia$Is_170 <- 0
-      New_Caledonia$Is_190 <- 0
-      New_Caledonia$Is_210 <- 0
-
-      values(New_Caledonia$"Is_10")[which(values(New_Caledonia$"ESA")  == 10)]  <- 1
-      values(New_Caledonia$"Is_11")[which(values(New_Caledonia$"ESA")  == 11)]  <- 1
-      values(New_Caledonia$"Is_12")[which(values(New_Caledonia$"ESA")  == 12)]  <- 1
-      values(New_Caledonia$"Is_20")[which(values(New_Caledonia$"ESA")  == 20)]  <- 1
-      values(New_Caledonia$"Is_30")[which(values(New_Caledonia$"ESA")  == 30)]  <- 1
-      values(New_Caledonia$"Is_40")[which(values(New_Caledonia$"ESA")  == 40)]  <- 1
-      values(New_Caledonia$"Is_50")[which(values(New_Caledonia$"ESA")  == 50)]  <- 1
-      values(New_Caledonia$"Is_80")[which(values(New_Caledonia$"ESA")  == 80)]  <- 1
-      values(New_Caledonia$"Is_100")[which(values(New_Caledonia$"ESA") == 100)] <- 1
-      values(New_Caledonia$"Is_110")[which(values(New_Caledonia$"ESA") == 110)] <- 1
-      values(New_Caledonia$"Is_120")[which(values(New_Caledonia$"ESA") == 120)] <- 1
-      values(New_Caledonia$"Is_121")[which(values(New_Caledonia$"ESA") == 121)] <- 1
-      values(New_Caledonia$"Is_130")[which(values(New_Caledonia$"ESA") == 130)] <- 1
-      values(New_Caledonia$"Is_150")[which(values(New_Caledonia$"ESA") == 150)] <- 1
-      values(New_Caledonia$"Is_160")[which(values(New_Caledonia$"ESA") == 160)] <- 1
-      values(New_Caledonia$"Is_170")[which(values(New_Caledonia$"ESA") == 170)] <- 1
-      values(New_Caledonia$"Is_190")[which(values(New_Caledonia$"ESA") == 190)] <- 1
-      values(New_Caledonia$"Is_210")[which(values(New_Caledonia$"ESA") == 210)] <- 1
+      values(New_Caledonia$"Is_Agriculture")[which(values(New_Caledonia$"ESA") %in% c(10,11,12,20,30,40))]  <- 1
+      values(New_Caledonia$"Is_Forest")     [which(values(New_Caledonia$"ESA") %in% c(50,60,61,62,70,71,72,80,81,82,90,100,160,170))]  <- 1
+      values(New_Caledonia$"Is_Grassland")  [which(values(New_Caledonia$"ESA") %in% c(110,130))]  <- 1
+      values(New_Caledonia$"Is_Wetland")    [which(values(New_Caledonia$"ESA")  == 180)]  <- 1
+      values(New_Caledonia$"Is_Settlement") [which(values(New_Caledonia$"ESA")  == 190)]  <- 1
+      values(New_Caledonia$"Is_Water")      [which(values(New_Caledonia$"ESA")  == 210)]  <- 1
+      values(New_Caledonia$"Is_Other")      [which(values(New_Caledonia$"ESA")  %in% c(120,121,122,140,150,151,152,153,200,201,202))]  <- 1
      
    ##
    ##    Use the survey Design to pull some random samples from the strata
@@ -135,72 +114,71 @@
       Random_Sample <- do.call(rbind, Random_Sample)
       
 
-      model_10  <- glm(Is_10  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_11  <- glm(Is_11  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_12  <- glm(Is_12  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_20  <- glm(Is_20  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_30  <- glm(Is_30  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_40  <- glm(Is_40  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_50  <- glm(Is_50  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_80  <- glm(Is_80  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_100 <- glm(Is_100 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_110 <- glm(Is_110 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_120 <- glm(Is_120 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_121 <- glm(Is_121 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_130 <- glm(Is_130 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_150 <- glm(Is_150 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_160 <- glm(Is_160 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_170 <- glm(Is_170 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_190 <- glm(Is_190 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      model_210 <- glm(Is_210 ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Agriculture  <- glm(Is_Agriculture  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Forest       <- glm(Is_Forest       ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Grassland    <- glm(Is_Grassland    ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Wetland      <- glm(Is_Wetland      ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Settlement   <- glm(Is_Settlement   ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Water        <- glm(Is_Water        ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Other        <- glm(Is_Other        ~ Red + Green + Blue, family = binomial, data = Random_Sample)
 
-      model_10se   <- predict(New_Caledonia, model_10,  type="response", se.fit=TRUE, cores = 1)
-      model_11se   <- predict(New_Caledonia, model_11,  type="response", se.fit=TRUE, cores = 1)
-      model_12se   <- predict(New_Caledonia, model_12,  type="response", se.fit=TRUE, cores = 1)
-      model_20se   <- predict(New_Caledonia, model_20,  type="response", se.fit=TRUE, cores = 1)
-      model_30se   <- predict(New_Caledonia, model_30,  type="response", se.fit=TRUE, cores = 1)
-      model_40se   <- predict(New_Caledonia, model_40,  type="response", se.fit=TRUE, cores = 1)
-      model_50se   <- predict(New_Caledonia, model_50,  type="response", se.fit=TRUE, cores = 1)
-      model_80se   <- predict(New_Caledonia, model_80,  type="response", se.fit=TRUE, cores = 1)
-      model_100se  <- predict(New_Caledonia, model_100, type="response", se.fit=TRUE, cores = 1)
-      model_110se  <- predict(New_Caledonia, model_110, type="response", se.fit=TRUE, cores = 1)
-      model_120se  <- predict(New_Caledonia, model_120, type="response", se.fit=TRUE, cores = 1)
-      model_121se  <- predict(New_Caledonia, model_121, type="response", se.fit=TRUE, cores = 1)
-      model_130se  <- predict(New_Caledonia, model_130, type="response", se.fit=TRUE, cores = 1)
-      model_150se  <- predict(New_Caledonia, model_150, type="response", se.fit=TRUE, cores = 1)
-      model_160se  <- predict(New_Caledonia, model_160, type="response", se.fit=TRUE, cores = 1)
-      model_170se  <- predict(New_Caledonia, model_170, type="response", se.fit=TRUE, cores = 1)
-      model_190se  <- predict(New_Caledonia, model_190, type="response", se.fit=TRUE, cores = 1)
-      model_210se  <- predict(New_Caledonia, model_210, type="response", se.fit=TRUE, cores = 1)
+      New_Caledonia$"Probability_Agriculture" <- predict(New_Caledonia, Model_Agriculture, type="response", se.fit=FALSE)
+      New_Caledonia$"Probability_Forest"      <- predict(New_Caledonia, Model_Forest,      type="response", se.fit=FALSE)
+      New_Caledonia$"Probability_Grassland"   <- predict(New_Caledonia, Model_Grassland,   type="response", se.fit=FALSE)
+      New_Caledonia$"Probability_Wetland"     <- predict(New_Caledonia, Model_Wetland,     type="response", se.fit=FALSE)
+      New_Caledonia$"Probability_Settlement"  <- predict(New_Caledonia, Model_Settlement,  type="response", se.fit=FALSE)
+      New_Caledonia$"Probability_Water"       <- predict(New_Caledonia, Model_Water,       type="response", se.fit=FALSE)
+      New_Caledonia$"Probability_Other"       <- predict(New_Caledonia, Model_Other,       type="response", se.fit=FALSE)
 
+   ##
+   ## Find the highest probability
+   ##
 
-
-plot(model_190se$fit)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
+      X = tapp(New_Caledonia, index = c(0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1), which.max)
+      New_Caledonia$"Predicted_Value"<- X$'X1'
+      plot(New_Caledonia$"Predicted_Value")
    ##
    ## Save files our produce some final output of something
    ##
-      save(Survey_Design, file = 'Data_Intermediate/Survey_Design.rda')
-      save(xxxx, file = 'Data_Output/xxxxxxxxxxxxx.rda')
+      writeRaster(New_Caledonia_2022, filename =paste0("Data_Spatial/", Country, "_2022.tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
 ##
 ##    And we're done
 ##
+rm(list=ls(all=TRUE))
+
+##
+##    Can we truncate this to the coastline?
+##
+New_Caledonia_2022 <- rast("Data_Spatial/New_Caledonia_2022.tif")
+   ##
+   ##    Read in the DEP shorelines project
+   ##
+      g <- geopackage("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg")
+      Shorelines <- gpkg_table(g, "shorelines_annual")
+      NewCal_Coast = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
+                                                                                    from shorelines_annual
+                                                                                    where eez_territory in ('NCL')
+                                                                                     and year = 2022
+                                                                                     and certainty = 'good'")
+NC <- st_transform(NewCal_Coast, crs = "epsg:4326")
+
+NewCal_Coast <- st_union(NC)
+NewCal_Coast <- st_concave_hull(NewCal_Coast, ratio =  0.0009765625)  ## THIS IS THE PERFECT NUMBER
+
+NC <- vect(NewCal_Coast)
+plet(NC)
+
+plot(NC, background = "yellow")
+
+Wonder <- mask(New_Caledonia_2022, NC)
+plot(Wonder)
 
 
 
-nrow(New_Caledonia)
+
+
+st_is_valid(NewCal_Coast)
+
+plot(st_polygonize(NewCal_Coast), background = "yellow")
+
 
