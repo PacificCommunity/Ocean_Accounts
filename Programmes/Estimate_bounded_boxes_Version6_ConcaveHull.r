@@ -77,6 +77,9 @@
    ##
    ##    I want to merge all of these Coastlines together - coastlines dont close - add a 1 meter buffer
    ##
+      library(sf)
+      library(rstac)
+      load("C:/GIT_Projects/Ocean_Accounts/Data_Spatial/Target_Countries.rda")
       All_Countries <- lapply(unique(Target_Countries$TERRITORY1), function(x){
                                     X <- st_as_sf(st_union(Target_Countries[(Target_Countries$TERRITORY1 == x),]))
                                     X$Country <- x
@@ -91,12 +94,32 @@
       
       CI <- st_concave_hull(CI, ratio = 0.00390625)
       FJ <- st_concave_hull(FJ, ratio = 0.0078125)
+#      FJ <- st_concave_hull(FJ, ratio = 1)
       NC <- st_concave_hull(NC, ratio = 0.001953125)
       PL <- st_concave_hull(PL, ratio = 0.00390625)
       
       All_Countries1 <- rbind(CI, FJ, NC, PL)
+
+
+      Fiji_Hull <- All_Countries1[All_Countries1$Country == "Fiji",]
+
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      
+      Search <- stac_search(q = s_obj,
+                            limit = 9999,
+                            collections= "dep_s2_geomad")
+                           
+      Filter <- ext_filter(q = Search,
+                           s_intersects(geometry, {{Fiji_Hull}}))
+      Results <- get_request(Filter)
+      
+      save(Target_Countries, file= "Data_Spatial/Target_Countries.rda")
+      
+write.table(Filter, file="Adhoc_Queries/filter.txt", row.names=FALSE, sep="\t")
+
+
             
-      NC <- vect(All_Countries1)
+      NC <- vect(New_Caledonia_Hull)
       plet(NC)
                               
    rm(g)
@@ -106,8 +129,7 @@
 ##
 ##    Try the intersect again
 ##
-#   for(Country in c("Cook Islands", "Fiji", "Palau", "New Caledonia"))
-   for(Country in c("Fiji", "Palau", "New Caledonia"))
+   for(Country in c("Cook Islands", "Fiji", "Palau", "New Caledonia"))
    {
       New_Caledonia_Hull <- All_Countries1[All_Countries1$Country == Country,]
 
@@ -120,12 +142,15 @@
       Filter <- ext_filter(q = Search,
                            s_intersects(geometry, {{New_Caledonia_Hull}}))
                                                    
+                                                   
+                                                   
+                                                   
       Results <- get_request(Filter)
       Items <- assets_select(Results,
                              asset_names = c("blue", "red", "green"))  
                              
       ToDownload <- assets_url(Items)
-      
+   
       ##
       ##    Try terra - YUP!!!
       ##
@@ -142,7 +167,7 @@
                               print(paste0("Bringing down ", count, " of ", length(BringDown)))
                               count <<- count + 1
                               Y <- rast(x)
-                              Y <- aggregate(Y,fact=5, cores = 10)
+                              #Y <- aggregate(Y,fact=5, cores = 10)
                               return(Y)
                               })
             Wonder <- sprc(Wonder)
@@ -261,3 +286,77 @@ st_concave_hull(NewCal_Coast, ratio =  0.0009765625)
          }
       }
    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   ##
+   ##    I want to merge all of these Coastlines together - coastlines dont close - add a 1 meter buffer
+   ##
+      library(sf)
+      library(rstac)
+      library(terra)
+      load("C:/GIT_Projects/Ocean_Accounts/Data_Spatial/Target_Countries.rda")
+      All_Countries <- lapply(unique(Target_Countries$TERRITORY1), function(x){
+                                    X <- st_as_sf(st_union(Target_Countries[(Target_Countries$TERRITORY1 == x),]))
+                                    X$Country <- x
+                             return(X)
+                     })
+      All_Countries <- st_shift_longitude(do.call(rbind, All_Countries))
+      
+      CI <- All_Countries[1,]
+      FJ <- All_Countries[2,]
+      NC <- All_Countries[3,]
+      PL <- All_Countries[4,]
+
+      CI <- st_concave_hull(CI, ratio = 0.00390625)
+      NC <- st_concave_hull(NC, ratio = 0.001953125)
+      PL <- st_concave_hull(PL, ratio = 0.00390625)
+
+      works <- data.frame(ratio  = numeric(),
+                          status = character())
+      
+     
+      s_obj <- stac("https://stac.digitalearthpacific.org")
+      
+      Search <- stac_search(q = s_obj,
+                            limit = 9999,
+                            collections= "dep_s2_geomad")
+      
+      for(i in seq(1, 0, -.01))
+     {
+         FJ <- All_Countries[2,]
+         FJ <- st_concave_hull(FJ, ratio = i)
+                               
+         Filter <- ext_filter(q = Search,
+                              s_intersects(geometry, {{FJ}}))
+         Results <- get_request(Filter)
+         if(exists("Results"))
+         {
+            works <- rbind(works,
+                           data.frame( ratio = i,
+                                       status = "works"))
+            rm(Results)
+         } else {
+         
+            works <- rbind(works,
+                           data.frame( ratio = i,
+                                       status = "fails"))
+         }
+      }
+      
+    
+NC <- vect(FJ)
+plet(NC)      
