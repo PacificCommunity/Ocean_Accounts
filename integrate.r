@@ -174,56 +174,6 @@
    ##
    ##    Clear the memory
    ##
-      rm(list=ls(all=TRUE))
-      options(max.print=999999)
-      options(scipen = 100)
-
-   ##
-   ##    Core libraries
-   ##
-      library(ggplot2)
-      library(plyr)
-      library(stringr)
-      library(reshape2)
-      library(lubridate)
-      library(calibrate)
-      library(Hmisc)
-      library(RColorBrewer)
-      library(stringi)
-      library(sqldf)
-      library(extrafont)
-      library(scales)
-      library(RDCOMClient)
-      library(extrafont)
-      library(tictoc)   
-      
-      library(sysfonts)
-      library(showtext)
-
-   ##
-   ##    Special Libraries
-   ##      
-      library(tensorflow)
-      library(GPUmatrix)
-      library(Matrix)
-      library(keras3)
-      library(terra)
-      library(raster)
-      library(sf)
-      library(parallel)   
-      library(stats)   
-      library(MASS)
-      library(bigmemory)
-      library(rstac)       # This library is derived from here: https://github.com/brazil-data-cube/rstac
-      library(dym)         # This library is derived from here: https://osf.io/hgfjq/files/5kqyf
-      library(gpkg)
-      library(stars)
-      
-   ##
-   ##    Set working directory
-   ##
-      setwd("c:\\Git_Projects\\Ocean_Accounts")
-      setwd("C:\\From BigDisk\\GIT\\Ocean_Accounts")
 
       ##
       ## ESA data cames from here: https://maps.elie.ucl.ac.be/CCI/viewer/download.php  and is their ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif file which is their world land use for 2015
@@ -237,7 +187,7 @@
       ##    Estimate the bounded boxes for Fiji, Palau, Cook Islands and New Caledonia EEZ so these can be passed to "Programmes/DEP_Play_Code_Version3.py" for data extraction
       ##       Dropping Fiji for the moment
       ##
-         source("Programmes/Estimate_bounded_boxes_Version6.r") # I moved onto V2 for issues associated with splitting countries into islands. Read programme notes.
+         source("Programmes/Estimate_bounded_boxes_Version7.r") # I moved onto V2 for issues associated with splitting countries into islands. Read programme notes.
                                                                 # So... Version 2 chopped the countries into islands and brought each down individually. That worked, in the sense that data was 
                                                                 # able to be downloaded, but it failed because it didn't get the full complexity of the islands in the likes of Fiji.
                                                                 # Version 3 kept the countries, but wasn't able to download data from New Caledonia becuase it was too big.
