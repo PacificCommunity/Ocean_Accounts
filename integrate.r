@@ -174,6 +174,57 @@
    ##
    ##    Clear the memory
    ##
+      rm(list=ls(all=TRUE))
+      options(max.print=999999)
+      options(scipen = 100)
+
+   ##
+   ##    Core libraries
+   ##
+      library(ggplot2)
+      library(plyr)
+      library(stringr)
+      library(reshape2)
+      library(lubridate)
+      library(calibrate)
+      library(Hmisc)
+      library(RColorBrewer)
+      library(stringi)
+      library(sqldf)
+      library(extrafont)
+      library(scales)
+      library(RDCOMClient)
+      library(extrafont)
+      library(tictoc)   
+      
+      library(sysfonts)
+      library(showtext)
+
+   ##
+   ##    Special Libraries
+   ##      
+      library(tensorflow)
+      library(GPUmatrix)
+      library(Matrix)
+      library(keras3)
+      library(terra)
+      library(raster)
+      library(sf)
+      library(parallel)   
+      library(stats)   
+      library(MASS)
+      library(bigmemory)
+      library(rstac)       # This library is derived from here: https://github.com/brazil-data-cube/rstac
+      library(dym)         # This library is derived from here: https://osf.io/hgfjq/files/5kqyf
+      library(gpkg)
+      library(stars)
+      library(RCurl)
+      library(httr2)
+   ##
+   ##    Set working directory
+   ##
+      setwd("c:\\Git_Projects\\Ocean_Accounts")
+      setwd("C:\\From BigDisk\\GIT\\Ocean_Accounts")
 
       ##
       ## ESA data cames from here: https://maps.elie.ucl.ac.be/CCI/viewer/download.php  and is their ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif file which is their world land use for 2015
