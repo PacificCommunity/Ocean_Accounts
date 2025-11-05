@@ -67,16 +67,18 @@ Shorelines <- gpkg_table(g, "shorelines_annual")
                               print(paste0("Bringing down ", count, " of ", length(BringDown)))
                               count <<- count + 1
                               Y <- rast(x)
-                              Y <- aggregate(Y,fact=2, cores = 10)
+                              Y <- aggregate(Y,fact=5, cores = 10)
+#                              Y <- aggregate(Y,fact=2, cores = 10)
                               return(Y)
                               })
             Wonder <- sprc(Wonder)
             r <- mosaic(Wonder)
-            rp = project(r,"epsg:4326")
-            Cut_Me <- mask(rp, fiji_concave[,1])
+            #rp <- rotate(project(r,"epsg:4326"))
+            #Cut_Me <- mask(rp, fiji_concave[,1])
             writeRaster(Cut_Me, filename =paste0("Data_Spatial/Fiji_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
          }
       }
+            
 
    ##
    ##    Cook Islands
