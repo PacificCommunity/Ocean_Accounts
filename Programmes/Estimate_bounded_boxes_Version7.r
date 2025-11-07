@@ -59,23 +59,26 @@ Shorelines <- gpkg_table(g, "shorelines_annual")
       {
          for(year in c("_2022","_2023","_2024"))
          {
-            print(paste0("Country is: Fiji Colour is: ", colour, " Year is: ", year))
-            BringDown <- ToDownload[str_detect(ToDownload, year)]
-            BringDown <- BringDown[str_detect(BringDown, colour) & !str_detect(BringDown, "rededge")]
-            count = 1
-            Wonder <- lapply(BringDown, function(x){
-                              print(paste0("Bringing down ", count, " of ", length(BringDown)))
-                              count <<- count + 1
-                              Y <- rast(x)
-                              Y <- aggregate(Y,fact=5, cores = 10)
-#                              Y <- aggregate(Y,fact=2, cores = 10)
-                              return(Y)
-                              })
-            Wonder <- sprc(Wonder)
-            r <- mosaic(Wonder)
-            #rp <- rotate(project(r,"epsg:4326"))
-            #Cut_Me <- mask(rp, fiji_concave[,1])
-            writeRaster(Cut_Me, filename =paste0("Data_Spatial/Fiji_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            if(!((colour == "_red") &(year == "_2022")))
+            {
+               print(paste0("Country is: Fiji Colour is: ", colour, " Year is: ", year))
+               BringDown <- ToDownload[str_detect(ToDownload, year)]
+               BringDown <- BringDown[str_detect(BringDown, colour) & !str_detect(BringDown, "rededge")]
+               count = 1
+               Wonder <- lapply(BringDown, function(x){
+                                 print(paste0("Bringing down ", count, " of ", length(BringDown)))
+                                 count <<- count + 1
+                                 Y <- rast(x)
+   #                              Y <- aggregate(Y,fact=5, cores = 10)
+                                 Y <- aggregate(Y,fact=2, cores = 10)
+                                 return(Y)
+                                 })
+               Wonder <- sprc(Wonder)
+               r <- mosaic(Wonder)
+               #rp <- rotate(project(r,"epsg:4326"))
+               #Cut_Me <- mask(rp, fiji_concave[,1])
+               writeRaster(r, filename =paste0("Data_Spatial/Fiji_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            }
          }
       }
             
@@ -187,22 +190,25 @@ Shorelines <- gpkg_table(g, "shorelines_annual")
       {
          for(year in c("_2022","_2023","_2024"))
          {
-            print(paste0("Country is: New Caledonian Colour is: ", colour, " Year is: ", year))
-            BringDown <- ToDownload[str_detect(ToDownload, year)]
-            BringDown <- BringDown[str_detect(BringDown, colour) & !str_detect(BringDown, "rededge")]
-            count = 1
-            Wonder <- lapply(BringDown, function(x){
-                              print(paste0("Bringing down ", count, " of ", length(BringDown)))
-                              count <<- count + 1
-                              Y <- rast(x)
-                              Y <- aggregate(Y,fact=2, cores = 10)
-                              return(Y)
-                              })
-            Wonder <- sprc(Wonder)
-            r <- mosaic(Wonder)
-            rp = project(r,"epsg:4326")
-            Cut_Me <- mask(rp, fiji_concave[,1])
-            writeRaster(Cut_Me, filename =paste0("Data_Spatial/New_ Caledonian_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            if(!((colour == "_red") & (year %in% c( "_2022", "_2023"))))
+            {
+               print(paste0("Country is: New Caledonian Colour is: ", colour, " Year is: ", year))
+               BringDown <- ToDownload[str_detect(ToDownload, year)]
+               BringDown <- BringDown[str_detect(BringDown, colour) & !str_detect(BringDown, "rededge")]
+               count = 1
+               Wonder <- lapply(BringDown, function(x){
+                                 print(paste0("Bringing down ", count, " of ", length(BringDown)))
+                                 count <<- count + 1
+                                 Y <- rast(x)
+                                 Y <- aggregate(Y,fact=2, cores = 10)
+                                 return(Y)
+                                 })
+               Wonder <- sprc(Wonder)
+               r <- mosaic(Wonder)
+               rp = project(r,"epsg:4326")
+               Cut_Me <- mask(rp, fiji_concave[,1])
+               writeRaster(Cut_Me, filename =paste0("Data_Spatial/New_Caledonian_Rast", colour, year,".tif"), gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            }
          }
       }
 
@@ -270,3 +276,47 @@ Shorelines <- gpkg_table(g, "shorelines_annual")
          }
       }
 
+
+
+##
+##    Damn you Fiji!
+##
+##
+   ##
+   ##    Load up Fiji again
+   ##
+      rast_Fiji <- rast("Data_Spatial/Fiji_Rast_red_2022.tif")
+      g <- geopackage("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg")
+      Shorelines <- gpkg_table(g, "shorelines_annual")
+
+##
+##    Extract the Palau, Cook Islands, Fiji and New Caledonian coastlines
+##
+   ##
+   ##    Fiji
+   ##
+      Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
+                                                                                        from shorelines_annual
+                                                                                        where eez_territory in ('FJI')")
+      Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
+      Target_Countries <- Target_Countries[(Target_Countries$year == max(Target_Countries$year)) & (Target_Countries$certainty == "good"),]
+                                                 
+      X <- st_as_sf(st_union(Target_Countries))
+      X <- st_shift_longitude(st_transform(X, st_crs(4326)))
+
+      X$Country = "Fiji"
+      plot(X)
+
+      fiji_concave <- st_concave_hull(X, ratio = .01)
+      plot(fiji_concave[,1])
+      rast_Fiji = project(rast_Fiji,"epsg:4326")
+
+      Crop_Fiji <- crop(rast_Fiji,fiji_concave)
+      Mask_Fiji <- mask(rast_Fiji,fiji_concave)
+
+ plot(Mask_Fiji, xlim=c(177, 185), ylim=c(-12, -20))
+ 
+ plot(rast_Fiji, xlim=c(177, 185), ylim=c(-12, -20))
+
+ 
+ 

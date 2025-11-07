@@ -247,8 +247,14 @@
                                                                 # Version 5 ditched the concept of using the World Bank countries data, and has moved to the DEP Coastlines project data.
                                                                 #    Also, version 5 is not using a convex hull to define the boundaries of the countries for chopping out DEP GeoMAD data.
                                                                 # Version 6 is significantly different - it uses RSTAC and Terra/Stars. Much more developed
+                                                                # Version 7 built on V6, but used coastline-based concave hulls to reduce the volume of satelite data read into the system. The satelite
+                                                                #    data is also subset to the concave hulls of the coast line. Looking at Palau, this will chop out the reefs, but I'm dependent on DEP making
+                                                                #    reef measures to be able to include that aspect into the spatial measures.
 
-         source("Programmes/Stratified_Sample_Design.r")  # Build a stratified sample
+         source("Programmes/Stratified_Sample_Design_V2.r")     # Build a stratified sample
+                                                                # Version 2 differs from V1 in that I realise I can pull in all the country data and create the regression on all of the countries all at once,
+                                                                #    because I'm using the regression to predict the land cover in the non-regression years. So, I don't need to do a sample - I can use the full years
+                                                                #    worth of data.
 
          
       ##
