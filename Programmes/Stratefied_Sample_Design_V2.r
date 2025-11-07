@@ -124,60 +124,16 @@
                names(Fiji) <- c("ESA", "Red", "Green", "Blue")
 
 
+   ##
+   ##    Ok, pull all of the land data out
+   ##
+      NC <- data.frame(New_Caledonian[New_Caledonian$ESA < 210,])
+      PL <- data.frame(Palau[Palau$ESA < 210,])
+      CI <- data.frame(Cook_Islands[Cook_Islands$ESA < 210,])
+      FJ <- data.frame(Fiji[Fiji$ESA   < 210,])
 
 
-Land_Cover_Data_NC <- data.frame(New_Caledonian[New_Caledonian$ESA < 200,])
 
-
-##
-##    Ok, that worked good. Can we stratify the sampling process?
-##
-   Frequency <- freq(New_Caledonian,digits=2, bylayer = TRUE)
-   Land_Cover <- Frequency[Frequency$layer == 1,]
-   Land_Cover$Population_Total <- sum(Land_Cover$count)
-   Land_Cover$Proportion <- Land_Cover$count / Land_Cover$Population_Total
-
-   ##
-   ##    If the things that vary by Land_Cover are the red/blue/green colours, then estimate how these vary by Land_Cover
-   ##
-   Land_Cover_Data_NC <- data.frame(New_Caledonia)
-   
-   ##
-   ##    Estimate the variance
-   ##
-      
-      Variance_Colours <- with(Land_Cover_Data_NC,
-                       aggregate(list(Variance_Red   = Red,
-                                      Variance_Green = Green,
-                                      Variance_Blue  = Blue,
-                                      Average_Variance = (Red + Green + Blue)/3),
-                               list(value = ESA),
-                               var, 
-                               na.rm = TRUE))   
-      Variance_Colours
-   ##
-   ##    Combine it with the Land_Cover totals - because water makes up 93% of the sample, lets exclude it
-   ##       when calculating the stratum sample size, and then pop it back in at the end.
-   ##
-      Survey_Design <- merge(Land_Cover,
-                             Variance_Colours,
-                             by = c("value"))
-      
-      Survey_Design$Weighted_Variance <- Survey_Design$Average_Variance * Survey_Design$count
-      
-      Survey_Design_Excl_Water <- Survey_Design[Survey_Design$value != 210,]
-      Survey_Design_Excl_Water$Sample_Size <- round(((Survey_Design_Excl_Water$Weighted_Variance)/sum(Survey_Design_Excl_Water$Weighted_Variance))*1000000)
-      for(i in 1:nrow(Survey_Design_Excl_Water))
-      {
-         Survey_Design_Excl_Water$Sample_Size[i] <- ifelse(Survey_Design_Excl_Water$Sample_Size[i] > Survey_Design_Excl_Water$count[i], Survey_Design_Excl_Water$count[i], Survey_Design_Excl_Water$Sample_Size[i])
-         Survey_Design_Excl_Water$Sample_Size[i] <- ifelse(Survey_Design_Excl_Water$Sample_Size[i] < 100, 100, Survey_Design_Excl_Water$Sample_Size[i])
-      }
-      Survey_Design <- rbind.fill(Survey_Design_Excl_Water,
-                                  Survey_Design[Survey_Design$value == 210,])
-                                  
-      Survey_Design$Sample_Size[Survey_Design$value == 210] <- Survey_Design$count[Survey_Design$value == 210] * 0.05
-   
-     sum(Survey_Design$Sample_Size)
 
    ##
    ##    run a logistic model
