@@ -127,6 +127,13 @@
    ##
    ##    Ok, pull all of the land data out
    ##
+      All_Together <- rbind(data.frame(New_Caledonian[New_Caledonian$ESA < 210,]),
+                            data.frame(Palau[Palau$ESA < 210,]),
+                            data.frame(Cook_Islands[Cook_Islands$ESA < 210,]),
+                            data.frame(Fiji[Fiji$ESA   < 210,]))
+
+
+
       NC <- data.frame(New_Caledonian[New_Caledonian$ESA < 210,])
       PL <- data.frame(Palau[Palau$ESA < 210,])
       CI <- data.frame(Cook_Islands[Cook_Islands$ESA < 210,])
