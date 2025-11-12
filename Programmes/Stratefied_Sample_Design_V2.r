@@ -17,6 +17,18 @@
       ##
       ##    Cook Islands
       ##
+         Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
+                                                                                           from shorelines_annual
+                                                                                           where eez_territory in ('COK')")
+         Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
+         Target_Countries <- Target_Countries[(Target_Countries$year == max(Target_Countries$year)) & (Target_Countries$certainty == "good"),]
+                                                    
+         X <- st_as_sf(st_union(Target_Countries))
+         X <- st_transform(X, st_crs(4326))
+
+         concave_hull <- st_concave_hull(X, ratio = .01)
+         #plot(concave_hull[,1])
+
          Red   <- rast("Data_Spatial/Cook_Islands_Rast_Red_2022.tif")
          Green <- rast("Data_Spatial/Cook_Islands_Rast_Green_2022.tif")
          Blue  <- rast("Data_Spatial/Cook_Islands_Rast_Blue_2022.tif")
@@ -25,10 +37,23 @@
          NC_ESA <- resample(NC_ESA, Red, method = "mode")
          
          Cook_Islands <- c(NC_ESA, Red, Green, Blue)
+         Cook_Islands <- mask(Cook_Islands, concave_hull)
          names(Cook_Islands) <- c("ESA", "Red", "Green", "Blue")
       ##
       ##    New Caledonia
       ##
+         Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
+                                                                                           from shorelines_annual
+                                                                                           where eez_territory in ('NCL')")
+         Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
+         Target_Countries <- Target_Countries[(Target_Countries$year == max(Target_Countries$year)) & (Target_Countries$certainty == "good"),]
+                                                    
+         X <- st_as_sf(st_union(Target_Countries))
+         X <- st_transform(X, st_crs(4326))
+
+         concave_hull <- st_concave_hull(X, ratio = .01)
+         #plot(concave_hull[,1])
+         
          Red   <- rast("Data_Spatial/New_Caledonian_Rast_Red_2022.tif")
          Green <- rast("Data_Spatial/New_Caledonian_Rast_Green_2022.tif")
          Blue  <- rast("Data_Spatial/New_Caledonian_Rast_Blue_2022.tif")
@@ -36,11 +61,25 @@
          NC_ESA <- crop(ESA,Red)
          NC_ESA <- resample(NC_ESA, Red, method = "mode")
          
-         New_Caledonian <- c(NC_ESA, Red, Green, Blue)
-         names(New_Caledonian) <- c("ESA", "Red", "Green", "Blue")
+         New_Caledonia <- c(NC_ESA, Red, Green, Blue)
+         New_Caledonia <- mask(New_Caledonia, concave_hull)
+         names(New_Caledonia) <- c("ESA", "Red", "Green", "Blue")
+         
       ##
       ##    Palau
       ##
+         Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
+                                                                                           from shorelines_annual
+                                                                                           where eez_territory in ('PLW')")
+         Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
+         Target_Countries <- Target_Countries[(Target_Countries$year == max(Target_Countries$year)) & (Target_Countries$certainty == "good"),]
+                                                    
+         X <- st_as_sf(st_union(Target_Countries))
+         X <- st_transform(X, st_crs(4326))
+
+         concave_hull <- st_concave_hull(X, ratio = .01)
+         #plot(concave_hull[,1])
+
          Red   <- rast("Data_Spatial/Palau_Rast_Red_2022.tif")
          Green <- rast("Data_Spatial/Palau_Rast_Green_2022.tif")
          Blue  <- rast("Data_Spatial/Palau_Rast_Blue_2022.tif")
@@ -49,6 +88,7 @@
          NC_ESA <- resample(NC_ESA, Red, method = "mode")
          
          Palau <- c(NC_ESA, Red, Green, Blue)
+         Palau <- mask(Palau, concave_hull)
          names(Palau) <- c("ESA", "Red", "Green", "Blue")
 
       ##
@@ -121,20 +161,16 @@
                NC_ESA <- resample(NC_ESA, Red, method = "mode")
                
                Fiji <- c(NC_ESA, Red, Green, Blue)
+               Fiji <- mask(Fiji, fiji_concave)
                names(Fiji) <- c("ESA", "Red", "Green", "Blue")
 
 
    ##
    ##    Ok, pull all of the land data out
    ##
-      All_Together <- rbind(data.frame(New_Caledonian[New_Caledonian$ESA < 210,]),
-                            data.frame(Palau[Palau$ESA < 210,]),
-                            data.frame(Cook_Islands[Cook_Islands$ESA < 210,]),
-                            data.frame(Fiji[Fiji$ESA   < 210,]))
-
-
-
-      NC <- data.frame(New_Caledonian[New_Caledonian$ESA < 210,])
+      Frequency <- freq(New_Caledonia,digits=2, bylayer = TRUE)
+   
+      NC <- data.frame(New_Caledonia[New_Caledonia$ESA < 210,])
       PL <- data.frame(Palau[Palau$ESA < 210,])
       CI <- data.frame(Cook_Islands[Cook_Islands$ESA < 210,])
       FJ <- data.frame(Fiji[Fiji$ESA   < 210,])
