@@ -220,6 +220,8 @@
       library(stars)
       library(RCurl)
       library(httr2)
+      library(pryr)
+      library(lineprof)
    ##
    ##    Set working directory
    ##
