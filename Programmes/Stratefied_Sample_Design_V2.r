@@ -163,7 +163,11 @@
                Fiji <- c(NC_ESA, Red, Green, Blue)
                Fiji <- mask(Fiji, fiji_concave)
                names(Fiji) <- c("ESA", "Red", "Green", "Blue")
-
+               
+            writeRaster(New_Caledonia, filename ="Data_Spatial/New_Caledonia.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            writeRaster(Fiji,          filename ="Data_Spatial/Fiji.tif",          gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            writeRaster(Palau,         filename ="Data_Spatial/Palau.tif",         gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
+            writeRaster(Cook_Islands,  filename ="Data_Spatial/Cook_Islands.tif",  gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
 
    ##
    ##    Ok, pull all of the land data out
