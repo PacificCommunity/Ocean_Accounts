@@ -253,6 +253,7 @@
                                                                 #    data is also subset to the concave hulls of the coast line. Looking at Palau, this will chop out the reefs, but I'm dependent on DEP making
                                                                 #    reef measures to be able to include that aspect into the spatial measures.
 
+         source("Programmes/Match_ESA_to_Countries.r")          # Clean up the rasters and throw away the sea
          source("Programmes/Stratified_Sample_Design_V2.r")     # Build a stratified sample
                                                                 # Version 2 differs from V1 in that I realise I can pull in all the country data and create the regression on all of the countries all at once,
                                                                 #    because I'm using the regression to predict the land cover in the non-regression years. So, I don't need to do a sample - I can use the full years

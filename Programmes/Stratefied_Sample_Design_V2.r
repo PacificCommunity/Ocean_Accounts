@@ -1,5 +1,5 @@
 ##
-##    Programme:  Stratefied_Sample_Design.r
+##    Programme:  Stratified_Sample_Design_V2.r
 ##
 ##    Objective:  
 ##
@@ -13,161 +13,11 @@
    ##
    ##    Load all of the country data
    ##
-      ESA <- rast("Data_Spatial/ESACCI-LC-L4-LCCS-Map-300m-P1Y-2015-v2.0.7.tif")
-      ##
-      ##    Cook Islands
-      ##
-         Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
-                                                                                           from shorelines_annual
-                                                                                           where eez_territory in ('COK')")
-         Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
-         Target_Countries <- Target_Countries[(Target_Countries$year == max(Target_Countries$year)) & (Target_Countries$certainty == "good"),]
-                                                    
-         X <- st_as_sf(st_union(Target_Countries))
-         X <- st_transform(X, st_crs(4326))
+      New_Caledonia <- rast("Data_Spatial/New_Caledonia.tif")
+      Fiji          <- rast("Data_Spatial/Fiji.tif")
+      Palau         <- rast("Data_Spatial/Palau.tif")
+      Cook_Islands  <- rast("Data_Spatial/Cook_Islands.tif")
 
-         concave_hull <- st_concave_hull(X, ratio = .01)
-         #plot(concave_hull[,1])
-
-         Red   <- rast("Data_Spatial/Cook_Islands_Rast_Red_2022.tif")
-         Green <- rast("Data_Spatial/Cook_Islands_Rast_Green_2022.tif")
-         Blue  <- rast("Data_Spatial/Cook_Islands_Rast_Blue_2022.tif")
-         
-         NC_ESA <- crop(ESA,Red)
-         NC_ESA <- resample(NC_ESA, Red, method = "mode")
-         
-         Cook_Islands <- c(NC_ESA, Red, Green, Blue)
-         Cook_Islands <- mask(Cook_Islands, concave_hull)
-         names(Cook_Islands) <- c("ESA", "Red", "Green", "Blue")
-      ##
-      ##    New Caledonia
-      ##
-         Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
-                                                                                           from shorelines_annual
-                                                                                           where eez_territory in ('NCL')")
-         Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
-         Target_Countries <- Target_Countries[(Target_Countries$year == max(Target_Countries$year)) & (Target_Countries$certainty == "good"),]
-                                                    
-         X <- st_as_sf(st_union(Target_Countries))
-         X <- st_transform(X, st_crs(4326))
-
-         concave_hull <- st_concave_hull(X, ratio = .01)
-         #plot(concave_hull[,1])
-         
-         Red   <- rast("Data_Spatial/New_Caledonian_Rast_Red_2022.tif")
-         Green <- rast("Data_Spatial/New_Caledonian_Rast_Green_2022.tif")
-         Blue  <- rast("Data_Spatial/New_Caledonian_Rast_Blue_2022.tif")
-         
-         NC_ESA <- crop(ESA,Red)
-         NC_ESA <- resample(NC_ESA, Red, method = "mode")
-         
-         New_Caledonia <- c(NC_ESA, Red, Green, Blue)
-         New_Caledonia <- mask(New_Caledonia, concave_hull)
-         names(New_Caledonia) <- c("ESA", "Red", "Green", "Blue")
-         
-      ##
-      ##    Palau
-      ##
-         Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
-                                                                                           from shorelines_annual
-                                                                                           where eez_territory in ('PLW')")
-         Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
-         Target_Countries <- Target_Countries[(Target_Countries$year == max(Target_Countries$year)) & (Target_Countries$certainty == "good"),]
-                                                    
-         X <- st_as_sf(st_union(Target_Countries))
-         X <- st_transform(X, st_crs(4326))
-
-         concave_hull <- st_concave_hull(X, ratio = .01)
-         #plot(concave_hull[,1])
-
-         Red   <- rast("Data_Spatial/Palau_Rast_Red_2022.tif")
-         Green <- rast("Data_Spatial/Palau_Rast_Green_2022.tif")
-         Blue  <- rast("Data_Spatial/Palau_Rast_Blue_2022.tif")
-         
-         NC_ESA <- crop(ESA,Red)
-         NC_ESA <- resample(NC_ESA, Red, method = "mode")
-         
-         Palau <- c(NC_ESA, Red, Green, Blue)
-         Palau <- mask(Palau, concave_hull)
-         names(Palau) <- c("ESA", "Red", "Green", "Blue")
-
-      ##
-      ##    Damn you Fiji!
-      ##
-      ##
-         ##
-         ##    Load up Fiji again
-         ##
-            Red   <- rast("Data_Spatial/Fiji_Rast_Red_2022.tif")
-            Green <- rast("Data_Spatial/Fiji_Rast_Green_2022.tif")
-            Blue  <- rast("Data_Spatial/Fiji_Rast_Blue_2022.tif")
-
-            
-            #plot(Blue,  xlim=c(3000000, 3500000), ylim=c(-1200000, -2200000))
-
-            #Red   <- project(Red,"epsg:4326")
-            #Green <- project(Green,"epsg:4326")
-            #Blue  <- project(Blue,"epsg:4326")
-
-         ##
-         ##    Extract the Palau, Cook Islands, Fiji and New Caledonian coastlines
-         ##
-            ##
-            ##    Fiji
-            ##
-               g <- geopackage("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg")
-               Shorelines <- gpkg_table(g, "shorelines_annual")
-
-               Target_Countries = st_read("Data_Spatial/dep_ls_coastlines_0-7-0-55.gpkg",query="select * 
-                                                                                                 from shorelines_annual
-                                                                                                 where eez_territory in ('FJI')")
-#               Target_Countries <- st_transform(Target_Countries, crs = "epsg:4326")
-
-               Target_Countries_Blue <- st_transform(Target_Countries, crs = crs(Blue))
-               Target_Countries_Red  <- st_transform(Target_Countries, crs = crs(Red))
-               Target_Countries_Green<- st_transform(Target_Countries, crs = crs(Green))
-               
-               Target_Countries_Blue  <- Target_Countries_Blue[ (Target_Countries_Blue$year  == max(Target_Countries_Blue$year))  & (Target_Countries_Blue$certainty  == "good"),]
-               Target_Countries_Red   <- Target_Countries_Red[  (Target_Countries_Red$year   == max(Target_Countries_Red$year))   & (Target_Countries_Red$certainty   == "good"),]
-               Target_Countries_Green <- Target_Countries_Green[(Target_Countries_Green$year == max(Target_Countries_Green$year)) & (Target_Countries_Green$certainty == "good"),]
-                                                          
-               X_Blue  <- st_as_sf(st_union(Target_Countries_Blue))
-               X_Red   <- st_as_sf(st_union(Target_Countries_Red))
-               X_Green <- st_as_sf(st_union(Target_Countries_Green))
-
-               fiji_concave <- st_concave_hull(X_Blue, ratio = .01)
-               Blue  <- mask(Blue, fiji_concave)
-               
-               fiji_concave <- st_concave_hull(X_Red, ratio = .01)
-               Red   <- mask(Red,  fiji_concave)
-
-               fiji_concave <- st_concave_hull(X_Green, ratio = .01)
-               Green <- mask(Green,fiji_concave)
-
-               plot(Red,   xlim=c(177, 185), ylim=c(-12, -20))
-               plot(Green, xlim=c(177, 185), ylim=c(-12, -20))
-               plot(Blue,  xlim=c(177, 185), ylim=c(-12, -20))
-   
-               Green  <- project(Green,  crs(Blue))
-               Red    <- project(Red,    crs(Blue))
-               
-               NC_ESA   <- project(ESA,Blue)
-               
-               NC_ESA <- project(NC_ESA, "epsg:4326")
-               Red    <- project(Red,    "epsg:4326")
-               Green  <- project(Green,  "epsg:4326")
-               Blue   <- project(Blue,   "epsg:4326")
-               
-               NC_ESA <- resample(NC_ESA, Red, method = "mode")
-               
-               Fiji <- c(NC_ESA, Red, Green, Blue)
-               Fiji <- mask(Fiji, fiji_concave)
-               names(Fiji) <- c("ESA", "Red", "Green", "Blue")
-               
-            writeRaster(New_Caledonia, filename ="Data_Spatial/New_Caledonia.tif", gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-            writeRaster(Fiji,          filename ="Data_Spatial/Fiji.tif",          gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-            writeRaster(Palau,         filename ="Data_Spatial/Palau.tif",         gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
-            writeRaster(Cook_Islands,  filename ="Data_Spatial/Cook_Islands.tif",  gdal=c("COMPRESS=DEFLATE"), overwrite=TRUE)
 
    ##
    ##    Ok, pull all of the land data out
@@ -181,7 +31,7 @@
 
 
 
-
+New_Caledonia <- Fiji
    ##
    ##    run a logistic model
    ##
@@ -216,13 +66,13 @@
       Random_Sample <- do.call(rbind, Random_Sample)
       
 
-      Model_Agriculture  <- glm(Is_Agriculture  ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      Model_Forest       <- glm(Is_Forest       ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      Model_Grassland    <- glm(Is_Grassland    ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      Model_Wetland      <- glm(Is_Wetland      ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      Model_Settlement   <- glm(Is_Settlement   ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      Model_Water        <- glm(Is_Water        ~ Red + Green + Blue, family = binomial, data = Random_Sample)
-      Model_Other        <- glm(Is_Other        ~ Red + Green + Blue, family = binomial, data = Random_Sample)
+      Model_Agriculture  <- glm(Is_Agriculture  ~ Red + Green + Blue, family = binomial, data = New_Caledonia)
+      Model_Forest       <- glm(Is_Forest       ~ Red + Green + Blue, family = binomial, data = New_Caledonia)
+      Model_Grassland    <- glm(Is_Grassland    ~ Red + Green + Blue, family = binomial, data = New_Caledonia)
+      Model_Wetland      <- glm(Is_Wetland      ~ Red + Green + Blue, family = binomial, data = New_Caledonia)
+      Model_Settlement   <- glm(Is_Settlement   ~ Red + Green + Blue, family = binomial, data = New_Caledonia)
+      Model_Water        <- glm(Is_Water        ~ Red + Green + Blue, family = binomial, data = New_Caledonia)
+      Model_Other        <- glm(Is_Other        ~ Red + Green + Blue, family = binomial, data = New_Caledonia)
 
       New_Caledonia$"Probability_Agriculture" <- predict(New_Caledonia, Model_Agriculture, type="response", se.fit=FALSE)
       New_Caledonia$"Probability_Forest"      <- predict(New_Caledonia, Model_Forest,      type="response", se.fit=FALSE)
